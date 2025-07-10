@@ -748,6 +748,7 @@ function MonitoringChatPane1() {
                 <div className="h-full overflow-hidden p-6">
                   <BuilderPreview
                     className="h-full w-full"
+                    isLoading={isPreviewLoading}
                     text="Signal Preview"
                     text2="AI Startup Acquisition Tracker"
                     text3="California-based artificial intelligence startup acquisitions and mergers, covering funding events, strategic partnerships, and market developments in the tech sector."
