@@ -6,7 +6,9 @@
  * Loader — https://app.subframe.com/002445ea7110/library?component=Loader_f2e570c8-e463-45c2-aae9-a960146bc5d5
  * Icon with background — https://app.subframe.com/002445ea7110/library?component=Icon+with+background_c5d68c0e-4c0c-4cff-8d8c-6ff334859b3a
  * Table — https://app.subframe.com/002445ea7110/library?component=Table_142dfde7-d0cc-48a1-a04c-a08ab2252633
- */
+ * HEY LOG, BUDDY GUYS, I'M WORKING ON THE BUILDER PREVIEW COMPONENT. I'M NOT SURE IF I'M DOING IT CORRECTLY.
+
+*/
 
 import React from "react";
 import * as SubframeUtils from "../utils";
