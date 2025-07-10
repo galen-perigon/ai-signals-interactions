@@ -178,11 +178,12 @@ const BuilderPreviewRoot = React.forwardRef<
                 </div>
               </div>
               <div className="flex w-full items-center justify-between">
-                <div className="flex items-center gap-12">
-                  <div className="flex items-center gap-2">
+                <div className="flex w-full items-center gap-12">
+                  <div className="flex flex-1 items-center gap-2">
                     <IconWithBackground
                       variant="success"
                       icon="FeatherSearch"
+                      className="min-h-[32px] min-w-[32px]"
                     />
                     <div className="flex flex-col items-start">
                       {text4 ? (
@@ -197,10 +198,11 @@ const BuilderPreviewRoot = React.forwardRef<
                       ) : null}
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-1 items-center gap-2">
                     <IconWithBackground
                       variant="success"
                       icon="FeatherFileText"
+                      className="min-h-[32px] min-w-[32px]"
                     />
                     <div className="flex flex-col items-start">
                       {text6 ? (
@@ -215,8 +217,12 @@ const BuilderPreviewRoot = React.forwardRef<
                       ) : null}
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <IconWithBackground variant="success" icon="FeatherFlag" />
+                  <div className="flex flex-1 items-center gap-2">
+                    <IconWithBackground
+                      variant="success"
+                      icon="FeatherCheckCircle"
+                      className="min-h-[32px] min-w-[32px]"
+                    />
                     <div className="flex flex-col items-start">
                       {text8 ? (
                         <span className="text-caption font-caption text-text-secondary">
@@ -277,6 +283,7 @@ const BuilderPreviewRoot = React.forwardRef<
                     <Table.HeaderCell>Deal value</Table.HeaderCell>
                     <Table.HeaderCell>Deal terms</Table.HeaderCell>
                     <Table.HeaderCell>Strategic rationale</Table.HeaderCell>
+                    <Table.HeaderCell>Source URL</Table.HeaderCell>
                   </Table.HeaderRow>
                 }
               >
@@ -316,6 +323,16 @@ const BuilderPreviewRoot = React.forwardRef<
                       Enhance AI capabilities in cloud services
                     </span>
                   </Table.Cell>
+                  <Table.Cell>
+                    <a
+                      className="text-body font-body text-text-primary hover:underline"
+                      href="https://example.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      https://example.com
+                    </a>
+                  </Table.Cell>
                 </Table.Row>
                 <Table.Row className="transition-colors duration-200 cursor-pointer">
                   <Table.Cell>
@@ -352,6 +369,16 @@ const BuilderPreviewRoot = React.forwardRef<
                     <span className="text-body font-body text-text-primary">
                       Expand data analytics platform
                     </span>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <a
+                      className="text-body font-body text-text-primary hover:underline"
+                      href="https://example.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      https://example.com
+                    </a>
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row className="transition-colors duration-200 cursor-pointer">
@@ -390,6 +417,16 @@ const BuilderPreviewRoot = React.forwardRef<
                       Strengthen cybersecurity offerings
                     </span>
                   </Table.Cell>
+                  <Table.Cell>
+                    <a
+                      className="text-body font-body text-text-primary hover:underline"
+                      href="https://example.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      https://example.com
+                    </a>
+                  </Table.Cell>
                 </Table.Row>
                 <Table.Row className="transition-colors duration-200 cursor-pointer">
                   <Table.Cell>
@@ -427,6 +464,16 @@ const BuilderPreviewRoot = React.forwardRef<
                       Enhance CRM integration capabilities
                     </span>
                   </Table.Cell>
+                  <Table.Cell>
+                    <a
+                      className="text-body font-body text-text-primary hover:underline"
+                      href="https://example.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      https://example.com
+                    </a>
+                  </Table.Cell>
                 </Table.Row>
                 <Table.Row className="transition-colors duration-200 cursor-pointer">
                   <Table.Cell>
@@ -463,6 +510,16 @@ const BuilderPreviewRoot = React.forwardRef<
                     <span className="text-body font-body text-text-primary">
                       Accelerate metaverse development
                     </span>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <a
+                      className="text-body font-body text-text-primary hover:underline"
+                      href="https://example.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      https://example.com
+                    </a>
                   </Table.Cell>
                 </Table.Row>
               </Table>

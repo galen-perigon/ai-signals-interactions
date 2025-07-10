@@ -27,7 +27,7 @@ interface SignalCardData {
   isLoading: boolean;
   isRestored?: boolean;
   originalTimestamp?: Date;
-  isEditingApprovedCard?: boolean;
+  isEditingApproved?: boolean;
 }
 
 interface MilestoneData {
@@ -36,12 +36,19 @@ interface MilestoneData {
   isFirst: boolean;
   isApproval?: boolean;
   isRestore?: boolean;
+  isUpdate?: boolean;
+}
+
+interface UpdateMessageData {
+  id: string;
+  text: string;
+  timestamp: Date;
 }
 
 interface ChatItem {
   id: string;
-  type: 'message' | 'signal' | 'milestone';
-  data: ChatMessage | SignalCardData | MilestoneData;
+  type: 'message' | 'signal' | 'milestone' | 'update-message';
+  data: ChatMessage | SignalCardData | MilestoneData | UpdateMessageData;
   timestamp: Date;
   isNew?: boolean; // For animation purposes
 }
@@ -96,6 +103,7 @@ function MonitoringChatPane1() {
   const [inputValue, setInputValue] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [isPreviewMode, setIsPreviewMode] = useState(false);
+  const [isPreviewLoading, setIsPreviewLoading] = useState(false);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -123,44 +131,78 @@ function MonitoringChatPane1() {
   }, [chatItems]);
 
   const handleSavePreview = () => {
-    // Set most recent SignalCard to "approved" variant
-    setChatItems(prev => {
-      const items = [...prev];
-      // Find the most recent signal card
-      for (let i = items.length - 1; i >= 0; i--) {
-        if (items[i].type === 'signal') {
-          const signalData = items[i].data as SignalCardData;
-          items[i] = {
-            ...items[i],
-            data: { ...signalData, variant: "approved" },
-            isNew: true, // Trigger transition animation
-          };
-          break;
-        }
-      }
-      return items;
-    });
+    const currentTime = new Date();
 
-    // Add "plan approved" milestone marker
-    setTimeout(() => {
-      const approvalTime = new Date();
-      const milestoneItem: ChatItem = {
-        id: Date.now().toString(),
-        type: 'milestone',
+    if (isPreviewMode) {
+      setIsPreviewLoading(true);
+      setTimeout(() => setIsPreviewLoading(false), 600);
+    }
+
+    const wasEditingApproved = chatItems.some(
+      (item) =>
+        item.type === "signal" &&
+        (item.data as SignalCardData).variant === "default" &&
+        (item.data as SignalCardData).isEditingApproved
+    );
+
+    setChatItems((prev) =>
+      prev.map((item) => {
+        if (
+          item.type === "signal" &&
+          (item.data as SignalCardData).variant === "default"
+        ) {
+          const signalData = item.data as SignalCardData;
+          return {
+            ...item,
+            data: {
+              ...signalData,
+              variant: "approved" as const,
+              isLoading: false,
+              isEditingApproved: false,
+            },
+            isNew: true,
+          };
+        }
+        return item;
+      })
+    );
+
+    if (wasEditingApproved) {
+      const messageTime = new Date(currentTime.getTime() + 1);
+      const updateMessage: ChatItem = {
+        id: messageTime.toISOString(),
+        type: "update-message",
         data: {
-          id: Date.now().toString(),
-          timestamp: approvalTime,
-          isFirst: false,
-          isApproval: true,
+          id: messageTime.toISOString(),
+          text: "Perfect! Your updates have been saved and are now reflected in the preview to the right. The data source is already working with your refreshed parameters. 🎉",
+          timestamp: messageTime,
         },
-        timestamp: approvalTime,
+        timestamp: messageTime,
         isNew: true,
       };
 
-      setChatItems(prev => [...prev, milestoneItem]);
-    }, 300);
+      const milestoneTime = new Date(currentTime.getTime() + 2);
+      const milestoneItem: ChatItem = {
+        id: milestoneTime.toISOString(),
+        type: "milestone",
+        data: {
+          id: milestoneTime.toISOString(),
+          timestamp: milestoneTime,
+          isFirst: false,
+          isUpdate: true,
+        },
+        timestamp: milestoneTime,
+        isNew: true,
+      };
 
-    // Enable preview mode with animation
+      setTimeout(() => {
+        setChatItems((prev) => [...prev, updateMessage]);
+        setTimeout(() => {
+          setChatItems((prev) => [...prev, milestoneItem]);
+        }, 2500); // Wait for message to stream
+      }, 500);
+    }
+
     setIsPreviewMode(true);
   };
 
@@ -174,7 +216,7 @@ function MonitoringChatPane1() {
             data: { 
               ...signalData, 
               variant: "default",
-              isEditingApprovedCard: signalData.variant === "approved" // Track if we're editing an approved card
+              isEditingApproved: signalData.variant === "approved" // Track if we're editing an approved card
             },
             isNew: true, // Trigger transition animation
           };
@@ -186,6 +228,12 @@ function MonitoringChatPane1() {
 
   const handleSendMessage = () => {
     if (!inputValue.trim() || isGenerating) return;
+
+    // Trigger loading animation if preview mode is active
+    if (isPreviewMode) {
+      setIsPreviewLoading(true);
+      setTimeout(() => setIsPreviewLoading(false), 600);
+    }
 
     const currentTime = new Date();
     
@@ -552,17 +600,20 @@ function MonitoringChatPane1() {
                                 text13="Filter for articles written in English"
                                 text14="Industry Focus"
                                 text15="Narrow search to specific technology sectors"
-                                onSavePreview={(item.data as SignalCardData).variant === 'default' ? handleSavePreview : undefined}
-                                onRestore={(item.data as SignalCardData).variant === 'old-version' ? handleRestore : undefined}
+                                onSavePreview={(item.data as SignalCardData).variant === 'default' ? () => handleSavePreview() : undefined}
+                                onRestore={(item.data as SignalCardData).variant === 'old-version' ? () => handleRestore((item.data as SignalCardData).originalTimestamp!) : undefined}
                                 onEdit={(item.data as SignalCardData).variant === 'approved' ? () => handleEdit(item.id) : undefined}
                                 originalTimestamp={(item.data as SignalCardData).timestamp}
-                                isEditingApprovedCard={(item.data as SignalCardData).isEditingApprovedCard}
                               />
                             </div>
                           )}
                         </div>
                       )}
                       
+                      {item.type === 'update-message' && (
+                        <UpdateMessage text={(item.data as UpdateMessageData).text} isNew={item.isNew} />
+                      )}
+
                       {item.type === 'milestone' && (
                         <div className={`flex w-full items-center gap-4 transition-all duration-700 ease-out opacity-70 hover:opacity-100 ${
                           item.isNew ? 'animate-in fade-in-0 slide-in-from-bottom-3 duration-600 delay-300' : ''
@@ -582,10 +633,12 @@ function MonitoringChatPane1() {
                               {(item.data as MilestoneData).isRestore
                                 ? "Plan restored"
                                 : (item.data as MilestoneData).isApproval 
-                                  ? "Plan approved" 
-                                  : (item.data as MilestoneData).isFirst 
-                                    ? "Plan created" 
-                                    : "Plan updated"} {formatTimestamp(item.timestamp)}
+                                  ? "Plan approved"
+                                  : (item.data as MilestoneData).isUpdate
+                                    ? "Signal updated"
+                                    : (item.data as MilestoneData).isFirst 
+                                      ? "Plan created" 
+                                      : "Plan updated"} {formatTimestamp(item.timestamp)}
                             </span>
                           </div>
                           <div className={`flex h-px grow shrink-0 basis-0 flex-col items-center gap-2 bg-border-primary transition-all duration-500 ${
@@ -675,8 +728,8 @@ function MonitoringChatPane1() {
                     text5="Last updated 2min ago"
                     text6="Sources"
                     text7="2,341 active sources"
-                    text8="Crunchbase, PitchBook, TechCrunch, VentureBeat, SEC filings, company press releases, startup databases, venture capital firm announcements"
-                    text9="Filters"
+                    text8="Found"
+                    text9="8 relevant events"
                     text10="Geographic: California only"
                     text11="Industry: AI/ML companies"
                     text12="Event types: Acquisitions, mergers"
@@ -692,5 +745,43 @@ function MonitoringChatPane1() {
     </DefaultPageLayout>
   );
 }
+
+const UpdateMessage = ({ text, isNew }: { text: string, isNew?: boolean }) => {
+  const [streamedText, setStreamedText] = useState("");
+  const [isStreaming, setIsStreaming] = useState(true);
+
+  useEffect(() => {
+    const streamText = async () => {
+      setStreamedText("");
+      setIsStreaming(true);
+      for (let i = 0; i < text.length; i++) {
+        await new Promise(res => setTimeout(res, 15));
+        setStreamedText(text.substring(0, i + 1));
+      }
+      setIsStreaming(false);
+    };
+
+    streamText();
+  }, [text]);
+
+  return (
+    <div className={`flex w-full flex-col items-start justify-center gap-1`}>
+      <div className="flex flex-col items-start justify-center gap-1">
+        <div
+          className={`flex w-full max-w-[576px] flex-col items-start gap-2 rounded-lg px-4 py-3 transition-all duration-300 transform hover:scale-[1.01] border border-solid border-brand-200 bg-background-tertiary shadow-sm hover:shadow-md ${
+            isNew ? 'animate-in zoom-in-95 duration-300 delay-100' : ''
+          }`}
+        >
+          <span className="text-body font-body text-text-primary">
+            {streamedText}
+            {isStreaming && (
+              <span className="inline-block w-2 h-4 bg-gray-600 ml-1 animate-pulse" />
+            )}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default MonitoringChatPane1; 

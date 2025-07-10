@@ -15,7 +15,7 @@
  * Dropdown Menu — https://app.subframe.com/002445ea7110/library?component=Dropdown+Menu_99951515-459b-4286-919e-a89e7549b43b
  */
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import * as SubframeUtils from "../utils";
 import * as SubframeCore from "@subframe/core";
 import { Button } from "./Button";
@@ -59,7 +59,6 @@ interface SignalCardRootProps extends React.HTMLAttributes<HTMLDivElement> {
   onRestore?: (originalTimestamp: Date) => void;
   onEdit?: () => void;
   originalTimestamp?: Date;
-  isEditingApprovedCard?: boolean;
   className?: string;
 }
 
@@ -88,7 +87,6 @@ const SignalCardRoot = React.forwardRef<HTMLElement, SignalCardRootProps>(
       onRestore,
       onEdit,
       originalTimestamp,
-      isEditingApprovedCard = false,
       className,
       ...otherProps
     }: SignalCardRootProps,
@@ -132,12 +130,6 @@ const SignalCardRoot = React.forwardRef<HTMLElement, SignalCardRootProps>(
         description: "Reason behind the acquisition",
       },
     ]);
-
-    // State for streaming message functionality
-    const [isStreaming, setIsStreaming] = useState(false);
-    const [streamingMessage, setStreamingMessage] = useState("");
-    const [showMilestone, setShowMilestone] = useState(false);
-    const [hasShownUpdateMessage, setHasShownUpdateMessage] = useState(false);
 
     // Function to add a new empty field
     const addNewField = () => {
@@ -185,41 +177,6 @@ const SignalCardRoot = React.forwardRef<HTMLElement, SignalCardRootProps>(
     const handleRestoreClick = () => {
       if (onRestore && originalTimestamp) {
         onRestore(originalTimestamp);
-      }
-    };
-
-    // Handle streaming message for approved card updates
-    const streamUpdateMessage = async () => {
-      const fullMessage = "Perfect! Your updates have been saved and are now reflected in the preview to the right. The data source is already working with your refreshed parameters. 🎉";
-      setIsStreaming(true);
-      setStreamingMessage("");
-      
-      // Stream the message character by character
-      for (let i = 0; i <= fullMessage.length; i++) {
-        await new Promise(resolve => setTimeout(resolve, 20)); // 20ms delay between characters
-        setStreamingMessage(fullMessage.slice(0, i));
-      }
-      
-      setIsStreaming(false);
-      
-      // Show milestone marker after a short delay
-      setTimeout(() => {
-        setShowMilestone(true);
-      }, 500);
-    };
-
-    // Handle save with streaming for approved cards
-    const handleSavePreview = () => {
-      if (onSavePreview) {
-        onSavePreview();
-      }
-      
-      // If this is an approved card being edited, show streaming message
-      if (isEditingApprovedCard && !hasShownUpdateMessage) {
-        setHasShownUpdateMessage(true);
-        setTimeout(() => {
-          streamUpdateMessage();
-        }, 300); // Small delay to feel natural
       }
     };
 
@@ -567,45 +524,10 @@ const SignalCardRoot = React.forwardRef<HTMLElement, SignalCardRootProps>(
                   </SubframeCore.DropdownMenu.Portal>
                 </SubframeCore.DropdownMenu.Root>
               </div>
-              <Button onClick={handleSavePreview}>Save + preview</Button>
+              <Button onClick={onSavePreview}>Save + preview</Button>
             </div>
           </div>
         </div>
-
-        {/* Streaming Update Message */}
-        {(isStreaming || streamingMessage) && (
-          <div className="flex w-full flex-col items-start gap-3 mt-4 p-4 bg-success-50 border border-success-200 rounded-lg">
-            <div className="flex items-start gap-3">
-              <div className="flex-shrink-0 mt-1">
-                <IconWithBackground variant="success" icon="FeatherCheckCircle" />
-              </div>
-              <div className="flex-1">
-                <p className="text-body font-body text-success-800">
-                  {streamingMessage}
-                  {isStreaming && (
-                    <span className="inline-block w-2 h-5 bg-success-600 ml-1 animate-pulse" />
-                  )}
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Milestone Marker */}
-        {showMilestone && (
-          <div className="flex w-full items-center gap-3 mt-4 p-3 bg-brand-50 border border-brand-200 rounded-lg">
-            <div className="flex items-center gap-2">
-              <IconWithBackground variant="brand" icon="FeatherFlag" />
-              <span className="text-body-bold font-body-bold text-brand-800">
-                Milestone: Signal Updated
-              </span>
-            </div>
-            <div className="flex-1 h-px bg-brand-200"></div>
-            <span className="text-caption font-caption text-brand-600">
-              {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-            </span>
-          </div>
-        )}
       </div>
     );
   }
