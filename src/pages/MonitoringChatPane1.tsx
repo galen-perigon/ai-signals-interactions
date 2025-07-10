@@ -105,19 +105,46 @@ function MonitoringChatPane1() {
   const [isPreviewMode, setIsPreviewMode] = useState(false);
   const [isPreviewLoading, setIsPreviewLoading] = useState(false);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+  const [userHasScrolled, setUserHasScrolled] = useState(false);
+  const chatItemsRef = useRef(chatItems);
 
-  const scrollToBottom = () => {
-    if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTo({
-        top: chatContainerRef.current.scrollHeight,
-        behavior: 'smooth'
-      });
+  const handleScroll = () => {
+    const container = chatContainerRef.current;
+    if (container) {
+      // Check if the user is scrolled to the bottom, with a small tolerance
+      const atBottom = container.scrollHeight - container.scrollTop <= container.clientHeight + 5;
+      setUserHasScrolled(!atBottom);
     }
   };
 
+  const scrollToBottom = (behavior: 'smooth' | 'auto' = 'smooth') => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTo({
+        top: chatContainerRef.current.scrollHeight,
+        behavior,
+      });
+    }
+  };
+  
   useEffect(() => {
-    scrollToBottom();
-  }, [chatItems]);
+    const container = chatContainerRef.current;
+    if (container) {
+      // Add scroll listener
+      container.addEventListener('scroll', handleScroll, { passive: true });
+      // Clean up listener
+      return () => container.removeEventListener('scroll', handleScroll);
+    }
+  }, []);
+
+  useEffect(() => {
+    // If a new message is added (by comparing lengths) and the user has not scrolled up,
+    // then we scroll to the bottom.
+    if (chatItems.length > chatItemsRef.current.length && !userHasScrolled) {
+      scrollToBottom();
+    }
+    // Update the ref to the latest chat items
+    chatItemsRef.current = chatItems;
+  }, [chatItems, userHasScrolled]);
 
   // Remove isNew flag after animation completes
   useEffect(() => {
