@@ -12,6 +12,7 @@ import { Button } from "@/ui/components/Button";
 import { SkeletonText } from "@/ui/components/SkeletonText";
 import { SkeletonCircle } from "@/ui/components/SkeletonCircle";
 import { BuilderPreview } from "@/ui/components/BuilderPreview";
+import { MobileToggle } from "@/ui/components/MobileToggle";
 
 interface ChatMessage {
   id: string;
@@ -104,10 +105,13 @@ function MonitoringChatPane1() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isPreviewMode, setIsPreviewMode] = useState(false);
   const [isPreviewLoading, setIsPreviewLoading] = useState(false);
+  const [mobileViewMode, setMobileViewMode] = useState<"chat" | "preview">("chat");
   const chatContainerRef = useRef<HTMLDivElement>(null);
+  const [shouldAutoScroll, setShouldAutoScroll] = useState(true);
+  const [chatItemsCount, setChatItemsCount] = useState(0);
 
   const scrollToBottom = () => {
-    if (chatContainerRef.current) {
+    if (chatContainerRef.current && shouldAutoScroll) {
       chatContainerRef.current.scrollTo({
         top: chatContainerRef.current.scrollHeight,
         behavior: 'smooth'
@@ -115,9 +119,24 @@ function MonitoringChatPane1() {
     }
   };
 
+  // Check if user has scrolled up manually
+  const handleScroll = () => {
+    if (chatContainerRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = chatContainerRef.current;
+      const isAtBottom = Math.abs(scrollHeight - clientHeight - scrollTop) < 50;
+      setShouldAutoScroll(isAtBottom);
+    }
+  };
+
+  // Only auto-scroll when new items are added (not when existing items change)
   useEffect(() => {
-    scrollToBottom();
-  }, [chatItems]);
+    if (chatItems.length > chatItemsCount) {
+      scrollToBottom();
+      setChatItemsCount(chatItems.length);
+    } else if (chatItems.length !== chatItemsCount) {
+      setChatItemsCount(chatItems.length);
+    }
+  }, [chatItems, chatItemsCount, shouldAutoScroll]);
 
   // Remove isNew flag after animation completes
   useEffect(() => {
@@ -137,6 +156,10 @@ function MonitoringChatPane1() {
       setIsPreviewLoading(true);
       setTimeout(() => setIsPreviewLoading(false), 600);
     }
+
+    // Enable preview mode and switch to preview on mobile
+    setIsPreviewMode(true);
+    setMobileViewMode("preview");
 
     const wasEditingApproved = chatItems.some(
       (item) =>
@@ -508,6 +531,14 @@ function MonitoringChatPane1() {
           </div>
         </div>
 
+        {/* Mobile Toggle - Only visible on mobile */}
+        <div className="md:hidden w-full px-4 py-1 bg-white border-b">
+          <MobileToggle 
+            activeMode={mobileViewMode} 
+            onModeChange={setMobileViewMode}
+          />
+        </div>
+
         {/* Main Content - Responsive Layout */}
         <div className="flex-1 relative overflow-hidden">
           <div className={`flex h-full transition-all duration-700 ease-out ${
@@ -519,12 +550,16 @@ function MonitoringChatPane1() {
               isPreviewMode 
                 ? 'w-2/5 transform translate-x-0' 
                 : 'w-full transform translate-x-0'
+            } ${
+              // Mobile responsive classes
+              mobileViewMode === "chat" ? "block" : "hidden md:block"
             }`}>
               <div
                 ref={chatContainerRef}
-                className={`h-full overflow-y-auto px-4 transition-all duration-700 ${
+                className={`h-full overflow-y-auto px-2 md:px-4 transition-all duration-700 ${
                   isPreviewMode ? 'pb-40' : 'pb-80'
                 }`}
+                onScroll={handleScroll}
               >
                 <div className={`mx-auto py-6 space-y-6 transition-all duration-700 ${
                   isPreviewMode ? 'max-w-2xl' : 'max-w-4xl'
@@ -652,7 +687,10 @@ function MonitoringChatPane1() {
               </div>
 
               {/* Fixed Input */}
-              <div className="absolute bottom-0 left-0 right-0 z-50 bg-gradient-to-t from-neutral-50 via-neutral-50 to-transparent pt-8 pb-6 px-4">
+              <div className={`absolute bottom-0 left-0 right-0 z-50 bg-gradient-to-t from-neutral-50 via-neutral-50 to-transparent pt-8 pb-6 px-2 md:px-4 ${
+                // Hide input on mobile when in preview mode
+                mobileViewMode === "preview" ? "hidden md:block" : "block"
+              }`}>
                   <div className="max-w-4xl mx-auto">
                     <div className="flex w-full flex-col items-center justify-end rounded-lg border border-solid border-brand-200 bg-background-primary px-1 py-1 shadow-lg transition-all duration-300 hover:shadow-xl backdrop-blur-sm">
                       <div className="flex w-full items-center gap-2 rounded-t-md px-3 pt-1 pb-2">
@@ -716,9 +754,16 @@ function MonitoringChatPane1() {
               </div>
 
             {/* Preview Panel - Slides in from right */}
-            {isPreviewMode && (
-              <div className="w-3/5 h-full animate-in slide-in-from-right-6 fade-in-0 duration-700 ease-out">
-                <div className="h-full overflow-hidden p-6">
+            {(isPreviewMode || mobileViewMode === "preview") && (
+              <div className={`h-full animate-in slide-in-from-right-6 fade-in-0 duration-700 ease-out ${
+                // Desktop: 3/5 width when preview mode is on
+                // Mobile: full width when preview mode is selected
+                isPreviewMode ? "w-3/5" : "w-full"
+              } ${
+                // Mobile responsive classes
+                mobileViewMode === "preview" ? "block" : "hidden md:block"
+              }`}>
+                <div className="h-full overflow-hidden p-2 md:p-6">
                   <BuilderPreview
                     className="h-full w-full"
                     text="Signal Preview"

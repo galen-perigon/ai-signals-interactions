@@ -140,22 +140,23 @@ const BuilderPreviewRoot = React.forwardRef<
       {...otherProps}
     >
       <div className="flex w-full items-center justify-between">
-        <div className="flex grow shrink-0 basis-0 items-center gap-2">
+        <div className="flex grow shrink-0 basis-0 items-center gap-2 min-w-0">
           <SubframeCore.Icon
-            className="text-body font-body text-text-primary"
+            className="text-body font-body text-text-primary flex-shrink-0"
             name={icon}
           />
           {text ? (
-            <span className="text-h2 font-h2 text-text-primary">{text}</span>
+            <span className="text-h2 font-h2 text-text-primary truncate">{text}</span>
           ) : null}
         </div>
-        <div className="flex grow shrink-0 basis-0 items-start justify-end mt-auto">
+        <div className="flex items-start justify-end flex-shrink-0">
           <Button variant="brand-tertiary" size="large" icon="FeatherPlay">
-            Start Monitoring
+            <span className="hidden md:inline">Start Monitoring</span>
+            <span className="md:hidden">Start</span>
           </Button>
         </div>
       </div>
-      <div className="flex w-full flex-col items-stretch justify-start gap-4 overflow-auto flex-1 px-12 min-w-[900px]">
+      <div className="flex w-full flex-col items-stretch justify-start gap-4 overflow-auto flex-1 px-4 md:px-12 min-w-0">
         <div className="flex w-full flex-col items-stretch justify-start gap-4 py-6 relative flex-1">
           <div className="flex w-full flex-col items-start gap-6 z-10">
             <div
@@ -275,7 +276,7 @@ const BuilderPreviewRoot = React.forwardRef<
             </div>
             <div className="w-full overflow-x-auto overflow-y-hidden">
               <Table
-                className="h-auto w-full table-auto min-w-[1200px]"
+                className="h-auto w-full table-auto min-w-[800px] md:min-w-[1200px]"
                 header={
                   <Table.HeaderRow>
                     <Table.HeaderCell className="min-w-[120px]">Event type</Table.HeaderCell>

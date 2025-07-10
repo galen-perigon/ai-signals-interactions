@@ -32,7 +32,7 @@ const DefaultPageLayoutRoot = React.forwardRef<
       {...otherProps}
     >
       <SidebarCollapsible
-        className="h-auto w-16 flex-none self-stretch mobile:h-auto mobile:w-full mobile:flex-none"
+        className="h-auto w-16 flex-none self-stretch mobile:h-auto mobile:w-full mobile:flex-none hidden md:flex"
         expanded={false}
       />
       {children ? (

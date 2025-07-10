@@ -183,7 +183,7 @@ const SignalCardRoot = React.forwardRef<HTMLElement, SignalCardRootProps>(
     return (
       <div
         className={SubframeUtils.twClassNames(
-          "group/74d5fb4a flex w-144 flex-col items-start gap-4 rounded-rounded-x-large border border-solid border-brand-200 bg-background-primary px-6 py-6 shadow-md relative z-10",
+          "group/74d5fb4a flex w-full max-w-none flex-col items-start gap-4 rounded-rounded-x-large border border-solid border-brand-200 bg-background-primary px-4 py-4 md:px-6 md:py-6 shadow-md relative z-10",
           {
             "px-4 py-4": variant === "old-version",
             "px-6 py-6": variant === "approved",
@@ -396,41 +396,94 @@ const SignalCardRoot = React.forwardRef<HTMLElement, SignalCardRootProps>(
             </div>
 
             {/* Dynamic Table */}
-            <Table
-              header={
-                <Table.HeaderRow>
-                  <Table.HeaderCell>Field Name</Table.HeaderCell>
-                  <Table.HeaderCell>Description</Table.HeaderCell>
-                  <Table.HeaderCell>Actions</Table.HeaderCell>
-                </Table.HeaderRow>
-              }
-            >
+            <div className="w-full overflow-x-auto relative">
+              <Table
+                className="min-w-[400px] md:min-w-[600px] relative w-full"
+                header={
+                  <Table.HeaderRow>
+                    <Table.HeaderCell className="w-full">Field Name</Table.HeaderCell>
+                    <Table.HeaderCell>Description</Table.HeaderCell>
+                    <Table.HeaderCell className="w-[100px] sticky right-0 bg-background-primary shadow-lg z-10 hidden md:table-cell text-center">Actions</Table.HeaderCell>
+                  </Table.HeaderRow>
+                }
+              >
               {dataFields.map((field) => (
                 <Table.Row key={field.id}>
-                  <Table.Cell>
-                    <TextField variant="filled" label="" helpText="">
+                  <Table.Cell className="w-full">
+                    <TextField variant="filled" label="" helpText="" className="w-full">
                       <TextField.Input
                         placeholder="Enter field name"
                         value={field.fieldName}
                         onChange={(e) =>
                           updateField(field.id, e.target.value, field.description)
                         }
+                        className="w-full"
                       />
                     </TextField>
                   </Table.Cell>
-                  <Table.Cell>
-                    <TextField variant="filled" label="" helpText="">
-                      <TextField.Input
-                        placeholder="Enter description"
-                        value={field.description}
-                        onChange={(e) =>
-                          updateField(field.id, field.fieldName, e.target.value)
-                        }
+                  <Table.Cell className="min-w-[200px]">
+                    {/* Desktop: Simple description field */}
+                    <div className="hidden md:block w-full">
+                      <TextField variant="filled" label="" helpText="" className="w-full">
+                        <TextField.Input
+                          placeholder="Enter description"
+                          value={field.description}
+                          onChange={(e) =>
+                            updateField(field.id, field.fieldName, e.target.value)
+                          }
+                          className="w-full"
+                        />
+                      </TextField>
+                    </div>
+                    {/* Mobile: Description field with action icons */}
+                    <div className="flex items-center gap-2 md:hidden">
+                      <div className="flex-1">
+                        <TextField variant="filled" label="" helpText="" className="w-full">
+                          <TextField.Input
+                            placeholder="Enter description"
+                            value={field.description}
+                            onChange={(e) =>
+                              updateField(field.id, field.fieldName, e.target.value)
+                            }
+                            className="w-full"
+                          />
+                        </TextField>
+                      </div>
+                      {/* Mobile enhance icon - positioned before trash icon */}
+                      <SubframeCore.Tooltip.Provider>
+                        <SubframeCore.Tooltip.Root>
+                          <SubframeCore.Tooltip.Trigger asChild={true}>
+                            <SubframeCore.Icon
+                              className="w-4 h-4 text-text-secondary hover:text-brand-600 transition-colors cursor-pointer flex-shrink-0"
+                              name="FeatherSparkle"
+                              onClick={() => {
+                                // Enhance functionality - could be expanded later
+                                console.log('Enhance description for field:', field.id);
+                              }}
+                            />
+                          </SubframeCore.Tooltip.Trigger>
+                          <SubframeCore.Tooltip.Portal>
+                            <SubframeCore.Tooltip.Content
+                              side="top"
+                              align="center"
+                              sideOffset={4}
+                              asChild={true}
+                            >
+                              <Tooltip>Enhance with AI</Tooltip>
+                            </SubframeCore.Tooltip.Content>
+                          </SubframeCore.Tooltip.Portal>
+                        </SubframeCore.Tooltip.Root>
+                      </SubframeCore.Tooltip.Provider>
+                      {/* Mobile delete icon - at the end of the row */}
+                      <SubframeCore.Icon
+                        className="w-4 h-4 text-text-secondary hover:text-red-600 transition-colors cursor-pointer flex-shrink-0"
+                        name="FeatherTrash2"
+                        onClick={() => removeField(field.id)}
                       />
-                    </TextField>
+                    </div>
                   </Table.Cell>
-                  <Table.Cell>
-                    <div className="flex items-center gap-2">
+                  <Table.Cell className="w-[100px] min-w-[100px] sticky right-0 bg-background-primary shadow-lg z-10 hidden md:table-cell align-middle">
+                    <div className="flex items-center gap-1 justify-center">
                       <SubframeCore.Tooltip.Provider>
                         <SubframeCore.Tooltip.Root>
                           <SubframeCore.Tooltip.Trigger asChild={true}>
@@ -474,17 +527,19 @@ const SignalCardRoot = React.forwardRef<HTMLElement, SignalCardRootProps>(
                 </Table.Row>
               ))}
             </Table>
+            </div>
 
             {/* Action Buttons */}
-            <div className="flex w-full items-center gap-2">
-              <div className="flex grow shrink-0 basis-0 items-start gap-2">
+            <div className="flex w-full items-center gap-2 flex-wrap">
+              <div className="flex grow shrink-0 basis-0 items-start gap-2 min-w-0">
                 <Button
                   variant="brand-secondary"
                   size="small"
                   icon="FeatherPlus"
                   onClick={addNewField}
                 >
-                  Add new field
+                  <span className="hidden md:inline">Add new field</span>
+                  <span className="md:hidden">Add</span>
                 </Button>
                 <SubframeCore.DropdownMenu.Root>
                   <SubframeCore.DropdownMenu.Trigger asChild={true}>
@@ -493,7 +548,8 @@ const SignalCardRoot = React.forwardRef<HTMLElement, SignalCardRootProps>(
                       size="small"
                       icon="FeatherSparkle"
                     >
-                      Field suggestions
+                      <span className="hidden sm:inline">Field suggestions</span>
+                      <span className="sm:hidden">Suggestions</span>
                     </Button>
                   </SubframeCore.DropdownMenu.Trigger>
                   <SubframeCore.DropdownMenu.Portal>
@@ -524,7 +580,10 @@ const SignalCardRoot = React.forwardRef<HTMLElement, SignalCardRootProps>(
                   </SubframeCore.DropdownMenu.Portal>
                 </SubframeCore.DropdownMenu.Root>
               </div>
-              <Button onClick={onSavePreview}>Save + preview</Button>
+              <Button onClick={onSavePreview} className="flex-shrink-0">
+                <span className="hidden md:inline">Save + preview</span>
+                <span className="md:hidden">Save</span>
+              </Button>
             </div>
           </div>
         </div>
