@@ -275,59 +275,59 @@ const BuilderPreviewRoot = React.forwardRef<
             </div>
             <div className="w-full overflow-x-auto overflow-y-hidden">
               <Table
-                className="h-auto w-full table-auto"
+                className="h-auto w-full table-auto min-w-[1200px]"
                 header={
                   <Table.HeaderRow>
-                    <Table.HeaderCell>Event type</Table.HeaderCell>
-                    <Table.HeaderCell>Acquirer name</Table.HeaderCell>
-                    <Table.HeaderCell>Startup name</Table.HeaderCell>
-                    <Table.HeaderCell>Startup location</Table.HeaderCell>
-                    <Table.HeaderCell>Deal value</Table.HeaderCell>
-                    <Table.HeaderCell>Deal terms</Table.HeaderCell>
-                    <Table.HeaderCell>Strategic rationale</Table.HeaderCell>
-                    <Table.HeaderCell>Source URL</Table.HeaderCell>
+                    <Table.HeaderCell className="min-w-[120px]">Event type</Table.HeaderCell>
+                    <Table.HeaderCell className="min-w-[160px]">Acquirer name</Table.HeaderCell>
+                    <Table.HeaderCell className="min-w-[140px]">Startup name</Table.HeaderCell>
+                    <Table.HeaderCell className="min-w-[140px]">Startup location</Table.HeaderCell>
+                    <Table.HeaderCell className="min-w-[100px]">Deal value</Table.HeaderCell>
+                    <Table.HeaderCell className="min-w-[120px]">Deal terms</Table.HeaderCell>
+                    <Table.HeaderCell className="min-w-[200px]">Strategic rationale</Table.HeaderCell>
+                    <Table.HeaderCell className="min-w-[160px]">Source URL</Table.HeaderCell>
                   </Table.HeaderRow>
                 }
               >
                 <Table.Row className="transition-colors duration-200 cursor-pointer">
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       Acquisition
                     </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       Microsoft Corporation
                     </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       AI Dynamics
                     </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       San Francisco, CA
                     </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       $2.4B
                     </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       All cash
                     </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       Enhance AI capabilities in cloud services
                     </span>
                   </Table.Cell>
                   <Table.Cell>
                     <a
-                      className="text-body font-body text-text-primary hover:underline"
+                      className="text-body font-body text-text-primary hover:underline whitespace-nowrap"
                       href="https://example.com"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -338,43 +338,43 @@ const BuilderPreviewRoot = React.forwardRef<
                 </Table.Row>
                 <Table.Row className="transition-colors duration-200 cursor-pointer">
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       Strategic Investment
                     </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       Google (Alphabet Inc.)
                     </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       DataFlow Technologies
                     </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       Austin, TX
                     </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       $850M
                     </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       70% cash, 30% stock
                     </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       Expand data analytics platform
                     </span>
                   </Table.Cell>
                   <Table.Cell>
                     <a
-                      className="text-body font-body text-text-primary hover:underline"
+                      className="text-body font-body text-text-primary hover:underline whitespace-nowrap"
                       href="https://example.com"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -385,43 +385,43 @@ const BuilderPreviewRoot = React.forwardRef<
                 </Table.Row>
                 <Table.Row className="transition-colors duration-200 cursor-pointer">
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       Merger
                     </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       Amazon Web Services
                     </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       CloudSecure
                     </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       Boston, MA
                     </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       $1.2B
                     </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       Stock swap
                     </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       Strengthen cybersecurity offerings
                     </span>
                   </Table.Cell>
                   <Table.Cell>
                     <a
-                      className="text-body font-body text-text-primary hover:underline"
+                      className="text-body font-body text-text-primary hover:underline whitespace-nowrap"
                       href="https://example.com"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -432,43 +432,43 @@ const BuilderPreviewRoot = React.forwardRef<
                 </Table.Row>
                 <Table.Row className="transition-colors duration-200 cursor-pointer">
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       Acquisition
                     </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       Salesforce Inc.
                     </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       ConnectHub
                     </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       New York, NY
                     </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       $650M
                     </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       50% cash, 50% stock
                     </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       Enhance CRM integration capabilities
                     </span>
                   </Table.Cell>
                   <Table.Cell>
                     <a
-                      className="text-body font-body text-text-primary hover:underline"
+                      className="text-body font-body text-text-primary hover:underline whitespace-nowrap"
                       href="https://example.com"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -479,43 +479,43 @@ const BuilderPreviewRoot = React.forwardRef<
                 </Table.Row>
                 <Table.Row className="transition-colors duration-200 cursor-pointer">
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       Strategic Partnership
                     </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       Meta Platforms
                     </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       VirtureSpace
                     </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       Seattle, WA
                     </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       $420M
                     </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       Phased investment
                     </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="text-body font-body text-text-primary">
+                    <span className="text-body font-body text-text-primary whitespace-nowrap">
                       Accelerate metaverse development
                     </span>
                   </Table.Cell>
                   <Table.Cell>
                     <a
-                      className="text-body font-body text-text-primary hover:underline"
+                      className="text-body font-body text-text-primary hover:underline whitespace-nowrap"
                       href="https://example.com"
                       target="_blank"
                       rel="noopener noreferrer"

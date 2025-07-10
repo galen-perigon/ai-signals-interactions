@@ -434,7 +434,7 @@ const SignalCardRoot = React.forwardRef<HTMLElement, SignalCardRootProps>(
                       <SubframeCore.Tooltip.Provider>
                         <SubframeCore.Tooltip.Root>
                           <SubframeCore.Tooltip.Trigger asChild={true}>
-                            <IconButton size="small" icon="FeatherStar" />
+                            <IconButton size="small" icon="FeatherSparkle" />
                           </SubframeCore.Tooltip.Trigger>
                           <SubframeCore.Tooltip.Portal>
                             <SubframeCore.Tooltip.Content
