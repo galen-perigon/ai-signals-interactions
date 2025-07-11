@@ -31,7 +31,7 @@ const NotificationCardRoot = React.forwardRef<
     className,
     ...otherProps
   }: NotificationCardRootProps,
-  ref
+  ref,
 ) {
   return (
     <div
@@ -40,7 +40,7 @@ const NotificationCardRoot = React.forwardRef<
         {
           "border border-solid border-gold-100 bg-gold-50": state === "warning",
         },
-        className
+        className,
       )}
       ref={ref as any}
       {...otherProps}

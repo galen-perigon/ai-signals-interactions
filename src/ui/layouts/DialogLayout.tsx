@@ -17,7 +17,7 @@ interface DialogLayoutRootProps extends React.ComponentProps<typeof Dialog> {
 const DialogLayoutRoot = React.forwardRef<HTMLElement, DialogLayoutRootProps>(
   function DialogLayoutRoot(
     { children, className, ...otherProps }: DialogLayoutRootProps,
-    ref
+    ref,
   ) {
     return (
       <Dialog className={className} ref={ref as any} {...otherProps}>
@@ -30,7 +30,7 @@ const DialogLayoutRoot = React.forwardRef<HTMLElement, DialogLayoutRootProps>(
         </Dialog.Content>
       </Dialog>
     );
-  }
+  },
 );
 
 export const DialogLayout = DialogLayoutRoot;

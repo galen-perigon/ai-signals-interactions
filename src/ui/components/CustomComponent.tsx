@@ -40,13 +40,13 @@ const CustomComponentRoot = React.forwardRef<
     className,
     ...otherProps
   }: CustomComponentRootProps,
-  ref
+  ref,
 ) {
   return (
     <div
       className={SubframeUtils.twClassNames(
         "flex w-full flex-col items-start gap-4 rounded-lg border border-solid border-brand-200 bg-background-secondary px-4 py-4 shadow-md",
-        className
+        className,
       )}
       ref={ref as any}
       {...otherProps}
@@ -70,6 +70,7 @@ const CustomComponentRoot = React.forwardRef<
         <div className="flex items-center gap-12">
           <div className="flex items-center gap-2">
             <IconWithBackground variant="success" icon="FeatherCircle" />
+
             <div className="flex flex-col items-start">
               {text3 ? (
                 <span className="text-caption font-caption text-text-secondary">
@@ -85,6 +86,7 @@ const CustomComponentRoot = React.forwardRef<
           </div>
           <div className="flex items-center gap-2">
             <IconWithBackground variant="success" icon="FeatherCircle" />
+
             <div className="flex flex-col items-start">
               {text5 ? (
                 <span className="text-caption font-caption text-text-secondary">
@@ -100,6 +102,7 @@ const CustomComponentRoot = React.forwardRef<
           </div>
           <div className="flex items-center gap-2">
             <IconWithBackground variant="success" icon="FeatherCircle" />
+
             <div className="flex flex-col items-start">
               {text7 ? (
                 <span className="text-caption font-caption text-text-secondary">

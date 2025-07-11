@@ -20,13 +20,13 @@ const Indicator = React.forwardRef<HTMLElement, IndicatorProps>(
         <div
           className={SubframeUtils.twClassNames(
             "flex h-2 w-full flex-col items-start gap-2 rounded-full bg-brand-500",
-            className
+            className,
           )}
           ref={ref as any}
         />
       </SubframeCore.Progress.Indicator>
     );
-  }
+  },
 );
 
 interface ProgressRootProps
@@ -38,14 +38,14 @@ interface ProgressRootProps
 const ProgressRoot = React.forwardRef<HTMLElement, ProgressRootProps>(
   function ProgressRoot(
     { value = 30, className, ...otherProps }: ProgressRootProps,
-    ref
+    ref,
   ) {
     return (
       <SubframeCore.Progress.Root asChild={true} value={value} {...otherProps}>
         <div
           className={SubframeUtils.twClassNames(
             "flex w-full flex-col items-start gap-2 overflow-hidden rounded-full bg-neutral-100",
-            className
+            className,
           )}
           ref={ref as any}
         >
@@ -53,7 +53,7 @@ const ProgressRoot = React.forwardRef<HTMLElement, ProgressRootProps>(
         </div>
       </SubframeCore.Progress.Root>
     );
-  }
+  },
 );
 
 export const Progress = Object.assign(ProgressRoot, {

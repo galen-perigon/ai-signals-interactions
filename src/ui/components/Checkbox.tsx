@@ -19,14 +19,14 @@ interface CheckboxRootProps
 const CheckboxRoot = React.forwardRef<HTMLElement, CheckboxRootProps>(
   function CheckboxRoot(
     { label, className, ...otherProps }: CheckboxRootProps,
-    ref
+    ref,
   ) {
     return (
       <SubframeCore.Checkbox.Root asChild={true} {...otherProps}>
         <button
           className={SubframeUtils.twClassNames(
             "group/3816e3b5 flex cursor-pointer items-center gap-2 text-left",
-            className
+            className,
           )}
           ref={ref as any}
         >
@@ -44,7 +44,7 @@ const CheckboxRoot = React.forwardRef<HTMLElement, CheckboxRootProps>(
         </button>
       </SubframeCore.Checkbox.Root>
     );
-  }
+  },
 );
 
 export const Checkbox = CheckboxRoot;

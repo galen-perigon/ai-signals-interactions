@@ -20,13 +20,13 @@ interface ChatHeaderRootProps extends React.HTMLAttributes<HTMLDivElement> {
 const ChatHeaderRoot = React.forwardRef<HTMLElement, ChatHeaderRootProps>(
   function ChatHeaderRoot(
     { name, subtitle, buttons, className, ...otherProps }: ChatHeaderRootProps,
-    ref
+    ref,
   ) {
     return (
       <div
         className={SubframeUtils.twClassNames(
           "flex w-full items-center gap-4",
-          className
+          className,
         )}
         ref={ref as any}
         {...otherProps}
@@ -54,7 +54,7 @@ const ChatHeaderRoot = React.forwardRef<HTMLElement, ChatHeaderRootProps>(
         ) : null}
       </div>
     );
-  }
+  },
 );
 
 export const ChatHeader = ChatHeaderRoot;

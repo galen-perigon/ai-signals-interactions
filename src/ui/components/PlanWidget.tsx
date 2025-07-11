@@ -63,13 +63,13 @@ const Subcomponent = React.forwardRef<HTMLElement, SubcomponentProps>(
       className,
       ...otherProps
     }: SubcomponentProps,
-    ref
+    ref,
   ) {
     return (
       <div
         className={SubframeUtils.twClassNames(
           "group/6d5db97a flex w-full flex-col items-start gap-4 rounded-lg bg-background-primary pt-2 relative z-10",
-          className
+          className,
         )}
         ref={ref as any}
         {...otherProps}
@@ -80,6 +80,7 @@ const Subcomponent = React.forwardRef<HTMLElement, SubcomponentProps>(
               className="text-body font-body text-text-primary"
               name={icon}
             />
+
             {text ? (
               <span className="text-h3 font-h3 text-text-primary">{text}</span>
             ) : null}
@@ -104,7 +105,7 @@ const Subcomponent = React.forwardRef<HTMLElement, SubcomponentProps>(
                 <span
                   className={SubframeUtils.twClassNames(
                     "text-body font-body text-text-primary",
-                    { inline: variant === "variation" }
+                    { inline: variant === "variation" },
                   )}
                 >
                   {text3}
@@ -168,7 +169,7 @@ const Subcomponent = React.forwardRef<HTMLElement, SubcomponentProps>(
                 <span
                   className={SubframeUtils.twClassNames(
                     "text-body font-body text-text-primary",
-                    { inline: variant === "variation" }
+                    { inline: variant === "variation" },
                   )}
                 >
                   {text5}
@@ -319,7 +320,7 @@ const Subcomponent = React.forwardRef<HTMLElement, SubcomponentProps>(
         </div>
       </div>
     );
-  }
+  },
 );
 
 interface PlanWidgetRootProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -345,14 +346,14 @@ const PlanWidgetRoot = React.forwardRef<HTMLElement, PlanWidgetRootProps>(
       className,
       ...otherProps
     }: PlanWidgetRootProps,
-    ref
+    ref,
   ) {
     return (
       <div
         className={SubframeUtils.twClassNames(
           "group/4782b0ea flex w-144 flex-col items-start overflow-hidden rounded-rounded-x-large border border-solid border-brand-200 bg-background-primary",
           { "h-auto w-144": variant === "new" },
-          className
+          className,
         )}
         ref={ref as any}
         {...otherProps}
@@ -367,7 +368,7 @@ const PlanWidgetRoot = React.forwardRef<HTMLElement, PlanWidgetRootProps>(
                 variant === "new-closed-approved",
               "flex flex-col flex-nowrap gap-0 rounded-rounded-x-large border-none px-6 py-4 shadow-sm":
                 variant === "new-closed",
-            }
+            },
           )}
         >
           <div className="flex w-full items-center gap-4">
@@ -376,22 +377,23 @@ const PlanWidgetRoot = React.forwardRef<HTMLElement, PlanWidgetRootProps>(
                 className="text-caption font-caption text-text-secondary"
                 name="FeatherZap"
               />
+
               <span className="text-caption-bold font-caption-bold text-text-secondary">
                 {variant === "new-open-approved"
                   ? "YOUR SIGNAL"
                   : variant === "new-closed-approved"
-                  ? "YOUR SIGNAL"
-                  : variant === "new-closed"
-                  ? "YOUR SIGNAL"
-                  : variant === "new"
-                  ? "YOUR SIGNAL"
-                  : "MONITORING PLAN"}
+                    ? "YOUR SIGNAL"
+                    : variant === "new-closed"
+                      ? "YOUR SIGNAL"
+                      : variant === "new"
+                        ? "YOUR SIGNAL"
+                        : "MONITORING PLAN"}
               </span>
             </div>
             <span
               className={SubframeUtils.twClassNames(
                 "text-caption font-caption text-text-primary",
-                { "text-text-secondary": variant === "new" }
+                { "text-text-secondary": variant === "new" },
               )}
             >
               Updated 2min ago
@@ -408,7 +410,7 @@ const PlanWidgetRoot = React.forwardRef<HTMLElement, PlanWidgetRootProps>(
                   variant === "new-open-approved" ||
                   variant === "new-closed-approved",
                 hidden: variant === "new-closed",
-              }
+              },
             )}
           >
             <div className="flex items-center gap-2">
@@ -427,7 +429,7 @@ const PlanWidgetRoot = React.forwardRef<HTMLElement, PlanWidgetRootProps>(
                   <span
                     className={SubframeUtils.twClassNames(
                       "text-h3 font-h3 text-text-primary",
-                      { "text-h2 font-h2": variant === "new" }
+                      { "text-h2 font-h2": variant === "new" },
                     )}
                   >
                     AI Startup Acquisition Tracker
@@ -461,7 +463,7 @@ const PlanWidgetRoot = React.forwardRef<HTMLElement, PlanWidgetRootProps>(
               {
                 hidden:
                   variant === "new-closed-approved" || variant === "new-closed",
-              }
+              },
             )}
           >
             <Accordion
@@ -471,6 +473,7 @@ const PlanWidgetRoot = React.forwardRef<HTMLElement, PlanWidgetRootProps>(
                     className="text-body font-body text-text-secondary"
                     name="FeatherFilter"
                   />
+
                   <span className="grow shrink-0 basis-0 text-body-bold font-body-bold text-text-secondary">
                     Filter presets
                   </span>
@@ -509,11 +512,12 @@ const PlanWidgetRoot = React.forwardRef<HTMLElement, PlanWidgetRootProps>(
               </div>
             </Accordion>
             <div className="flex h-px w-full flex-none flex-col items-center gap-2 bg-border-primary" />
+
             <div className="flex w-full flex-col items-start gap-4 rounded-lg bg-background-primary relative z-10">
               <div
                 className={SubframeUtils.twClassNames(
                   "flex w-full items-center justify-between",
-                  { "h-6 w-full flex-none": variant === "new" }
+                  { "h-6 w-full flex-none": variant === "new" },
                 )}
               >
                 <div className="flex items-center gap-2">
@@ -521,6 +525,7 @@ const PlanWidgetRoot = React.forwardRef<HTMLElement, PlanWidgetRootProps>(
                     className="text-body font-body text-text-secondary"
                     name="FeatherTableProperties"
                   />
+
                   <span className="text-body-bold font-body-bold text-text-secondary">
                     Your custom data points
                   </span>
@@ -529,7 +534,7 @@ const PlanWidgetRoot = React.forwardRef<HTMLElement, PlanWidgetRootProps>(
                   <div
                     className={SubframeUtils.twClassNames(
                       "flex items-center justify-between",
-                      { flex: variant === "new" }
+                      { flex: variant === "new" },
                     )}
                   >
                     {dataPointActionSlot}
@@ -693,13 +698,13 @@ const PlanWidgetRoot = React.forwardRef<HTMLElement, PlanWidgetRootProps>(
                 variant === "new-open-approved" ||
                 variant === "new-closed-approved" ||
                 variant === "new-closed",
-            }
+            },
           )}
         >
           <div
             className={SubframeUtils.twClassNames(
               "flex w-full items-center justify-between px-4 py-4",
-              { hidden: variant === "new" }
+              { hidden: variant === "new" },
             )}
           >
             <div className="flex grow shrink-0 basis-0 items-center gap-2">
@@ -707,6 +712,7 @@ const PlanWidgetRoot = React.forwardRef<HTMLElement, PlanWidgetRootProps>(
                 className="text-body font-body text-text-primary"
                 name="FeatherRadio"
               />
+
               <span className="text-h3 font-h3 text-text-primary">
                 Monitoring Plan
               </span>
@@ -723,7 +729,7 @@ const PlanWidgetRoot = React.forwardRef<HTMLElement, PlanWidgetRootProps>(
           <div
             className={SubframeUtils.twClassNames(
               "flex flex-col items-start overflow-hidden",
-              { hidden: variant === "new" }
+              { hidden: variant === "new" },
             )}
           >
             <div className="flex w-full flex-col items-start gap-4 border-y border-solid border-brand-200 bg-background-primary shadow-sm">
@@ -735,6 +741,7 @@ const PlanWidgetRoot = React.forwardRef<HTMLElement, PlanWidgetRootProps>(
                         className="text-body font-body text-text-primary"
                         name="FeatherEye"
                       />
+
                       <span className="text-body-bold font-body-bold text-text-primary">
                         Events we will track
                       </span>
@@ -801,6 +808,7 @@ const PlanWidgetRoot = React.forwardRef<HTMLElement, PlanWidgetRootProps>(
                         className="text-body font-body text-text-primary"
                         name="FeatherLightbulb"
                       />
+
                       <span className="text-body-bold font-body-bold text-text-primary">
                         Assumptions to filter for
                       </span>
@@ -831,6 +839,7 @@ const PlanWidgetRoot = React.forwardRef<HTMLElement, PlanWidgetRootProps>(
                   className="text-body font-body text-text-primary"
                   name="FeatherFileText"
                 />
+
                 <span className="text-body-bold font-body-bold text-text-primary">
                   Data points we&#39;ll capture
                 </span>
@@ -1211,6 +1220,7 @@ const PlanWidgetRoot = React.forwardRef<HTMLElement, PlanWidgetRootProps>(
                         className="text-body font-body text-text-primary"
                         name="FeatherZap"
                       />
+
                       <span className="grow shrink-0 basis-0 text-body-bold font-body-bold text-text-primary">
                         Suggestions to enhance your plan
                       </span>
@@ -1257,7 +1267,7 @@ const PlanWidgetRoot = React.forwardRef<HTMLElement, PlanWidgetRootProps>(
         </div>
       </div>
     );
-  }
+  },
 );
 
 export const PlanWidget = Object.assign(PlanWidgetRoot, {

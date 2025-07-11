@@ -15,14 +15,14 @@ interface ChevronProps
 
 const Chevron = React.forwardRef<HTMLElement, ChevronProps>(function Chevron(
   { className, ...otherProps }: ChevronProps,
-  ref
+  ref,
 ) {
   return (
     <SubframeCore.Collapsible.Chevron {...otherProps}>
       <SubframeCore.Icon
         className={SubframeUtils.twClassNames(
           "text-body font-body text-text-primary",
-          className
+          className,
         )}
         name="FeatherChevronDown"
         ref={ref as any}
@@ -39,14 +39,14 @@ interface ContentProps
 
 const Content = React.forwardRef<HTMLElement, ContentProps>(function Content(
   { children, className, ...otherProps }: ContentProps,
-  ref
+  ref,
 ) {
   return children ? (
     <SubframeCore.Collapsible.Content asChild={true} {...otherProps}>
       <div
         className={SubframeUtils.twClassNames(
           "flex w-full flex-col items-start gap-2",
-          className
+          className,
         )}
         ref={ref as any}
       >
@@ -64,14 +64,14 @@ interface TriggerProps
 
 const Trigger = React.forwardRef<HTMLElement, TriggerProps>(function Trigger(
   { children, className, ...otherProps }: TriggerProps,
-  ref
+  ref,
 ) {
   return children ? (
     <SubframeCore.Collapsible.Trigger asChild={true} {...otherProps}>
       <div
         className={SubframeUtils.twClassNames(
           "flex w-full cursor-pointer flex-col items-start gap-2",
-          className
+          className,
         )}
         ref={ref as any}
       >
@@ -91,14 +91,14 @@ interface AccordionRootProps
 const AccordionRoot = React.forwardRef<HTMLElement, AccordionRootProps>(
   function AccordionRoot(
     { trigger, children, className, ...otherProps }: AccordionRootProps,
-    ref
+    ref,
   ) {
     return (
       <SubframeCore.Collapsible.Root asChild={true} {...otherProps}>
         <div
           className={SubframeUtils.twClassNames(
             "group/d2e81e20 flex w-full flex-col items-start rounded-md",
-            className
+            className,
           )}
           ref={ref as any}
         >
@@ -119,7 +119,7 @@ const AccordionRoot = React.forwardRef<HTMLElement, AccordionRootProps>(
         </div>
       </SubframeCore.Collapsible.Root>
     );
-  }
+  },
 );
 
 export const Accordion = Object.assign(AccordionRoot, {

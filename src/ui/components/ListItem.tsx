@@ -31,13 +31,13 @@ const ListItemRoot = React.forwardRef<HTMLElement, ListItemRootProps>(
       className,
       ...otherProps
     }: ListItemRootProps,
-    ref
+    ref,
   ) {
     return (
       <div
         className={SubframeUtils.twClassNames(
           "group/4e9ab2f8 flex w-full items-center justify-between",
-          className
+          className,
         )}
         ref={ref as any}
         {...otherProps}
@@ -54,7 +54,7 @@ const ListItemRoot = React.forwardRef<HTMLElement, ListItemRootProps>(
                   {
                     "font-['Px_Grotesk'] text-[16px] font-[400] leading-[20px] tracking-normal":
                       avatar,
-                  }
+                  },
                 )}
               >
                 {title}
@@ -75,7 +75,7 @@ const ListItemRoot = React.forwardRef<HTMLElement, ListItemRootProps>(
         </div>
       </div>
     );
-  }
+  },
 );
 
 export const ListItem = ListItemRoot;

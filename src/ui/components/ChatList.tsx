@@ -33,14 +33,14 @@ const ChatListItem = React.forwardRef<HTMLElement, ChatListItemProps>(
       className,
       ...otherProps
     }: ChatListItemProps,
-    ref
+    ref,
   ) {
     return (
       <div
         className={SubframeUtils.twClassNames(
           "group/f0df7a36 flex w-full cursor-pointer items-center gap-4 overflow-hidden rounded-md px-3 py-3 hover:bg-neutral-50 active:bg-neutral-100",
           { "bg-brand-50 hover:bg-brand-50 active:bg-brand-0": selected },
-          className
+          className,
         )}
         ref={ref as any}
         {...otherProps}
@@ -63,7 +63,7 @@ const ChatListItem = React.forwardRef<HTMLElement, ChatListItemProps>(
                     "text-text-primary": selected,
                     "text-caption-bold font-caption-bold text-text-primary":
                       unread,
-                  }
+                  },
                 )}
               >
                 {timestamp}
@@ -74,10 +74,11 @@ const ChatListItem = React.forwardRef<HTMLElement, ChatListItemProps>(
             <SubframeCore.Icon
               className={SubframeUtils.twClassNames(
                 "hidden text-body-bold font-body-bold text-text-secondary",
-                { "inline-flex": replied }
+                { "inline-flex": replied },
               )}
               name="FeatherCornerUpLeft"
             />
+
             {message ? (
               <span
                 className={SubframeUtils.twClassNames(
@@ -86,7 +87,7 @@ const ChatListItem = React.forwardRef<HTMLElement, ChatListItemProps>(
                     "text-text-primary": selected,
                     "text-body-bold font-body-bold text-text-primary": unread,
                     "text-body font-body": replied,
-                  }
+                  },
                 )}
               >
                 {message}
@@ -96,7 +97,7 @@ const ChatListItem = React.forwardRef<HTMLElement, ChatListItemProps>(
         </div>
       </div>
     );
-  }
+  },
 );
 
 interface ChatListRootProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -107,13 +108,13 @@ interface ChatListRootProps extends React.HTMLAttributes<HTMLDivElement> {
 const ChatListRoot = React.forwardRef<HTMLElement, ChatListRootProps>(
   function ChatListRoot(
     { children, className, ...otherProps }: ChatListRootProps,
-    ref
+    ref,
   ) {
     return children ? (
       <div
         className={SubframeUtils.twClassNames(
           "flex w-full flex-col items-start gap-1",
-          className
+          className,
         )}
         ref={ref as any}
         {...otherProps}
@@ -121,7 +122,7 @@ const ChatListRoot = React.forwardRef<HTMLElement, ChatListRootProps>(
         {children}
       </div>
     ) : null;
-  }
+  },
 );
 
 export const ChatList = Object.assign(ChatListRoot, {

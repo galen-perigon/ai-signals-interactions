@@ -17,14 +17,14 @@ interface ContentProps
 
 const Content = React.forwardRef<HTMLElement, ContentProps>(function Content(
   { children, className, ...otherProps }: ContentProps,
-  ref
+  ref,
 ) {
   return children ? (
     <SubframeCore.Dialog.Content asChild={true} {...otherProps}>
       <div
         className={SubframeUtils.twClassNames(
           "flex min-w-[320px] flex-col items-start gap-2 rounded-md border border-solid border-brand-200 bg-background-primary shadow-lg max-h-[90vh] overflow-auto",
-          className
+          className,
         )}
         ref={ref as any}
       >
@@ -45,14 +45,14 @@ interface DialogRootProps
 const DialogRoot = React.forwardRef<HTMLElement, DialogRootProps>(
   function DialogRoot(
     { children, className, ...otherProps }: DialogRootProps,
-    ref
+    ref,
   ) {
     return children ? (
       <SubframeCore.Dialog.Root asChild={true} {...otherProps}>
         <div
           className={SubframeUtils.twClassNames(
-            "flex h-full w-full flex-col items-center justify-center gap-2 bg-[#00000099]",
-            className
+            "flex h-full w-full flex-col items-center justify-center gap-2 bg-[#00000099] z-[9999]",
+            className,
           )}
           ref={ref as any}
         >
@@ -60,7 +60,7 @@ const DialogRoot = React.forwardRef<HTMLElement, DialogRootProps>(
         </div>
       </SubframeCore.Dialog.Root>
     ) : null;
-  }
+  },
 );
 
 export const Dialog = Object.assign(DialogRoot, {

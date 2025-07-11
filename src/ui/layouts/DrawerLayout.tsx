@@ -17,7 +17,7 @@ interface DrawerLayoutRootProps extends React.ComponentProps<typeof Drawer> {
 const DrawerLayoutRoot = React.forwardRef<HTMLElement, DrawerLayoutRootProps>(
   function DrawerLayoutRoot(
     { children, className, ...otherProps }: DrawerLayoutRootProps,
-    ref
+    ref,
   ) {
     return (
       <Drawer className={className} ref={ref as any} {...otherProps}>
@@ -30,7 +30,7 @@ const DrawerLayoutRoot = React.forwardRef<HTMLElement, DrawerLayoutRootProps>(
         </Drawer.Content>
       </Drawer>
     );
-  }
+  },
 );
 
 export const DrawerLayout = DrawerLayoutRoot;

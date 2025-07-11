@@ -46,7 +46,7 @@ const CalendarRoot = React.forwardRef<HTMLElement, CalendarRootProps>(
         {...otherProps}
       />
     );
-  }
+  },
 );
 
 export const Calendar = CalendarRoot;

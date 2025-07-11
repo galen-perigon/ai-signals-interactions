@@ -27,14 +27,14 @@ const NavItem = React.forwardRef<HTMLElement, NavItemProps>(function NavItem(
     className,
     ...otherProps
   }: NavItemProps,
-  ref
+  ref,
 ) {
   return (
     <div
       className={SubframeUtils.twClassNames(
         "group/2713e17b flex w-full cursor-pointer items-center gap-2 rounded-md px-3 py-2 hover:bg-neutral-50 active:bg-neutral-100",
         { "bg-brand-0 hover:bg-brand-0 active:bg-brand-50": selected },
-        className
+        className,
       )}
       ref={ref as any}
       {...otherProps}
@@ -42,15 +42,16 @@ const NavItem = React.forwardRef<HTMLElement, NavItemProps>(function NavItem(
       <SubframeCore.Icon
         className={SubframeUtils.twClassNames(
           "text-h3 font-h3 text-neutral-600",
-          { "text-brand-600": selected }
+          { "text-brand-600": selected },
         )}
         name={icon}
       />
+
       {children ? (
         <span
           className={SubframeUtils.twClassNames(
             "line-clamp-1 grow shrink-0 basis-0 text-body-bold font-body-bold text-neutral-600",
-            { "text-brand-600": selected }
+            { "text-brand-600": selected },
           )}
         >
           {children}
@@ -70,13 +71,13 @@ interface NavSectionProps extends React.HTMLAttributes<HTMLDivElement> {
 const NavSection = React.forwardRef<HTMLElement, NavSectionProps>(
   function NavSection(
     { children, label, className, ...otherProps }: NavSectionProps,
-    ref
+    ref,
   ) {
     return (
       <div
         className={SubframeUtils.twClassNames(
           "flex w-full flex-col items-start gap-1 pt-6",
-          className
+          className,
         )}
         ref={ref as any}
         {...otherProps}
@@ -95,7 +96,7 @@ const NavSection = React.forwardRef<HTMLElement, NavSectionProps>(
         ) : null}
       </div>
     );
-  }
+  },
 );
 
 interface SidebarWithSectionsRootProps
@@ -117,13 +118,13 @@ const SidebarWithSectionsRoot = React.forwardRef<
     className,
     ...otherProps
   }: SidebarWithSectionsRootProps,
-  ref
+  ref,
 ) {
   return (
     <nav
       className={SubframeUtils.twClassNames(
         "flex h-full w-60 flex-col items-start border-r border-solid border-brand-200 bg-background-primary",
-        className
+        className,
       )}
       ref={ref as any}
       {...otherProps}

@@ -17,13 +17,13 @@ interface ListingSelectRootProps extends React.HTMLAttributes<HTMLDivElement> {
 const ListingSelectRoot = React.forwardRef<HTMLElement, ListingSelectRootProps>(
   function ListingSelectRoot(
     { label, value, className, ...otherProps }: ListingSelectRootProps,
-    ref
+    ref,
   ) {
     return (
       <div
         className={SubframeUtils.twClassNames(
           "group/480d03ec flex w-full cursor-pointer items-start gap-2 px-5 py-4 hover:bg-neutral-100 active:bg-neutral-200",
-          className
+          className,
         )}
         ref={ref as any}
         {...otherProps}
@@ -48,7 +48,7 @@ const ListingSelectRoot = React.forwardRef<HTMLElement, ListingSelectRootProps>(
         </div>
       </div>
     );
-  }
+  },
 );
 
 export const ListingSelect = ListingSelectRoot;

@@ -35,13 +35,13 @@ const SidebarNavRoot = React.forwardRef<HTMLElement, SidebarNavRootProps>(
       className,
       ...otherProps
     }: SidebarNavRootProps,
-    ref
+    ref,
   ) {
     return (
       <div
         className={SubframeUtils.twClassNames(
           "flex h-full w-64 flex-col items-start gap-6 border-r border-solid border-brand-200 bg-background-primary px-4 py-6 fixed left-0 top-0",
-          className
+          className,
         )}
         ref={ref as any}
         {...otherProps}
@@ -69,6 +69,7 @@ const SidebarNavRoot = React.forwardRef<HTMLElement, SidebarNavRootProps>(
           <LinkButton icon="FeatherTrendingUp">Trending</LinkButton>
           <LinkButton icon="FeatherZap">Signals</LinkButton>
           <div className="flex h-px w-full flex-none items-start bg-brand-200" />
+
           <div className="flex w-full items-center justify-between">
             <LinkButton icon="FeatherBook">Library</LinkButton>
             <div className="flex items-center gap-2">
@@ -114,6 +115,7 @@ const SidebarNavRoot = React.forwardRef<HTMLElement, SidebarNavRootProps>(
         <div className="flex w-full flex-col items-start justify-end gap-4 grow">
           <div className="flex w-full flex-col items-start gap-4">
             <div className="flex h-px w-full flex-none items-start bg-brand-200" />
+
             <LinkButton icon="FeatherCode">Developers</LinkButton>
             <LinkButton icon="FeatherSettings">Settings</LinkButton>
           </div>
@@ -141,7 +143,7 @@ const SidebarNavRoot = React.forwardRef<HTMLElement, SidebarNavRootProps>(
         </div>
       </div>
     );
-  }
+  },
 );
 
 export const SidebarNav = SidebarNavRoot;

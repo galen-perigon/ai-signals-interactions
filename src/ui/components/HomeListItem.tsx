@@ -32,13 +32,13 @@ const HomeListItemRoot = React.forwardRef<HTMLElement, HomeListItemRootProps>(
       className,
       ...otherProps
     }: HomeListItemRootProps,
-    ref
+    ref,
   ) {
     return (
       <div
         className={SubframeUtils.twClassNames(
           "group/ebb36ea3 flex w-full cursor-pointer items-center gap-4 rounded-md px-2 py-2 hover:bg-neutral-50",
-          className
+          className,
         )}
         ref={ref as any}
         {...otherProps}
@@ -71,7 +71,7 @@ const HomeListItemRoot = React.forwardRef<HTMLElement, HomeListItemRootProps>(
         ) : null}
       </div>
     );
-  }
+  },
 );
 
 export const HomeListItem = HomeListItemRoot;

@@ -16,13 +16,13 @@ interface NavItemProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const NavItem = React.forwardRef<HTMLElement, NavItemProps>(function NavItem(
   { children, className, ...otherProps }: NavItemProps,
-  ref
+  ref,
 ) {
   return (
     <div
       className={SubframeUtils.twClassNames(
         "group/4f025ecf flex h-12 cursor-pointer flex-col items-center justify-center gap-4 px-4",
-        className
+        className,
       )}
       ref={ref as any}
       {...otherProps}
@@ -43,13 +43,13 @@ interface ModernNavbarRootProps extends React.HTMLAttributes<HTMLDivElement> {
 const ModernNavbarRoot = React.forwardRef<HTMLElement, ModernNavbarRootProps>(
   function ModernNavbarRoot(
     { className, ...otherProps }: ModernNavbarRootProps,
-    ref
+    ref,
   ) {
     return (
       <div
         className={SubframeUtils.twClassNames(
           "flex w-full max-w-[1024px] flex-wrap items-center gap-4 rounded-md border border-solid border-brand-200 bg-background-primary shadow-md",
-          className
+          className,
         )}
         ref={ref as any}
         {...otherProps}
@@ -74,7 +74,7 @@ const ModernNavbarRoot = React.forwardRef<HTMLElement, ModernNavbarRootProps>(
         </div>
       </div>
     );
-  }
+  },
 );
 
 export const ModernNavbar = Object.assign(ModernNavbarRoot, {

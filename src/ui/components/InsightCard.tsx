@@ -25,13 +25,13 @@ interface InsightCardRootProps extends React.HTMLAttributes<HTMLDivElement> {
 const InsightCardRoot = React.forwardRef<HTMLElement, InsightCardRootProps>(
   function InsightCardRoot(
     { headline, className, ...otherProps }: InsightCardRootProps,
-    ref
+    ref,
   ) {
     return (
       <div
         className={SubframeUtils.twClassNames(
           "flex w-full max-w-[448px] flex-col items-start gap-4 rounded-lg border border-solid border-brand-200 bg-background-primary px-6 py-6 shadow-sm",
-          className
+          className,
         )}
         ref={ref as any}
         {...otherProps}
@@ -91,7 +91,7 @@ const InsightCardRoot = React.forwardRef<HTMLElement, InsightCardRootProps>(
         </div>
       </div>
     );
-  }
+  },
 );
 
 export const InsightCard = InsightCardRoot;

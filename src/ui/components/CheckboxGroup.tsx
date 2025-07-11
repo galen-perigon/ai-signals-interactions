@@ -28,14 +28,14 @@ const CheckboxGroupRoot = React.forwardRef<HTMLElement, CheckboxGroupRootProps>(
       className,
       ...otherProps
     }: CheckboxGroupRootProps,
-    ref
+    ref,
   ) {
     return (
       <div
         className={SubframeUtils.twClassNames(
           "group/f9f1b596 flex flex-col items-start gap-2",
           { "flex-col flex-nowrap gap-2": horizontal },
-          className
+          className,
         )}
         ref={ref as any}
         {...otherProps}
@@ -44,7 +44,7 @@ const CheckboxGroupRoot = React.forwardRef<HTMLElement, CheckboxGroupRootProps>(
           <span
             className={SubframeUtils.twClassNames(
               "text-body-bold font-body-bold text-text-primary",
-              { "text-text-primary": error }
+              { "text-text-primary": error },
             )}
           >
             {label}
@@ -54,7 +54,7 @@ const CheckboxGroupRoot = React.forwardRef<HTMLElement, CheckboxGroupRootProps>(
           <div
             className={SubframeUtils.twClassNames(
               "flex flex-col items-start gap-2",
-              { "flex-row flex-nowrap gap-6": horizontal }
+              { "flex-row flex-nowrap gap-6": horizontal },
             )}
           >
             {children}
@@ -64,7 +64,7 @@ const CheckboxGroupRoot = React.forwardRef<HTMLElement, CheckboxGroupRootProps>(
           <span
             className={SubframeUtils.twClassNames(
               "text-caption font-caption text-text-secondary",
-              { "text-red-700": error }
+              { "text-red-700": error },
             )}
           >
             {helpText}
@@ -72,7 +72,7 @@ const CheckboxGroupRoot = React.forwardRef<HTMLElement, CheckboxGroupRootProps>(
         ) : null}
       </div>
     );
-  }
+  },
 );
 
 export const CheckboxGroup = CheckboxGroupRoot;

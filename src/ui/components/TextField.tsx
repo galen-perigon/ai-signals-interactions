@@ -18,13 +18,13 @@ interface InputProps
 
 const Input = React.forwardRef<HTMLElement, InputProps>(function Input(
   { placeholder, className, ...otherProps }: InputProps,
-  ref
+  ref,
 ) {
   return (
     <input
       className={SubframeUtils.twClassNames(
         "h-full w-full border-none bg-transparent text-body font-body text-text-primary outline-none placeholder:text-neutral-400",
-        className
+        className,
       )}
       placeholder={placeholder as string}
       ref={ref as any}
@@ -60,13 +60,13 @@ const TextFieldRoot = React.forwardRef<HTMLElement, TextFieldRootProps>(
       className,
       ...otherProps
     }: TextFieldRootProps,
-    ref
+    ref,
   ) {
     return (
       <label
         className={SubframeUtils.twClassNames(
           "group/be48ca43 flex flex-col items-start gap-1 h-auto w-full",
-          className
+          className,
         )}
         ref={ref as any}
         {...otherProps}
@@ -84,13 +84,14 @@ const TextFieldRoot = React.forwardRef<HTMLElement, TextFieldRootProps>(
                 variant === "filled",
               "border border-solid border-red-600": error,
               "border border-solid border-neutral-200 bg-neutral-200": disabled,
-            }
+            },
           )}
         >
           <SubframeCore.Icon
             className="text-body font-body text-text-secondary"
             name={icon}
           />
+
           {children ? (
             <div className="flex grow shrink-0 basis-0 flex-col items-start self-stretch px-1">
               {children}
@@ -99,7 +100,7 @@ const TextFieldRoot = React.forwardRef<HTMLElement, TextFieldRootProps>(
           <SubframeCore.Icon
             className={SubframeUtils.twClassNames(
               "text-body font-body text-text-secondary",
-              { "text-red-500": error }
+              { "text-red-500": error },
             )}
             name={iconRight}
           />
@@ -108,7 +109,7 @@ const TextFieldRoot = React.forwardRef<HTMLElement, TextFieldRootProps>(
           <span
             className={SubframeUtils.twClassNames(
               "text-caption font-caption text-text-secondary",
-              { "text-red-700": error }
+              { "text-red-700": error },
             )}
           >
             {helpText}
@@ -116,7 +117,7 @@ const TextFieldRoot = React.forwardRef<HTMLElement, TextFieldRootProps>(
         ) : null}
       </label>
     );
-  }
+  },
 );
 
 export const TextField = Object.assign(TextFieldRoot, {

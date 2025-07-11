@@ -10,6 +10,14 @@
 import React from "react";
 import * as SubframeUtils from "../utils";
 import * as SubframeCore from "@subframe/core";
+import {
+  FeatherEdit,
+  FeatherCheck,
+  FeatherLoader,
+  FeatherChevronDown,
+  FeatherPaperclip,
+  FeatherArrowUp,
+} from "@subframe/core";
 import { Button } from "./Button";
 import { TextArea } from "./TextArea";
 import { IconButton } from "./IconButton";
@@ -30,14 +38,14 @@ const ChatInputRoot = React.forwardRef<HTMLElement, ChatInputRootProps>(
       className,
       ...otherProps
     }: ChatInputRootProps,
-    ref
+    ref,
   ) {
     return (
       <div
         className={SubframeUtils.twClassNames(
           "group/bf9d5156 flex h-52 w-112 flex-col items-center justify-end pt-4",
           { "h-52 w-112": variant === "no-banner" },
-          className
+          className,
         )}
         ref={ref as any}
         {...otherProps}
@@ -45,7 +53,7 @@ const ChatInputRoot = React.forwardRef<HTMLElement, ChatInputRootProps>(
         <div
           className={SubframeUtils.twClassNames(
             "hidden w-full flex-col items-start rounded-lg border border-solid border-border-focused bg-background-primary shadow-[0px_12px_32px_-4px_#d1f0ffff,0px_4px_8px_-2px_#00000014]",
-            { "flex h-auto w-full flex-none": variant === "approval" }
+            { "flex h-auto w-full flex-none": variant === "approval" },
           )}
         >
           <div className="flex w-full items-center justify-between border-b border-dashed border-border-primary px-4 py-4">
@@ -62,10 +70,14 @@ const ChatInputRoot = React.forwardRef<HTMLElement, ChatInputRootProps>(
             </span>
           </div>
           <div className="flex w-full items-center justify-end gap-4 px-4 pt-2 pb-3">
-            <Button variant="brand-secondary" size="large" icon="FeatherEdit">
+            <Button
+              variant="brand-secondary"
+              size="large"
+              icon={<FeatherEdit />}
+            >
               {variant === "approval" ? "Request edits" : "Continue chatting"}
             </Button>
-            <Button size="large" icon="FeatherCheck">
+            <Button size="large" icon={<FeatherCheck />}>
               {variant === "approval" ? "Generate preview" : "Approve plan"}
             </Button>
           </div>
@@ -73,13 +85,13 @@ const ChatInputRoot = React.forwardRef<HTMLElement, ChatInputRootProps>(
         <div
           className={SubframeUtils.twClassNames(
             "flex w-full flex-col items-center justify-end rounded-lg border border-solid border-brand-200 bg-background-primary px-1 py-1",
-            { hidden: variant === "approval" }
+            { hidden: variant === "approval" },
           )}
         >
           <div
             className={SubframeUtils.twClassNames(
               "flex w-full items-center gap-2 rounded-t-md px-3 pt-1 pb-2",
-              { hidden: variant === "no-banner" || variant === "approval" }
+              { hidden: variant === "no-banner" || variant === "approval" },
             )}
           >
             <div className="flex grow shrink-0 basis-0 items-center justify-between">
@@ -88,20 +100,17 @@ const ChatInputRoot = React.forwardRef<HTMLElement, ChatInputRootProps>(
                   className="text-caption font-caption text-brand-600"
                   name={icon}
                 />
+
                 {statusLabel ? (
                   <span className="whitespace-nowrap text-caption font-caption text-text-primary">
                     {statusLabel}
                   </span>
                 ) : null}
-                <SubframeCore.Icon
-                  className="text-caption font-caption text-brand-600"
-                  name={null}
-                />
               </div>
               <Button
                 variant="brand-secondary"
                 size="small"
-                iconRight="FeatherChevronDown"
+                iconRight={<FeatherChevronDown />}
               >
                 Details
               </Button>
@@ -110,7 +119,7 @@ const ChatInputRoot = React.forwardRef<HTMLElement, ChatInputRootProps>(
           <TextArea
             className={SubframeUtils.twClassNames(
               "h-36 w-full flex-none relative",
-              { hidden: variant === "approval" }
+              { hidden: variant === "approval" },
             )}
             label=""
             helpText=""
@@ -119,19 +128,21 @@ const ChatInputRoot = React.forwardRef<HTMLElement, ChatInputRootProps>(
               className="min-h-[96px] w-full grow shrink-0 basis-0"
               placeholder="Any changes to the plan?"
             />
+
             <div className="flex w-full items-start justify-between px-2 pb-2">
-              <IconButton icon="FeatherPaperclip" />
+              <IconButton icon={<FeatherPaperclip />} />
+
               <Button
                 className="h-8 w-8 flex-none"
                 variant="brand-tertiary"
-                iconRight="FeatherArrowUp"
+                iconRight={<FeatherArrowUp />}
               />
             </div>
           </TextArea>
         </div>
       </div>
     );
-  }
+  },
 );
 
 export const ChatInput = ChatInputRoot;

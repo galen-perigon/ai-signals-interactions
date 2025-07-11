@@ -17,7 +17,7 @@ interface AreaChartRootProps
 const AreaChartRoot = React.forwardRef<HTMLElement, AreaChartRootProps>(
   function AreaChartRoot(
     { stacked = false, className, ...otherProps }: AreaChartRootProps,
-    ref
+    ref,
   ) {
     return (
       <SubframeCore.AreaChart
@@ -35,7 +35,7 @@ const AreaChartRoot = React.forwardRef<HTMLElement, AreaChartRootProps>(
         {...otherProps}
       />
     );
-  }
+  },
 );
 
 export const AreaChart = AreaChartRoot;

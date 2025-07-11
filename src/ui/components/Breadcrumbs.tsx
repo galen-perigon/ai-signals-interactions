@@ -16,14 +16,14 @@ interface ItemProps extends React.HTMLAttributes<HTMLSpanElement> {
 
 const Item = React.forwardRef<HTMLElement, ItemProps>(function Item(
   { children, active = false, className, ...otherProps }: ItemProps,
-  ref
+  ref,
 ) {
   return children ? (
     <span
       className={SubframeUtils.twClassNames(
         "group/bbdc1640 line-clamp-1 cursor-pointer break-words text-h3 font-h3 text-text-primary hover:text-text-primary hover:underline",
         { "text-h3 font-h3 text-text-primary": active },
-        className
+        className,
       )}
       ref={ref as any}
       {...otherProps}
@@ -43,13 +43,13 @@ interface DividerProps
 
 const Divider = React.forwardRef<HTMLElement, DividerProps>(function Divider(
   { className, ...otherProps }: DividerProps,
-  ref
+  ref,
 ) {
   return (
     <SubframeCore.Icon
       className={SubframeUtils.twClassNames(
         "text-body font-body text-text-secondary",
-        className
+        className,
       )}
       name="FeatherChevronRight"
       ref={ref as any}
@@ -66,13 +66,13 @@ interface BreadcrumbsRootProps extends React.HTMLAttributes<HTMLDivElement> {
 const BreadcrumbsRoot = React.forwardRef<HTMLElement, BreadcrumbsRootProps>(
   function BreadcrumbsRoot(
     { children, className, ...otherProps }: BreadcrumbsRootProps,
-    ref
+    ref,
   ) {
     return children ? (
       <div
         className={SubframeUtils.twClassNames(
           "group/8898334b flex items-center gap-2 flex-row flex-nowrap",
-          className
+          className,
         )}
         ref={ref as any}
         {...otherProps}
@@ -80,7 +80,7 @@ const BreadcrumbsRoot = React.forwardRef<HTMLElement, BreadcrumbsRootProps>(
         {children}
       </div>
     ) : null;
-  }
+  },
 );
 
 export const Breadcrumbs = Object.assign(BreadcrumbsRoot, {

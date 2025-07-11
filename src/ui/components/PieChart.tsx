@@ -30,7 +30,7 @@ const PieChartRoot = React.forwardRef<HTMLElement, PieChartRootProps>(
         {...otherProps}
       />
     );
-  }
+  },
 );
 
 export const PieChart = PieChartRoot;
