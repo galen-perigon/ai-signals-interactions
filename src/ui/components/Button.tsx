@@ -23,8 +23,8 @@ interface ButtonRootProps
     | "inverse";
   size?: "large" | "medium" | "small";
   children?: React.ReactNode;
-  icon?: SubframeCore.IconName;
-  iconRight?: SubframeCore.IconName;
+  icon?: React.ReactNode;
+  iconRight?: React.ReactNode;
   loading?: boolean;
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   className?: string;
@@ -75,29 +75,32 @@ const ButtonRoot = React.forwardRef<HTMLElement, ButtonRootProps>(
         type={type}
         {...otherProps}
       >
-        <SubframeCore.Icon
-          className={SubframeUtils.twClassNames(
-            "text-body font-body text-text-primary group-disabled/3b777358:text-text-disabled",
-            {
-              hidden: loading,
-              "text-body font-body": size === "small",
-              "text-h3 font-h3": size === "large",
-              "text-white": variant === "inverse",
-              "text-red-700":
-                variant === "destructive-tertiary" ||
-                variant === "destructive-secondary",
-              "text-text-inverted group-hover/3b777358:text-text-inverted group-active/3b777358:text-text-inverted":
-                variant === "destructive-primary",
-              "text-neutral-700":
-                variant === "neutral-tertiary" ||
-                variant === "neutral-secondary" ||
-                variant === "neutral-primary",
-              "text-text-inverted": variant === "brand-tertiary",
-              "text-text-primary": variant === "brand-secondary",
-            }
-          )}
-          name={icon}
-        />
+        {icon ? (
+          <SubframeCore.IconWrapper
+            className={SubframeUtils.twClassNames(
+              "text-body font-body text-text-primary group-disabled/3b777358:text-text-disabled",
+              {
+                hidden: loading,
+                "text-body font-body": size === "small",
+                "text-h3 font-h3": size === "large",
+                "text-white": variant === "inverse",
+                "text-red-700":
+                  variant === "destructive-tertiary" ||
+                  variant === "destructive-secondary",
+                "text-text-inverted group-hover/3b777358:text-text-inverted group-active/3b777358:text-text-inverted":
+                  variant === "destructive-primary",
+                "text-neutral-700":
+                  variant === "neutral-tertiary" ||
+                  variant === "neutral-secondary" ||
+                  variant === "neutral-primary",
+                "text-text-inverted": variant === "brand-tertiary",
+                "text-text-primary": variant === "brand-secondary",
+              }
+            )}
+          >
+            {icon}
+          </SubframeCore.IconWrapper>
+        ) : null}
         <div
           className={SubframeUtils.twClassNames(
             "hidden h-4 w-4 flex-none items-center justify-center gap-2",
@@ -155,28 +158,31 @@ const ButtonRoot = React.forwardRef<HTMLElement, ButtonRootProps>(
             {children}
           </span>
         ) : null}
-        <SubframeCore.Icon
-          className={SubframeUtils.twClassNames(
-            "text-body font-body text-text-primary group-disabled/3b777358:text-text-disabled",
-            {
-              "text-body font-body text-text-primary": size === "small",
-              "text-h3 font-h3 text-text-primary": size === "large",
-              "text-white": variant === "inverse",
-              "text-red-700":
-                variant === "destructive-tertiary" ||
-                variant === "destructive-secondary",
-              "text-text-inverted group-hover/3b777358:text-text-inverted group-active/3b777358:text-text-inverted":
-                variant === "destructive-primary",
-              "text-text-primary":
-                variant === "neutral-tertiary" ||
-                variant === "neutral-secondary" ||
-                variant === "neutral-primary" ||
-                variant === "brand-secondary",
-              "text-text-inverted": variant === "brand-tertiary",
-            }
-          )}
-          name={iconRight}
-        />
+        {iconRight ? (
+          <SubframeCore.IconWrapper
+            className={SubframeUtils.twClassNames(
+              "text-body font-body text-text-primary group-disabled/3b777358:text-text-disabled",
+              {
+                "text-body font-body text-text-primary": size === "small",
+                "text-h3 font-h3 text-text-primary": size === "large",
+                "text-white": variant === "inverse",
+                "text-red-700":
+                  variant === "destructive-tertiary" ||
+                  variant === "destructive-secondary",
+                "text-text-inverted group-hover/3b777358:text-text-inverted group-active/3b777358:text-text-inverted":
+                  variant === "destructive-primary",
+                "text-text-primary":
+                  variant === "neutral-tertiary" ||
+                  variant === "neutral-secondary" ||
+                  variant === "neutral-primary" ||
+                  variant === "brand-secondary",
+                "text-text-inverted": variant === "brand-tertiary",
+              }
+            )}
+          >
+            {iconRight}
+          </SubframeCore.IconWrapper>
+        ) : null}
       </button>
     );
   }

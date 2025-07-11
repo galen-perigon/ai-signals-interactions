@@ -18,6 +18,7 @@
 import React, { useState } from "react";
 import * as SubframeUtils from "../utils";
 import * as SubframeCore from "@subframe/core";
+import { FeatherSparkle, FeatherTrash, FeatherPlus, FeatherColumns, FeatherEdit } from "@subframe/core";
 import { Button } from "./Button";
 import { Badges } from "./Badges";
 import { IconButton } from "./IconButton";
@@ -242,7 +243,7 @@ const SignalCardRoot = React.forwardRef<HTMLElement, SignalCardRootProps>(
               flex: variant === "approved",
             })}
             size={variant === "approved" ? "small" : "small"}
-            icon={variant === "approved" ? "FeatherEdit" : undefined}
+            icon={variant === "approved" ? <FeatherEdit /> : undefined}
             onClick={onEdit}
           />
         </div>
@@ -477,7 +478,7 @@ const SignalCardRoot = React.forwardRef<HTMLElement, SignalCardRootProps>(
                       {/* Mobile delete icon - at the end of the row */}
                       <SubframeCore.Icon
                         className="w-4 h-4 text-text-secondary hover:text-red-600 transition-colors cursor-pointer flex-shrink-0"
-                        name="FeatherTrash2"
+                        name="FeatherTrash"
                         onClick={() => removeField(field.id)}
                       />
                     </div>
@@ -487,7 +488,7 @@ const SignalCardRoot = React.forwardRef<HTMLElement, SignalCardRootProps>(
                       <SubframeCore.Tooltip.Provider>
                         <SubframeCore.Tooltip.Root>
                           <SubframeCore.Tooltip.Trigger asChild={true}>
-                            <IconButton size="small" icon="FeatherSparkle" />
+                            <IconButton size="small" icon={<FeatherSparkle />} />
                           </SubframeCore.Tooltip.Trigger>
                           <SubframeCore.Tooltip.Portal>
                             <SubframeCore.Tooltip.Content
@@ -506,7 +507,7 @@ const SignalCardRoot = React.forwardRef<HTMLElement, SignalCardRootProps>(
                           <SubframeCore.Tooltip.Trigger asChild={true}>
                             <IconButton
                               size="small"
-                              icon="FeatherTrash"
+                              icon={<FeatherTrash />}
                               onClick={() => removeField(field.id)}
                             />
                           </SubframeCore.Tooltip.Trigger>
@@ -535,7 +536,7 @@ const SignalCardRoot = React.forwardRef<HTMLElement, SignalCardRootProps>(
                 <Button
                   variant="brand-secondary"
                   size="small"
-                  icon="FeatherPlus"
+                  icon={<FeatherPlus />}
                   onClick={addNewField}
                 >
                   <span className="hidden md:inline">Add new field</span>
@@ -546,7 +547,7 @@ const SignalCardRoot = React.forwardRef<HTMLElement, SignalCardRootProps>(
                     <Button
                       variant="brand-secondary"
                       size="small"
-                      icon="FeatherSparkle"
+                      icon={<FeatherSparkle />}
                     >
                       <span className="hidden sm:inline">Field suggestions</span>
                       <span className="sm:hidden">Suggestions</span>

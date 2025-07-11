@@ -10,6 +10,7 @@
 import React from "react";
 import * as SubframeUtils from "../utils";
 import * as SubframeCore from "@subframe/core";
+import { FeatherEdit, FeatherCheck, FeatherLoader, FeatherChevronDown, FeatherPaperclip, FeatherArrowUp } from "@subframe/core";
 import { Button } from "./Button";
 import { TextArea } from "./TextArea";
 import { IconButton } from "./IconButton";
@@ -62,10 +63,10 @@ const ChatInputRoot = React.forwardRef<HTMLElement, ChatInputRootProps>(
             </span>
           </div>
           <div className="flex w-full items-center justify-end gap-4 px-4 pt-2 pb-3">
-            <Button variant="brand-secondary" size="large" icon="FeatherEdit">
+            <Button variant="brand-secondary" size="large" icon={<FeatherEdit />}>
               {variant === "approval" ? "Request edits" : "Continue chatting"}
             </Button>
-            <Button size="large" icon="FeatherCheck">
+            <Button size="large" icon={<FeatherCheck />}>
               {variant === "approval" ? "Generate preview" : "Approve plan"}
             </Button>
           </div>
@@ -93,15 +94,11 @@ const ChatInputRoot = React.forwardRef<HTMLElement, ChatInputRootProps>(
                     {statusLabel}
                   </span>
                 ) : null}
-                <SubframeCore.Icon
-                  className="text-caption font-caption text-brand-600"
-                  name={null}
-                />
               </div>
               <Button
                 variant="brand-secondary"
                 size="small"
-                iconRight="FeatherChevronDown"
+                iconRight={<FeatherChevronDown />}
               >
                 Details
               </Button>
@@ -120,11 +117,11 @@ const ChatInputRoot = React.forwardRef<HTMLElement, ChatInputRootProps>(
               placeholder="Any changes to the plan?"
             />
             <div className="flex w-full items-start justify-between px-2 pb-2">
-              <IconButton icon="FeatherPaperclip" />
+              <IconButton icon={<FeatherPaperclip />} />
               <Button
                 className="h-8 w-8 flex-none"
                 variant="brand-tertiary"
-                iconRight="FeatherArrowUp"
+                iconRight={<FeatherArrowUp />}
               />
             </div>
           </TextArea>

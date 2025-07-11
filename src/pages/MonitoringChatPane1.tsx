@@ -3,8 +3,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { DefaultPageLayout } from "@/ui/layouts/DefaultPageLayout";
 import * as SubframeCore from "@subframe/core";
+import { FeatherPenLine, FeatherStar, FeatherBell, FeatherSlidersHorizontal, FeatherArrowUp, FeatherPaperclip, FeatherChevronDown, FeatherFileText, FeatherX } from "@subframe/core";
 import { Breadcrumbs } from "@/ui/components/Breadcrumbs";
 import { IconButton } from "@/ui/components/IconButton";
+import { Badge } from "@/ui/components/Badge";
 import { Badges } from "@/ui/components/Badges";
 import { SignalCard } from "@/ui/components/SignalCard";
 import { IconWithBackground } from "@/ui/components/IconWithBackground";
@@ -12,6 +14,8 @@ import { Button } from "@/ui/components/Button";
 import { SkeletonText } from "@/ui/components/SkeletonText";
 import { SkeletonCircle } from "@/ui/components/SkeletonCircle";
 import { BuilderPreview } from "@/ui/components/BuilderPreview";
+import { Dialog } from "@/ui/components/Dialog";
+import { AttachmentsModal } from "@/ui/components/AttachmentsModal";
 import { MobileToggle } from "@/ui/components/MobileToggle";
 
 interface ChatMessage {
@@ -109,6 +113,8 @@ function MonitoringChatPane1() {
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const [shouldAutoScroll, setShouldAutoScroll] = useState(true);
   const [chatItemsCount, setChatItemsCount] = useState(0);
+  const [isAttachmentsModalOpen, setIsAttachmentsModalOpen] = useState(false);
+  const [attachedFile, setAttachedFile] = useState<File | null>(null);
 
   const scrollToBottom = () => {
     if (chatContainerRef.current && shouldAutoScroll) {
@@ -250,7 +256,7 @@ function MonitoringChatPane1() {
   };
 
   const handleSendMessage = () => {
-    if (!inputValue.trim() || isGenerating) return;
+    if ((!inputValue.trim() && !attachedFile) || isGenerating) return;
 
     // Trigger loading animation if preview mode is active
     if (isPreviewMode) {
@@ -261,12 +267,18 @@ function MonitoringChatPane1() {
     const currentTime = new Date();
     
     // Add user message with animation
+    const messageText = attachedFile 
+      ? inputValue.trim() 
+        ? `${inputValue}\n\n📎 Attached: ${attachedFile.name} (${formatFileSize(attachedFile.size)})`
+        : `📎 Attached: ${attachedFile.name} (${formatFileSize(attachedFile.size)})`
+      : inputValue;
+
     const userMessageItem: ChatItem = {
       id: Date.now().toString(),
       type: 'message',
       data: {
         id: Date.now().toString(),
-        text: inputValue,
+        text: messageText,
         isUser: true,
         timestamp: currentTime,
       },
@@ -292,6 +304,7 @@ function MonitoringChatPane1() {
     });
 
     setInputValue("");
+    setAttachedFile(null);
     setIsGenerating(true);
 
     // AI response after 1 second
@@ -440,6 +453,30 @@ function MonitoringChatPane1() {
     }, 300);
   };
 
+  const handleOpenAttachmentsModal = () => {
+    setIsAttachmentsModalOpen(true);
+  };
+
+  const handleCloseAttachmentsModal = () => {
+    setIsAttachmentsModalOpen(false);
+  };
+
+  const handleFileAttach = (file: File) => {
+    setAttachedFile(file);
+  };
+
+  const handleRemoveAttachedFile = () => {
+    setAttachedFile(null);
+  };
+
+  const formatFileSize = (bytes: number) => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  };
+
   const formatTimestamp = (date: Date) => {
     return date.toLocaleString('en-US', {
       month: 'short',
@@ -508,26 +545,28 @@ function MonitoringChatPane1() {
               <IconButton
                 variant="neutral-tertiary"
                 size="small"
-                icon="FeatherPenLine"
+                icon={<FeatherPenLine />}
                 onClick={() => {}}
               />
               <Badges variant="neutral">Draft</Badges>
             </Breadcrumbs>
             <IconButton
               size="small"
-              icon="FeatherStar"
+              icon={<FeatherStar />}
               onClick={() => {}}
             />
             <IconButton
               size="small"
-              icon="FeatherBell"
+              icon={<FeatherBell />}
               onClick={() => {}}
             />
-            <IconButton
+                        <IconButton
               size="small"
-              icon="FeatherSlidersHorizontal"
+              icon={<FeatherSlidersHorizontal />}
               onClick={() => {}}
             />
+            
+
           </div>
         </div>
 
@@ -548,7 +587,7 @@ function MonitoringChatPane1() {
             {/* Chat Panel */}
             <div className={`relative transition-all duration-700 ease-out ${
               isPreviewMode 
-                ? 'w-2/5 transform translate-x-0' 
+                ? 'w-full md:w-2/5 transform translate-x-0' 
                 : 'w-full transform translate-x-0'
             } ${
               // Mobile responsive classes
@@ -562,7 +601,7 @@ function MonitoringChatPane1() {
                 onScroll={handleScroll}
               >
                 <div className={`mx-auto py-6 space-y-6 transition-all duration-700 ${
-                  isPreviewMode ? 'max-w-2xl' : 'max-w-4xl'
+                  isPreviewMode ? 'max-w-full md:max-w-xl' : 'max-w-full md:max-w-2xl'
                 }`}>
                   {sortedChatItems.map((item) => (
                     <div 
@@ -581,7 +620,7 @@ function MonitoringChatPane1() {
                         >
                           <div className="flex flex-col items-start justify-center gap-1">
                             <div
-                              className={`flex w-full max-w-[576px] flex-col items-start gap-2 rounded-lg px-4 py-3 transition-all duration-300 transform hover:scale-[1.01] ${
+                              className={`flex w-full max-w-full md:max-w-[576px] flex-col items-start gap-2 rounded-lg px-4 py-3 transition-all duration-300 transform hover:scale-[1.01] ${
                                 (item.data as ChatMessage).isUser
                                   ? "bg-sapphire-600 shadow-lg hover:shadow-xl"
                                   : "border border-solid border-brand-200 bg-background-tertiary shadow-sm hover:shadow-md"
@@ -691,7 +730,7 @@ function MonitoringChatPane1() {
                 // Hide input on mobile when in preview mode
                 mobileViewMode === "preview" ? "hidden md:block" : "block"
               }`}>
-                  <div className="max-w-4xl mx-auto">
+                  <div className="max-w-full md:max-w-2xl mx-auto">
                     <div className="flex w-full flex-col items-center justify-end rounded-lg border border-solid border-brand-200 bg-background-primary px-1 py-1 shadow-lg transition-all duration-300 hover:shadow-xl backdrop-blur-sm">
                       <div className="flex w-full items-center gap-2 rounded-t-md px-3 pt-1 pb-2">
                         <div className="flex grow shrink-0 basis-0 items-center justify-between">
@@ -709,13 +748,40 @@ function MonitoringChatPane1() {
                           <Button
                             variant="brand-secondary"
                             size="small"
-                            iconRight="FeatherChevronDown"
+                            iconRight={<FeatherChevronDown />}
                             className="transition-all duration-200 hover:scale-105"
                           >
                             Details
                           </Button>
                         </div>
                       </div>
+                      
+                      {/* Attached File Display */}
+                      {attachedFile && (
+                        <div className="w-full px-3 py-2 border-b border-solid border-border-primary">
+                          <div className="flex items-center">
+                            <div className="flex h-6 items-center gap-1 rounded-md border border-solid border-brand-200 bg-neutral-100 px-2">
+                              <SubframeCore.Icon
+                                className="text-caption font-caption text-neutral-700"
+                                name="FeatherFileText"
+                              />
+                              <span className="whitespace-nowrap text-caption font-caption text-neutral-700">
+                                {attachedFile.name} ({formatFileSize(attachedFile.size)})
+                              </span>
+                              <button
+                                onClick={handleRemoveAttachedFile}
+                                className="ml-1 flex h-4 w-4 items-center justify-center rounded-sm hover:bg-neutral-200 transition-colors"
+                              >
+                                <SubframeCore.Icon
+                                  className="text-caption font-caption text-neutral-500 hover:text-neutral-700"
+                                  name="FeatherX"
+                                />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      
                       <div className="h-36 w-full flex-none relative">
                         <textarea
                           className="min-h-[96px] w-full grow shrink-0 basis-0 resize-none rounded-md border-0 bg-transparent px-3 py-2 text-body font-body text-text-primary placeholder:text-text-secondary focus:outline-none transition-all duration-200 focus:bg-neutral-50/50"
@@ -731,21 +797,22 @@ function MonitoringChatPane1() {
                           disabled={isGenerating}
                         />
                         <div className="flex w-full items-start justify-between px-2 pb-2 absolute bottom-0">
-                          <IconButton 
-                            icon="FeatherPaperclip" 
-                            className="transition-all duration-200 hover:scale-110" 
-                          />
-                          <Button
-                            className={`h-8 w-8 flex-none transition-all duration-300 ${
-                              inputValue.trim() && !isGenerating
-                                ? "scale-100 opacity-100 hover:scale-110" 
-                                : "scale-90 opacity-50"
-                            }`}
-                            variant="brand-tertiary"
-                            iconRight="FeatherArrowUp"
-                            onClick={handleSendMessage}
-                            disabled={!inputValue.trim() || isGenerating}
-                          />
+                          <div className="flex gap-1">
+                            <IconButton 
+                              icon={<FeatherPaperclip />} 
+                              className="transition-all duration-200 hover:scale-110" 
+                              onClick={handleOpenAttachmentsModal}
+                            />
+                          </div>
+                          <div className="flex gap-1">
+                            <Button
+                              className="h-8 w-8 flex-none"
+                              variant="brand-tertiary"
+                              iconRight={<FeatherArrowUp />}
+                              onClick={handleSendMessage}
+                              disabled={(!inputValue.trim() && !attachedFile) || isGenerating}
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -756,20 +823,19 @@ function MonitoringChatPane1() {
             {/* Preview Panel - Slides in from right */}
             {(isPreviewMode || mobileViewMode === "preview") && (
               <div className={`h-full animate-in slide-in-from-right-6 fade-in-0 duration-700 ease-out ${
-                // Desktop: 3/5 width when preview mode is on
-                // Mobile: full width when preview mode is selected
-                isPreviewMode ? "w-3/5" : "w-full"
+                // Desktop: 3/5 width when preview mode is on, Mobile: always full width
+                isPreviewMode ? "w-full md:w-3/5" : "w-full"
               } ${
                 // Mobile responsive classes
                 mobileViewMode === "preview" ? "block" : "hidden md:block"
               }`}>
-                <div className="h-full overflow-hidden p-2 md:p-6">
+                <div className="h-full overflow-hidden p-3 md:p-2">
                   <BuilderPreview
                     className="h-full w-full"
                     text="Signal Preview"
                     text2="AI Startup Acquisition Tracker"
                     text3="California-based artificial intelligence startup acquisitions and mergers, covering funding events, strategic partnerships, and market developments in the tech sector."
-                    text4="Real-time monitoring active"
+                    text4="Monitoring active"
                     text5="Last updated 2min ago"
                     text6="Sources"
                     text7="2,341 active sources"
@@ -787,6 +853,20 @@ function MonitoringChatPane1() {
           </div>
         </div>
       </div>
+      
+      {/* Attachments Modal */}
+      <Dialog open={isAttachmentsModalOpen} onOpenChange={setIsAttachmentsModalOpen}>
+        <Dialog.Content>
+          <AttachmentsModal
+            text="Attachments"
+            text2="Upload files to enhance your monitoring plan"
+            text3="Drag and drop files here or click to browse"
+            text4="Download template for bulk uploads"
+            onClose={handleCloseAttachmentsModal}
+            onFileAttach={handleFileAttach}
+          />
+        </Dialog.Content>
+      </Dialog>
     </DefaultPageLayout>
   );
 }
@@ -813,7 +893,7 @@ const UpdateMessage = ({ text, isNew }: { text: string, isNew?: boolean }) => {
     <div className={`flex w-full flex-col items-start justify-center gap-1`}>
       <div className="flex flex-col items-start justify-center gap-1">
         <div
-          className={`flex w-full max-w-[576px] flex-col items-start gap-2 rounded-lg px-4 py-3 transition-all duration-300 transform hover:scale-[1.01] border border-solid border-brand-200 bg-background-tertiary shadow-sm hover:shadow-md ${
+          className={`flex w-full max-w-full md:max-w-[576px] flex-col items-start gap-2 rounded-lg px-4 py-3 transition-all duration-300 transform hover:scale-[1.01] border border-solid border-brand-200 bg-background-tertiary shadow-sm hover:shadow-md ${
             isNew ? 'animate-in zoom-in-95 duration-300 delay-100' : ''
           }`}
         >

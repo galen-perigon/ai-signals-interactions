@@ -13,6 +13,7 @@
 import React from "react";
 import * as SubframeUtils from "../utils";
 import * as SubframeCore from "@subframe/core";
+import { FeatherPlay } from "@subframe/core";
 import { Button } from "./Button";
 import { Loader } from "./Loader";
 import { IconWithBackground } from "./IconWithBackground";
@@ -150,7 +151,7 @@ const BuilderPreviewRoot = React.forwardRef<
           ) : null}
         </div>
         <div className="flex items-start justify-end flex-shrink-0">
-          <Button variant="brand-tertiary" size="large" icon="FeatherPlay">
+          <Button variant="brand-tertiary" size="large" icon={<FeatherPlay />}>
             <span className="hidden md:inline">Start Monitoring</span>
             <span className="md:hidden">Start</span>
           </Button>
@@ -181,8 +182,8 @@ const BuilderPreviewRoot = React.forwardRef<
                 </div>
               </div>
               <div className="flex w-full items-center justify-between">
-                <div className="flex w-full items-center gap-12">
-                  <div className="flex flex-1 items-center gap-2">
+                <div className="flex w-full items-center gap-4 overflow-x-auto">
+                  <div className="flex min-w-[180px] flex-shrink-0 items-center gap-2">
                     <IconWithBackground
                       variant="success"
                       icon="FeatherSearch"
@@ -190,18 +191,18 @@ const BuilderPreviewRoot = React.forwardRef<
                     />
                     <div className="flex flex-col items-start">
                       {text4 ? (
-                        <span className="text-caption font-caption text-text-secondary">
+                        <span className="text-caption font-caption text-text-secondary whitespace-nowrap">
                           {text4}
                         </span>
                       ) : null}
                       {text5 ? (
-                        <span className="text-body-bold font-body-bold text-text-primary">
+                        <span className="text-body-bold font-body-bold text-text-primary whitespace-nowrap">
                           {text5}
                         </span>
                       ) : null}
                     </div>
                   </div>
-                  <div className="flex flex-1 items-center gap-2">
+                  <div className="flex min-w-[180px] flex-shrink-0 items-center gap-2">
                     <IconWithBackground
                       variant="success"
                       icon="FeatherFileText"
@@ -209,18 +210,18 @@ const BuilderPreviewRoot = React.forwardRef<
                     />
                     <div className="flex flex-col items-start">
                       {text6 ? (
-                        <span className="text-caption font-caption text-text-secondary">
+                        <span className="text-caption font-caption text-text-secondary whitespace-nowrap">
                           {text6}
                         </span>
                       ) : null}
                       {text7 ? (
-                        <span className="text-body-bold font-body-bold text-text-primary">
+                        <span className="text-body-bold font-body-bold text-text-primary whitespace-nowrap">
                           {text7}
                         </span>
                       ) : null}
                     </div>
                   </div>
-                  <div className="flex flex-1 items-center gap-2">
+                  <div className="flex min-w-[180px] flex-shrink-0 items-center gap-2">
                     <IconWithBackground
                       variant="success"
                       icon="FeatherCheckCircle"
@@ -228,12 +229,12 @@ const BuilderPreviewRoot = React.forwardRef<
                     />
                     <div className="flex flex-col items-start">
                       {text8 ? (
-                        <span className="text-caption font-caption text-text-secondary">
+                        <span className="text-caption font-caption text-text-secondary whitespace-nowrap">
                           {text8}
                         </span>
                       ) : null}
                       {text9 ? (
-                        <span className="text-body-bold font-body-bold text-text-primary">
+                        <span className="text-body-bold font-body-bold text-text-primary whitespace-nowrap">
                           {text9}
                         </span>
                       ) : null}
