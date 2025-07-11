@@ -69,6 +69,7 @@ interface BuilderPreviewRootProps extends React.HTMLAttributes<HTMLDivElement> {
   text45?: React.ReactNode;
   text46?: React.ReactNode;
   text47?: React.ReactNode;
+  loading?: boolean;
   className?: string;
 }
 
@@ -126,6 +127,7 @@ const BuilderPreviewRoot = React.forwardRef<
     text45,
     text46,
     text47,
+    loading = false,
     className,
     ...otherProps
   }: BuilderPreviewRootProps,
@@ -134,403 +136,428 @@ const BuilderPreviewRoot = React.forwardRef<
   return (
     <div
       className={SubframeUtils.twClassNames(
-        "flex w-full flex-col items-start gap-6 rounded-rounded-x-large border border-solid border-brand-200 bg-white p-6 shadow-md",
+        "flex w-full flex-col items-start gap-6 rounded-rounded-x-large border border-solid border-brand-200 bg-white px-3 py-6 md:px-6 shadow-md",
         className
       )}
       ref={ref as any}
       {...otherProps}
     >
-      <div className="flex w-full items-center justify-between">
-        <div className="flex grow shrink-0 basis-0 items-center gap-2 min-w-0">
-          <SubframeCore.Icon
-            className="text-body font-body text-text-primary flex-shrink-0"
-            name={icon}
-          />
-          {text ? (
-            <span className="text-h2 font-h2 text-text-primary truncate">{text}</span>
-          ) : null}
-        </div>
-        <div className="flex items-start justify-end flex-shrink-0">
-          <Button variant="brand-tertiary" size="large" icon={<FeatherPlay />}>
-            <span className="hidden md:inline">Start Monitoring</span>
-            <span className="md:hidden">Start</span>
-          </Button>
-        </div>
-      </div>
-      <div className="flex w-full flex-col items-stretch justify-start gap-4 overflow-auto flex-1 px-4 md:px-12 min-w-0">
-        <div className="flex w-full flex-col items-stretch justify-start gap-4 py-6 relative flex-1">
-          <div className="flex w-full flex-col items-start gap-6 z-10">
-            <div
-              id="stats"
-              className="flex w-full flex-col items-start gap-4 rounded-lg border border-solid border-brand-200 bg-background-secondary px-4 py-4 shadow-md flex-shrink-0"
-            >
-              <div className="flex w-full items-start gap-4">
-                <div className="flex items-center gap-3">
-                  <Loader />
-                  <div className="flex flex-col items-start">
-                    {text2 ? (
-                      <span className="text-h3 font-h3 text-text-primary">
-                        {text2}
-                      </span>
-                    ) : null}
-                    {text3 ? (
-                      <span className="text-body font-body text-text-secondary">
-                        {text3}
-                      </span>
-                    ) : null}
-                  </div>
-                </div>
-              </div>
-              <div className="flex w-full items-center justify-between">
-                <div className="flex w-full items-center gap-4 overflow-x-auto">
-                  <div className="flex min-w-[180px] flex-shrink-0 items-center gap-2">
-                    <IconWithBackground
-                      variant="success"
-                      icon="FeatherSearch"
-                      className="min-h-[32px] min-w-[32px]"
-                    />
-                    <div className="flex flex-col items-start">
-                      {text4 ? (
-                        <span className="text-caption font-caption text-text-secondary whitespace-nowrap">
-                          {text4}
-                        </span>
-                      ) : null}
-                      {text5 ? (
-                        <span className="text-body-bold font-body-bold text-text-primary whitespace-nowrap">
-                          {text5}
-                        </span>
-                      ) : null}
-                    </div>
-                  </div>
-                  <div className="flex min-w-[180px] flex-shrink-0 items-center gap-2">
-                    <IconWithBackground
-                      variant="success"
-                      icon="FeatherFileText"
-                      className="min-h-[32px] min-w-[32px]"
-                    />
-                    <div className="flex flex-col items-start">
-                      {text6 ? (
-                        <span className="text-caption font-caption text-text-secondary whitespace-nowrap">
-                          {text6}
-                        </span>
-                      ) : null}
-                      {text7 ? (
-                        <span className="text-body-bold font-body-bold text-text-primary whitespace-nowrap">
-                          {text7}
-                        </span>
-                      ) : null}
-                    </div>
-                  </div>
-                  <div className="flex min-w-[180px] flex-shrink-0 items-center gap-2">
-                    <IconWithBackground
-                      variant="success"
-                      icon="FeatherCheckCircle"
-                      className="min-h-[32px] min-w-[32px]"
-                    />
-                    <div className="flex flex-col items-start">
-                      {text8 ? (
-                        <span className="text-caption font-caption text-text-secondary whitespace-nowrap">
-                          {text8}
-                        </span>
-                      ) : null}
-                      {text9 ? (
-                        <span className="text-body-bold font-body-bold text-text-primary whitespace-nowrap">
-                          {text9}
-                        </span>
-                      ) : null}
-                    </div>
-                  </div>
-                </div>
-              </div>
+      {loading ? (
+        // Loading State - Lightning Zap Loader
+        <div className="flex w-full h-full items-center justify-center py-20">
+          <div className="flex flex-col items-center gap-4">
+            <div className="relative">
+              <SubframeCore.Icon
+                className="text-6xl text-brand-500 animate-pulse"
+                name="FeatherZap"
+                style={{
+                  filter: 'drop-shadow(0 0 20px rgba(99, 102, 241, 0.5))',
+                  animation: 'pulse 1.5s ease-in-out infinite alternate'
+                }}
+              />
+              <div className="absolute inset-0 bg-brand-500/20 rounded-full animate-ping"></div>
+            </div>
+            <div className="text-body-bold font-body-bold text-text-secondary animate-pulse">
+              Loading preview...
             </div>
           </div>
-          <div
-            id="table"
-            className="flex w-full flex-col items-start gap-2 rounded-lg border border-solid border-brand-200 bg-background-secondary shadow-md flex-1"
-          >
-            <div className="flex w-full items-center justify-between border-b border-solid border-brand-200 px-6 py-6">
-              <div className="flex items-center gap-2">
-                <SubframeCore.Icon
-                  className="text-caption font-caption text-text-secondary"
-                  name={icon2}
-                />
-                {text10 ? (
-                  <span className="text-caption-bold font-caption-bold text-text-secondary">
-                    {text10}
-                  </span>
-                ) : null}
-              </div>
+        </div>
+      ) : (
+        // Normal Content
+        <>
+          <div className="flex w-full items-center justify-between">
+            <div className="flex grow shrink-0 basis-0 items-center gap-2 min-w-0">
+              <SubframeCore.Icon
+                className="text-body font-body text-text-primary flex-shrink-0"
+                name={icon}
+              />
+              {text ? (
+                <span className="text-h3 font-h3 text-text-primary truncate">{text}</span>
+              ) : null}
             </div>
-            <div className="flex w-full items-center gap-6 px-4 py-4">
-              <div className="flex grow shrink-0 basis-0 flex-col items-start gap-1">
-                {text11 ? (
-                  <span className="text-body-bold font-body-bold text-text-primary">
-                    {text11}
-                  </span>
-                ) : null}
-                {text12 ? (
-                  <span className="text-body font-body text-text-secondary">
-                    {text12}
-                  </span>
-                ) : null}
-              </div>
+            <div className="flex items-start justify-end flex-shrink-0">
+              <Button variant="brand-tertiary" size="large" icon={<FeatherPlay />}>
+                <span className="hidden md:inline">Start Monitoring</span>
+                <span className="md:hidden">Start</span>
+              </Button>
             </div>
-            <div className="w-full overflow-x-auto overflow-y-hidden">
-              <Table
-                className="h-auto w-full table-auto min-w-[800px] md:min-w-[1200px]"
-                header={
-                  <Table.HeaderRow>
-                    <Table.HeaderCell className="min-w-[120px]">Event type</Table.HeaderCell>
-                    <Table.HeaderCell className="min-w-[160px]">Acquirer name</Table.HeaderCell>
-                    <Table.HeaderCell className="min-w-[140px]">Startup name</Table.HeaderCell>
-                    <Table.HeaderCell className="min-w-[140px]">Startup location</Table.HeaderCell>
-                    <Table.HeaderCell className="min-w-[100px]">Deal value</Table.HeaderCell>
-                    <Table.HeaderCell className="min-w-[120px]">Deal terms</Table.HeaderCell>
-                    <Table.HeaderCell className="min-w-[200px]">Strategic rationale</Table.HeaderCell>
-                    <Table.HeaderCell className="min-w-[160px]">Source URL</Table.HeaderCell>
-                  </Table.HeaderRow>
-                }
+          </div>
+          <div className="flex w-full flex-col items-stretch justify-start gap-4 overflow-auto flex-1 px-2 md:px-8 min-w-0">
+            <div className="flex w-full flex-col items-stretch justify-start gap-4 py-6 relative flex-1">
+              <div className="flex w-full flex-col items-start gap-6 z-10">
+                <div
+                  id="stats"
+                  className="flex w-full flex-col items-start gap-4 rounded-lg border border-solid border-brand-200 bg-background-secondary px-4 py-4 shadow-md flex-shrink-0"
+                >
+                  <div className="flex w-full items-start gap-4">
+                    <div className="flex items-center gap-3">
+                      <Loader />
+                      <div className="flex flex-col items-start">
+                        {text2 ? (
+                          <span className="text-h3 font-h3 text-text-primary">
+                            {text2}
+                          </span>
+                        ) : null}
+                        {text3 ? (
+                          <span className="text-body font-body text-text-secondary">
+                            {text3}
+                          </span>
+                        ) : null}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex w-full items-center justify-between">
+                    <div className="flex w-full items-center gap-4 overflow-x-auto">
+                      <div className="flex min-w-[180px] flex-shrink-0 items-center gap-2">
+                        <IconWithBackground
+                          variant="success"
+                          icon="FeatherSearch"
+                          className="min-h-[32px] min-w-[32px]"
+                        />
+                        <div className="flex flex-col items-start">
+                          {text4 ? (
+                            <span className="text-caption font-caption text-text-secondary whitespace-nowrap">
+                              {text4}
+                            </span>
+                          ) : null}
+                          {text5 ? (
+                            <span className="text-body-bold font-body-bold text-text-primary whitespace-nowrap">
+                              {text5}
+                            </span>
+                          ) : null}
+                        </div>
+                      </div>
+                      <div className="flex min-w-[180px] flex-shrink-0 items-center gap-2">
+                        <IconWithBackground
+                          variant="success"
+                          icon="FeatherFileText"
+                          className="min-h-[32px] min-w-[32px]"
+                        />
+                        <div className="flex flex-col items-start">
+                          {text6 ? (
+                            <span className="text-caption font-caption text-text-secondary whitespace-nowrap">
+                              {text6}
+                            </span>
+                          ) : null}
+                          {text7 ? (
+                            <span className="text-body-bold font-body-bold text-text-primary whitespace-nowrap">
+                              {text7}
+                            </span>
+                          ) : null}
+                        </div>
+                      </div>
+                      <div className="flex min-w-[180px] flex-shrink-0 items-center gap-2">
+                        <IconWithBackground
+                          variant="success"
+                          icon="FeatherCheckCircle"
+                          className="min-h-[32px] min-w-[32px]"
+                        />
+                        <div className="flex flex-col items-start">
+                          {text8 ? (
+                            <span className="text-caption font-caption text-text-secondary whitespace-nowrap">
+                              {text8}
+                            </span>
+                          ) : null}
+                          {text9 ? (
+                            <span className="text-body-bold font-body-bold text-text-primary whitespace-nowrap">
+                              {text9}
+                            </span>
+                          ) : null}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                id="table"
+                className="flex w-full flex-col items-start gap-2 rounded-lg border border-solid border-brand-200 bg-background-secondary shadow-md flex-1"
               >
-                <Table.Row className="transition-colors duration-200 cursor-pointer">
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      Acquisition
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      Microsoft Corporation
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      AI Dynamics
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      San Francisco, CA
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      $2.4B
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      All cash
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      Enhance AI capabilities in cloud services
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <a
-                      className="text-body font-body text-text-primary hover:underline whitespace-nowrap"
-                      href="https://example.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      https://example.com
-                    </a>
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row className="transition-colors duration-200 cursor-pointer">
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      Strategic Investment
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      Google (Alphabet Inc.)
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      DataFlow Technologies
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      Austin, TX
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      $850M
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      70% cash, 30% stock
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      Expand data analytics platform
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <a
-                      className="text-body font-body text-text-primary hover:underline whitespace-nowrap"
-                      href="https://example.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      https://example.com
-                    </a>
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row className="transition-colors duration-200 cursor-pointer">
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      Merger
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      Amazon Web Services
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      CloudSecure
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      Boston, MA
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      $1.2B
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      Stock swap
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      Strengthen cybersecurity offerings
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <a
-                      className="text-body font-body text-text-primary hover:underline whitespace-nowrap"
-                      href="https://example.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      https://example.com
-                    </a>
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row className="transition-colors duration-200 cursor-pointer">
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      Acquisition
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      Salesforce Inc.
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      ConnectHub
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      New York, NY
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      $650M
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      50% cash, 50% stock
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      Enhance CRM integration capabilities
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <a
-                      className="text-body font-body text-text-primary hover:underline whitespace-nowrap"
-                      href="https://example.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      https://example.com
-                    </a>
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row className="transition-colors duration-200 cursor-pointer">
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      Strategic Partnership
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      Meta Platforms
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      VirtureSpace
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      Seattle, WA
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      $420M
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      Phased investment
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <span className="text-body font-body text-text-primary whitespace-nowrap">
-                      Accelerate metaverse development
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <a
-                      className="text-body font-body text-text-primary hover:underline whitespace-nowrap"
-                      href="https://example.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      https://example.com
-                    </a>
-                  </Table.Cell>
-                </Table.Row>
-              </Table>
+                <div className="flex w-full items-center justify-between border-b border-solid border-brand-200 px-6 py-6">
+                  <div className="flex items-center gap-2">
+                    <SubframeCore.Icon
+                      className="text-caption font-caption text-text-secondary"
+                      name={icon2}
+                    />
+                    {text10 ? (
+                      <span className="text-caption-bold font-caption-bold text-text-secondary">
+                        {text10}
+                      </span>
+                    ) : null}
+                  </div>
+                </div>
+                <div className="flex w-full items-center gap-6 px-4 py-4">
+                  <div className="flex grow shrink-0 basis-0 flex-col items-start gap-1">
+                    {text11 ? (
+                      <span className="text-body-bold font-body-bold text-text-primary">
+                        {text11}
+                      </span>
+                    ) : null}
+                    {text12 ? (
+                      <span className="text-body font-body text-text-secondary">
+                        {text12}
+                      </span>
+                    ) : null}
+                  </div>
+                </div>
+                <div className="w-full overflow-x-auto overflow-y-hidden">
+                  <Table
+                    className="h-auto w-full table-auto min-w-[800px] md:min-w-[1200px]"
+                    header={
+                      <Table.HeaderRow>
+                        <Table.HeaderCell className="min-w-[120px]">Event type</Table.HeaderCell>
+                        <Table.HeaderCell className="min-w-[160px]">Acquirer name</Table.HeaderCell>
+                        <Table.HeaderCell className="min-w-[140px]">Startup name</Table.HeaderCell>
+                        <Table.HeaderCell className="min-w-[140px]">Startup location</Table.HeaderCell>
+                        <Table.HeaderCell className="min-w-[100px]">Deal value</Table.HeaderCell>
+                        <Table.HeaderCell className="min-w-[120px]">Deal terms</Table.HeaderCell>
+                        <Table.HeaderCell className="min-w-[200px]">Strategic rationale</Table.HeaderCell>
+                        <Table.HeaderCell className="min-w-[160px]">Source URL</Table.HeaderCell>
+                      </Table.HeaderRow>
+                    }
+                  >
+                    <Table.Row className="transition-colors duration-200 cursor-pointer">
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          Acquisition
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          Microsoft Corporation
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          AI Dynamics
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          San Francisco, CA
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          $2.4B
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          All cash
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          Enhance AI capabilities in cloud services
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <a
+                          className="text-body font-body text-text-primary hover:underline whitespace-nowrap"
+                          href="https://example.com"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          https://example.com
+                        </a>
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row className="transition-colors duration-200 cursor-pointer">
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          Strategic Investment
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          Google (Alphabet Inc.)
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          DataFlow Technologies
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          Austin, TX
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          $850M
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          70% cash, 30% stock
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          Expand data analytics platform
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <a
+                          className="text-body font-body text-text-primary hover:underline whitespace-nowrap"
+                          href="https://example.com"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          https://example.com
+                        </a>
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row className="transition-colors duration-200 cursor-pointer">
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          Merger
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          Amazon Web Services
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          CloudSecure
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          Boston, MA
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          $1.2B
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          Stock swap
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          Strengthen cybersecurity offerings
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <a
+                          className="text-body font-body text-text-primary hover:underline whitespace-nowrap"
+                          href="https://example.com"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          https://example.com
+                        </a>
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row className="transition-colors duration-200 cursor-pointer">
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          Acquisition
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          Salesforce Inc.
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          ConnectHub
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          New York, NY
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          $650M
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          50% cash, 50% stock
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          Enhance CRM integration capabilities
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <a
+                          className="text-body font-body text-text-primary hover:underline whitespace-nowrap"
+                          href="https://example.com"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          https://example.com
+                        </a>
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row className="transition-colors duration-200 cursor-pointer">
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          Strategic Partnership
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          Meta Platforms
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          VirtureSpace
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          Seattle, WA
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          $420M
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          Phased investment
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <span className="text-body font-body text-text-primary whitespace-nowrap">
+                          Accelerate metaverse development
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <a
+                          className="text-body font-body text-text-primary hover:underline whitespace-nowrap"
+                          href="https://example.com"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          https://example.com
+                        </a>
+                      </Table.Cell>
+                    </Table.Row>
+                  </Table>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 });

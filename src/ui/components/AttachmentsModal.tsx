@@ -98,7 +98,7 @@ const AttachmentsModalRoot = React.forwardRef<
   return (
     <div
       className={SubframeUtils.twClassNames(
-        "flex h-full w-144 flex-col items-start gap-6 bg-background-primary px-6 py-6",
+        "flex h-full w-full max-w-lg md:max-w-2xl flex-col items-start gap-4 md:gap-6 bg-background-primary px-4 py-4 md:px-6 md:py-6",
         className
       )}
       ref={ref as any}
@@ -119,7 +119,7 @@ const AttachmentsModalRoot = React.forwardRef<
       </div>
       <div 
         className={SubframeUtils.twClassNames(
-          "flex w-full flex-col items-start gap-4 rounded-lg border-2 border-dashed px-6 py-6 transition-all duration-200",
+          "flex w-full flex-col items-start gap-3 md:gap-4 rounded-lg border-2 border-dashed px-4 py-4 md:px-6 md:py-6 transition-all duration-200",
           {
             "border-brand-400 bg-brand-50": isDragOver,
             "border-brand-200 bg-background-secondary": !isDragOver,
@@ -131,17 +131,17 @@ const AttachmentsModalRoot = React.forwardRef<
       >
         <div className="flex w-full flex-col items-center gap-2">
           {icon2 ? (
-            <SubframeCore.IconWrapper className="text-h1 font-h1 text-brand-300">
+            <SubframeCore.IconWrapper className="text-h2 md:text-h1 font-h2 md:font-h1 text-brand-300">
               {icon2}
             </SubframeCore.IconWrapper>
           ) : null}
           {text2 ? (
-            <span className="text-body-bold font-body-bold text-text-primary">
+            <span className="text-body-bold font-body-bold text-text-primary text-center">
               {selectedFile ? 'File Selected' : text2}
             </span>
           ) : null}
           {text3 ? (
-            <span className="text-body font-body text-text-secondary">
+            <span className="text-body font-body text-text-secondary text-center">
               {selectedFile ? 'Click "Upload File" to proceed' : text3}
             </span>
           ) : null}

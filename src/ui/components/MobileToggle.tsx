@@ -17,7 +17,7 @@ export const MobileToggle: React.FC<MobileToggleProps> = ({
   return (
     <div
       className={SubframeUtils.twClassNames(
-        "flex w-full items-center justify-center p-1 bg-neutral-100 rounded-lg shadow-sm border border-solid border-neutral-200",
+        "flex w-full items-center justify-center bg-neutral-100",
         className
       )}
     >
@@ -25,7 +25,7 @@ export const MobileToggle: React.FC<MobileToggleProps> = ({
         {/* Background slider */}
         <div
           className={SubframeUtils.twClassNames(
-            "absolute top-1 bottom-1 w-1/2 bg-white rounded-md shadow-sm border border-solid border-neutral-200 transition-transform duration-200 ease-out",
+            "absolute top-0 bottom-0 w-1/2 bg-white rounded-md shadow-sm border border-solid border-neutral-200 transition-transform duration-200 ease-out",
             {
               "translate-x-0": activeMode === "chat",
               "translate-x-full": activeMode === "preview",

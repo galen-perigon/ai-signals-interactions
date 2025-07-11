@@ -17,6 +17,7 @@ import { BuilderPreview } from "@/ui/components/BuilderPreview";
 import { Dialog } from "@/ui/components/Dialog";
 import { AttachmentsModal } from "@/ui/components/AttachmentsModal";
 import { MobileToggle } from "@/ui/components/MobileToggle";
+import { useAIChat } from "../hooks/useAIChat";
 
 interface ChatMessage {
   id: string;
@@ -33,6 +34,7 @@ interface SignalCardData {
   isRestored?: boolean;
   originalTimestamp?: Date;
   isEditingApproved?: boolean;
+  aiGeneratedContent?: string;
 }
 
 interface MilestoneData {
@@ -116,6 +118,16 @@ function MonitoringChatPane1() {
   const [isAttachmentsModalOpen, setIsAttachmentsModalOpen] = useState(false);
   const [attachedFile, setAttachedFile] = useState<File | null>(null);
 
+  // AI Chat Integration
+  const { streamMessage, isStreaming: aiIsStreaming, currentStreamContent, generateSignal, generatePreview } = useAIChat({
+    onStreamStart: () => setIsGenerating(true),
+    onStreamEnd: () => setIsGenerating(false),
+    onError: (error) => console.error('AI Streaming error:', error),
+  });
+
+  // Add state for storing AI-generated signal content
+  const [aiGeneratedSignalContent, setAiGeneratedSignalContent] = useState<string>('');
+
   const scrollToBottom = () => {
     if (chatContainerRef.current && shouldAutoScroll) {
       chatContainerRef.current.scrollTo({
@@ -155,17 +167,34 @@ function MonitoringChatPane1() {
     return () => clearTimeout(timer);
   }, [chatItems]);
 
-  const handleSavePreview = () => {
+  const handleSavePreview = async () => {
     const currentTime = new Date();
-
-    if (isPreviewMode) {
-      setIsPreviewLoading(true);
-      setTimeout(() => setIsPreviewLoading(false), 600);
-    }
 
     // Enable preview mode and switch to preview on mobile
     setIsPreviewMode(true);
     setMobileViewMode("preview");
+
+    // Start preview loading for 5 seconds
+    setIsPreviewLoading(true);
+    
+    // Use AI to generate preview content
+    try {
+      const signalConfig = {
+        title: "AI Startup Acquisition Tracker",
+        location: "California",
+        focus: "artificial intelligence startup acquisitions and mergers",
+        dataTypes: "funding events, strategic partnerships, market developments"
+      };
+      
+      await generatePreview(signalConfig);
+      
+      // Keep loading for at least 5 seconds for the lightning animation
+      setTimeout(() => setIsPreviewLoading(false), 5000);
+    } catch (error) {
+      console.error('Failed to generate AI preview:', error);
+      // Fallback to original 5-second timer
+      setTimeout(() => setIsPreviewLoading(false), 5000);
+    }
 
     const wasEditingApproved = chatItems.some(
       (item) =>
@@ -203,7 +232,7 @@ function MonitoringChatPane1() {
         type: "update-message",
         data: {
           id: messageTime.toISOString(),
-          text: "Perfect! Your updates have been saved and are now reflected in the preview to the right. The data source is already working with your refreshed parameters. 🎉",
+          text: "Perfect! Your updates have been saved and are now reflected in the preview to the right. The data source is already working with your refreshed parameters.",
           timestamp: messageTime,
         },
         timestamp: messageTime,
@@ -255,7 +284,28 @@ function MonitoringChatPane1() {
     );
   };
 
-  const handleSendMessage = () => {
+  // Function to detect if a message is requesting signal modification
+  const isSignalModificationRequest = (message: string): boolean => {
+    const signalKeywords = [
+      'track', 'monitor', 'watch', 'signal', 'create', 'generate', 'want to', 'change to', 'switch to', 'modify', 'update', 'instead'
+    ];
+    return signalKeywords.some(keyword => message.toLowerCase().includes(keyword));
+  };
+
+  // Function to extract signal parameters from user message
+  const extractSignalParams = (message: string) => {
+    // Extract topic, location, and requirements from the message
+    const topicMatch = message.match(/track|monitor|watch|signal.*?([\w\s]+?)(?:\sin\s|\sfor\s|\sat\s|$)/i);
+    const locationMatch = message.match(/\sin\s([\w\s]+?)(?:\s|$)/i);
+    
+    return {
+      topic: topicMatch ? topicMatch[1].trim() : message,
+      location: locationMatch ? locationMatch[1].trim() : 'California',
+      requirements: message
+    };
+  };
+
+  const handleSendMessage = async () => {
     if ((!inputValue.trim() && !attachedFile) || isGenerating) return;
 
     // Trigger loading animation if preview mode is active
@@ -303,98 +353,160 @@ function MonitoringChatPane1() {
       return [...updatedItems, userMessageItem];
     });
 
+    const inputValueCopy = inputValue;
     setInputValue("");
     setAttachedFile(null);
-    setIsGenerating(true);
 
-    // AI response after 1 second
-    setTimeout(() => {
-      const responses = [
-        "Perfect! I've updated your signal to better capture those nuances. The enhanced plan now includes more granular tracking parameters.",
-        "Great insight! I've refined the monitoring scope to align with your feedback. This should provide much more targeted results.",
-        "Excellent point! I've adjusted the signal parameters to incorporate your suggestions. The updated plan is now more comprehensive.",
-        "That's a valuable refinement! I've enhanced the tracking criteria based on your input. This will improve the signal quality significantly.",
-      ];
-
-      const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-      const aiResponseTime = new Date();
-
-      const aiMessageItem: ChatItem = {
-        id: (Date.now() + 1).toString(),
-        type: 'message',
-        data: {
-          id: (Date.now() + 1).toString(),
-          text: randomResponse,
-          isUser: false,
-          timestamp: aiResponseTime,
-        },
-        timestamp: aiResponseTime,
-        isNew: true,
-      };
-
-      setChatItems(prev => [...prev, aiMessageItem]);
-
-      // Add loading signal card after AI response
-      setTimeout(() => {
-        const loadingTime = new Date();
-        const loadingSignalId = Date.now().toString();
-
-        const loadingSignalItem: ChatItem = {
-          id: loadingSignalId,
-          type: 'signal',
-          data: {
-            id: loadingSignalId,
-            variant: "default",
-            timestamp: loadingTime,
-            isLoading: true,
-          },
-          timestamp: loadingTime,
-          isNew: true,
-        };
-
-        setChatItems(prev => [...prev, loadingSignalItem]);
-
-        // After loading, show the actual signal card and add milestone
+    try {
+      // Detect if this is a signal modification request
+      const isSignalRequest = isSignalModificationRequest(inputValueCopy);
+      
+      if (isSignalRequest) {
+        // For signal requests, use both chat and signal generation
+        const signalParams = extractSignalParams(inputValueCopy);
+        
+        // First, get the AI chat response
+        const chatResponse = await streamMessage(inputValueCopy);
+        
+        // Add AI chat response as a message
         setTimeout(() => {
-          const finalTime = new Date();
-          
-          setChatItems(prev => {
-            const updatedItems = prev.map(item => {
-              if (item.id === loadingSignalId) {
-                const signalData = item.data as SignalCardData;
-                return {
-                  ...item,
-                  data: { ...signalData, isLoading: false },
-                  isNew: true, // Trigger completion animation
-                };
-              }
-              return item;
-            });
-
-            return updatedItems;
-          });
-
-          // Add milestone marker with 300ms delay for organic timing
-          setTimeout(() => {
-            const milestoneItem: ChatItem = {
-              id: (Date.now() + 100).toString(),
-              type: 'milestone',
+          if (chatResponse) {
+            const aiResponseTime = new Date();
+            const aiMessageItem: ChatItem = {
+              id: (Date.now() + 1).toString(),
+              type: 'message',
               data: {
-                id: (Date.now() + 100).toString(),
-                timestamp: finalTime,
-                isFirst: false,
+                id: (Date.now() + 1).toString(),
+                text: chatResponse,
+                isUser: false,
+                timestamp: aiResponseTime,
               },
-              timestamp: finalTime,
+              timestamp: aiResponseTime,
               isNew: true,
             };
 
-            setChatItems(prev => [...prev, milestoneItem]);
-          }, 300);
-          
-          setIsGenerating(false);
-        }, 2000);
-      }, 300);
-    }, 1000);
+            setChatItems(prev => [...prev, aiMessageItem]);
+          }
+        }, 500);
+
+        // Then generate the signal configuration
+        setTimeout(async () => {
+          // Add loading signal card
+          const loadingTime = new Date();
+          const loadingSignalId = Date.now().toString();
+
+          const loadingSignalItem: ChatItem = {
+            id: loadingSignalId,
+            type: 'signal',
+            data: {
+              id: loadingSignalId,
+              variant: "default",
+              timestamp: loadingTime,
+              isLoading: true,
+              aiGeneratedContent: '',
+            },
+            timestamp: loadingTime,
+            isNew: true,
+          };
+
+          setChatItems(prev => [...prev, loadingSignalItem]);
+
+          try {
+            // Generate signal content
+            const signalResponse = await generateSignal(signalParams.topic, signalParams.location, signalParams.requirements);
+
+            // After loading, show the actual signal card with AI-generated content
+            setTimeout(() => {
+              const finalTime = new Date();
+              
+              setChatItems(prev => {
+                const updatedItems = prev.map(item => {
+                  if (item.id === loadingSignalId) {
+                    const signalData = item.data as SignalCardData;
+                    return {
+                      ...item,
+                      data: { 
+                        ...signalData, 
+                        isLoading: false,
+                        aiGeneratedContent: signalResponse || `AI Startup Funding Tracker\nMonitoring funding rounds and investment activity in California`, // Store AI-generated content
+                      },
+                      isNew: true, // Trigger completion animation
+                    };
+                  }
+                  return item;
+                });
+
+                return updatedItems;
+              });
+
+              // Add milestone marker with 300ms delay for organic timing
+              setTimeout(() => {
+                const milestoneItem: ChatItem = {
+                  id: (Date.now() + 100).toString(),
+                  type: 'milestone',
+                  data: {
+                    id: (Date.now() + 100).toString(),
+                    timestamp: finalTime,
+                    isFirst: false,
+                  },
+                  timestamp: finalTime,
+                  isNew: true,
+                };
+
+                setChatItems(prev => [...prev, milestoneItem]);
+              }, 300);
+            }, 2000);
+          } catch (error) {
+            console.error('Failed to generate signal:', error);
+            // Show signal card with fallback content
+            setChatItems(prev => {
+              const updatedItems = prev.map(item => {
+                if (item.id === loadingSignalId) {
+                  const signalData = item.data as SignalCardData;
+                  return {
+                    ...item,
+                    data: { 
+                      ...signalData, 
+                      isLoading: false,
+                      aiGeneratedContent: `AI Startup Funding Tracker\nReal-time monitoring of California tech funding rounds`,
+                    },
+                    isNew: true,
+                  };
+                }
+                return item;
+              });
+              return updatedItems;
+            });
+          }
+        }, 800);
+      } else {
+        // Regular chat message - use existing flow
+        const aiResponse = await streamMessage(inputValueCopy);
+        
+        // Get the latest response and add it as a chat item
+        setTimeout(() => {
+          if (aiResponse) {
+            const aiResponseTime = new Date();
+            const aiMessageItem: ChatItem = {
+              id: (Date.now() + 1).toString(),
+              type: 'message',
+              data: {
+                id: (Date.now() + 1).toString(),
+                text: aiResponse,
+                isUser: false,
+                timestamp: aiResponseTime,
+              },
+              timestamp: aiResponseTime,
+              isNew: true,
+            };
+
+            setChatItems(prev => [...prev, aiMessageItem]);
+          }
+        }, 500);
+      }
+    } catch (error) {
+      console.error('Message sending error:', error);
+    }
   };
 
   const handleRestore = (originalTimestamp: Date) => {
@@ -496,6 +608,50 @@ function MonitoringChatPane1() {
     return "Updated 2min ago";
   };
 
+  // Function to extract signal title from AI-generated content
+  const getSignalTitle = (signalData: SignalCardData): string => {
+    if (signalData.aiGeneratedContent) {
+      // Try to extract title from structured AI response
+      const titleMatch = signalData.aiGeneratedContent.match(/TITLE:\s*([^\n]+)/i);
+      if (titleMatch) {
+        return titleMatch[1].trim();
+      }
+      // Fallback: try general title pattern
+      const generalTitleMatch = signalData.aiGeneratedContent.match(/title[:\s]+([^\n]+)/i);
+      if (generalTitleMatch) {
+        return generalTitleMatch[1].trim();
+      }
+      // Final fallback: extract first meaningful line
+      const lines = signalData.aiGeneratedContent.split('\n').filter(line => line.trim());
+      if (lines.length > 0) {
+        return lines[0].replace(/^\d+\.\s*/, '').trim();
+      }
+    }
+    return "AI Startup Acquisition Tracker";
+  };
+
+  // Function to extract signal description from AI-generated content
+  const getSignalDescription = (signalData: SignalCardData): string => {
+    if (signalData.aiGeneratedContent) {
+      // Try to extract description from structured AI response
+      const descMatch = signalData.aiGeneratedContent.match(/DESCRIPTION:\s*([^\n]+)/i);
+      if (descMatch) {
+        return descMatch[1].trim();
+      }
+      // Fallback: try general description pattern
+      const generalDescMatch = signalData.aiGeneratedContent.match(/description[:\s]+([^\n]+)/i);
+      if (generalDescMatch) {
+        return generalDescMatch[1].trim();
+      }
+      // Final fallback: extract second meaningful line or part of content
+      const lines = signalData.aiGeneratedContent.split('\n').filter(line => line.trim());
+      if (lines.length > 1) {
+        return lines[1].replace(/^\d+\.\s*/, '').trim();
+      }
+    }
+    return "Real-time monitoring of California tech acquisitions";
+  };
+
   // Skeleton SignalCard component with pulse animation
   const SkeletonSignalCard = () => (
     <div className="flex w-full flex-col items-start gap-4 rounded-rounded-x-large border border-solid border-brand-200 bg-background-primary px-6 py-6 shadow-md animate-pulse">
@@ -571,7 +727,7 @@ function MonitoringChatPane1() {
         </div>
 
         {/* Mobile Toggle - Only visible on mobile */}
-        <div className="md:hidden w-full px-4 py-1 bg-white border-b">
+        <div className="md:hidden w-full px-4 py-1 bg-neutral-100 border-b">
           <MobileToggle 
             activeMode={mobileViewMode} 
             onModeChange={setMobileViewMode}
@@ -581,7 +737,7 @@ function MonitoringChatPane1() {
         {/* Main Content - Responsive Layout */}
         <div className="flex-1 relative overflow-hidden">
           <div className={`flex h-full transition-all duration-700 ease-out ${
-            isPreviewMode ? 'gap-4 p-4' : ''
+            isPreviewMode ? 'gap-4 p-4' : 'gap-0 p-0'
           }`}>
             
             {/* Chat Panel */}
@@ -661,8 +817,8 @@ function MonitoringChatPane1() {
                                 variant={(item.data as SignalCardData).variant}
                                 text="YOUR SIGNAL"
                                 text2={getSignalCardTimestampText(item.data as SignalCardData)}
-                                text3="AI Startup Acquisition Tracker"
-                                text4="Real-time monitoring of California tech acquisitions"
+                                text3={getSignalTitle(item.data as SignalCardData)}
+                                text4={getSignalDescription(item.data as SignalCardData)}
                                 text5="Research Scope"
                                 text6="Data Sources"
                                 text7="Your custom data points"
@@ -678,6 +834,7 @@ function MonitoringChatPane1() {
                                 onRestore={(item.data as SignalCardData).variant === 'old-version' ? () => handleRestore((item.data as SignalCardData).originalTimestamp!) : undefined}
                                 onEdit={(item.data as SignalCardData).variant === 'approved' ? () => handleEdit(item.id) : undefined}
                                 originalTimestamp={(item.data as SignalCardData).timestamp}
+                                aiGeneratedContent={(item.data as SignalCardData).aiGeneratedContent}
                               />
                             </div>
                           )}
@@ -685,7 +842,11 @@ function MonitoringChatPane1() {
                       )}
                       
                       {item.type === 'update-message' && (
-                        <UpdateMessage text={(item.data as UpdateMessageData).text} isNew={item.isNew} />
+                        <UpdateMessage 
+                          text={(item.data as UpdateMessageData).text} 
+                          isNew={item.isNew} 
+                          useAIStreaming={true}
+                        />
                       )}
 
                       {item.type === 'milestone' && (
@@ -821,16 +982,22 @@ function MonitoringChatPane1() {
               </div>
 
             {/* Preview Panel - Slides in from right */}
-            {(isPreviewMode || mobileViewMode === "preview") && (
-              <div className={`h-full animate-in slide-in-from-right-6 fade-in-0 duration-700 ease-out ${
-                // Desktop: 3/5 width when preview mode is on, Mobile: always full width
-                isPreviewMode ? "w-full md:w-3/5" : "w-full"
-              } ${
-                // Mobile responsive classes
-                mobileViewMode === "preview" ? "block" : "hidden md:block"
+            <div className={`h-full transition-all duration-700 ease-out overflow-hidden ${
+              // Desktop: 3/5 width when preview mode is on, Mobile: always full width
+              isPreviewMode || mobileViewMode === "preview" ? "w-full md:w-3/5" : "w-0"
+            } ${
+              // Mobile responsive classes
+              mobileViewMode === "preview" ? "block" : "hidden md:block"
+            }`}>
+              <div className={`h-full transition-all duration-700 ease-out ${
+                isPreviewMode || mobileViewMode === "preview"
+                  ? "transform translate-x-0 opacity-100" 
+                  : "transform translate-x-full opacity-0 pointer-events-none"
               }`}>
-                <div className="h-full overflow-hidden p-3 md:p-2">
+                <div className="h-full overflow-hidden p-3 md:p-2 relative">
+                  {/* BuilderPreview Content */}
                   <BuilderPreview
+                    loading={isPreviewLoading}
                     className="h-full w-full"
                     text="Signal Preview"
                     text2="AI Startup Acquisition Tracker"
@@ -849,7 +1016,7 @@ function MonitoringChatPane1() {
                   />
                 </div>
               </div>
-            )}
+            </div>
           </div>
         </div>
       </div>
@@ -871,23 +1038,33 @@ function MonitoringChatPane1() {
   );
 }
 
-const UpdateMessage = ({ text, isNew }: { text: string, isNew?: boolean }) => {
+const UpdateMessage = ({ text, isNew, useAIStreaming = false }: { text: string, isNew?: boolean, useAIStreaming?: boolean }) => {
   const [streamedText, setStreamedText] = useState("");
   const [isStreaming, setIsStreaming] = useState(true);
+  const { enhanceMessage, currentStreamContent, isStreaming: aiIsStreaming } = useAIChat();
 
   useEffect(() => {
-    const streamText = async () => {
-      setStreamedText("");
-      setIsStreaming(true);
-      for (let i = 0; i < text.length; i++) {
-        await new Promise(res => setTimeout(res, 15));
-        setStreamedText(text.substring(0, i + 1));
-      }
-      setIsStreaming(false);
-    };
+    if (useAIStreaming) {
+      // Use AI to enhance the message
+      enhanceMessage(text, 'Signal monitoring and business intelligence system');
+    } else {
+      // Use the existing character-by-character streaming
+      const streamText = async () => {
+        setStreamedText("");
+        setIsStreaming(true);
+        for (let i = 0; i < text.length; i++) {
+          await new Promise(res => setTimeout(res, 15));
+          setStreamedText(text.substring(0, i + 1));
+        }
+        setIsStreaming(false);
+      };
 
-    streamText();
-  }, [text]);
+      streamText();
+    }
+  }, [text, useAIStreaming, enhanceMessage]);
+
+  const displayText = useAIStreaming ? currentStreamContent : streamedText;
+  const showCursor = useAIStreaming ? aiIsStreaming : isStreaming;
 
   return (
     <div className={`flex w-full flex-col items-start justify-center gap-1`}>
@@ -898,8 +1075,8 @@ const UpdateMessage = ({ text, isNew }: { text: string, isNew?: boolean }) => {
           }`}
         >
           <span className="text-body font-body text-text-primary">
-            {streamedText}
-            {isStreaming && (
+            {displayText || text}
+            {showCursor && (
               <span className="inline-block w-2 h-4 bg-gray-600 ml-1 animate-pulse" />
             )}
           </span>

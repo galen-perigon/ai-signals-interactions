@@ -61,6 +61,7 @@ interface SignalCardRootProps extends React.HTMLAttributes<HTMLDivElement> {
   onEdit?: () => void;
   originalTimestamp?: Date;
   className?: string;
+  aiGeneratedContent?: string;
 }
 
 const SignalCardRoot = React.forwardRef<HTMLElement, SignalCardRootProps>(
@@ -89,6 +90,7 @@ const SignalCardRoot = React.forwardRef<HTMLElement, SignalCardRootProps>(
       onEdit,
       originalTimestamp,
       className,
+      aiGeneratedContent,
       ...otherProps
     }: SignalCardRootProps,
     ref

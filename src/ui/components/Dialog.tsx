@@ -23,7 +23,7 @@ const Content = React.forwardRef<HTMLElement, ContentProps>(function Content(
     <SubframeCore.Dialog.Content asChild={true} {...otherProps}>
       <div
         className={SubframeUtils.twClassNames(
-          "flex min-w-[320px] flex-col items-start gap-2 rounded-md border border-solid border-brand-200 bg-background-primary shadow-lg max-h-[90vh] overflow-auto",
+          "flex w-[95vw] max-w-[320px] md:min-w-[320px] md:max-w-none flex-col items-start gap-2 rounded-md border border-solid border-brand-200 bg-background-primary shadow-lg max-h-[90vh] overflow-auto mx-2 md:mx-0",
           className
         )}
         ref={ref as any}
@@ -51,7 +51,7 @@ const DialogRoot = React.forwardRef<HTMLElement, DialogRootProps>(
       <SubframeCore.Dialog.Root asChild={true} {...otherProps}>
         <div
           className={SubframeUtils.twClassNames(
-            "flex h-full w-full flex-col items-center justify-center gap-2 bg-[#00000099] z-[9999]",
+            "flex h-full w-full flex-col items-center justify-center gap-2 bg-[#00000099] z-[9999] p-4 md:p-2",
             className
           )}
           ref={ref as any}
