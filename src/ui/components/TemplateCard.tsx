@@ -18,13 +18,13 @@ interface TemplateCardRootProps
 const TemplateCardRoot = React.forwardRef<HTMLElement, TemplateCardRootProps>(
   function TemplateCardRoot(
     { content, className, ...otherProps }: TemplateCardRootProps,
-    ref
+    ref,
   ) {
     return (
       <div
         className={SubframeUtils.twClassNames(
           "group/dfab6ff2 flex cursor-pointer items-start justify-between rounded-md border border-solid border-brand-200 bg-background-primary px-4 py-3 hover:flex-row hover:flex-nowrap hover:justify-between hover:px-4 hover:py-3 hover:shadow-sm",
-          className
+          className,
         )}
         ref={ref as any}
         {...otherProps}
@@ -43,7 +43,7 @@ const TemplateCardRoot = React.forwardRef<HTMLElement, TemplateCardRootProps>(
         />
       </div>
     );
-  }
+  },
 );
 
 export const TemplateCard = TemplateCardRoot;

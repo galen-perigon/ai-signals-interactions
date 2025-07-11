@@ -21,13 +21,13 @@ interface InputProps
 
 const Input = React.forwardRef<HTMLElement, InputProps>(function Input(
   { placeholder, className, ...otherProps }: InputProps,
-  ref
+  ref,
 ) {
   return (
     <textarea
       className={SubframeUtils.twClassNames(
         "min-h-[96px] w-full border-none bg-transparent px-2 py-1.5 text-body font-body text-text-primary outline-none placeholder:text-neutral-400",
-        className
+        className,
       )}
       placeholder={placeholder as string}
       ref={ref as any}
@@ -57,14 +57,14 @@ const TextAreaRoot = React.forwardRef<HTMLElement, TextAreaRootProps>(
       className,
       ...otherProps
     }: TextAreaRootProps,
-    ref
+    ref,
   ) {
     return (
       <label
         className={SubframeUtils.twClassNames(
           "group/4ec05ee8 flex flex-col items-start gap-1",
           { "border-none": variant === "filled" },
-          className
+          className,
         )}
         ref={ref as any}
         {...otherProps}
@@ -82,7 +82,7 @@ const TextAreaRoot = React.forwardRef<HTMLElement, TextAreaRootProps>(
                 "border border-solid border-neutral-100 bg-neutral-100 group-hover/4ec05ee8:border group-hover/4ec05ee8:border-solid group-hover/4ec05ee8:border-border-primary group-focus-within/4ec05ee8:bg-background-primary":
                   variant === "filled",
                 "border border-solid border-red-600": error,
-              }
+              },
             )}
           >
             {children}
@@ -92,7 +92,7 @@ const TextAreaRoot = React.forwardRef<HTMLElement, TextAreaRootProps>(
           <span
             className={SubframeUtils.twClassNames(
               "text-caption font-caption text-text-secondary",
-              { "text-red-700": error }
+              { "text-red-700": error },
             )}
           >
             {helpText}
@@ -100,7 +100,7 @@ const TextAreaRoot = React.forwardRef<HTMLElement, TextAreaRootProps>(
         ) : null}
       </label>
     );
-  }
+  },
 );
 
 export const TextArea = Object.assign(TextAreaRoot, {

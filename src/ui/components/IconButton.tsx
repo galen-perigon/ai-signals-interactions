@@ -40,7 +40,7 @@ const IconButtonRoot = React.forwardRef<HTMLElement, IconButtonRootProps>(
       type = "button",
       ...otherProps
     }: IconButtonRootProps,
-    ref
+    ref,
   ) {
     return (
       <button
@@ -66,7 +66,7 @@ const IconButtonRoot = React.forwardRef<HTMLElement, IconButtonRootProps>(
             "border border-solid border-brand-200 bg-button-primary hover:bg-button-primary-bright active:bg-button-primary-dim":
               variant === "brand-primary",
           },
-          className
+          className,
         )}
         ref={ref as any}
         type={type}
@@ -94,7 +94,7 @@ const IconButtonRoot = React.forwardRef<HTMLElement, IconButtonRootProps>(
                   variant === "brand-tertiary",
                 "text-text-primary group-hover/af9405b1:text-text-primary group-active/af9405b1:text-text-primary":
                   variant === "brand-secondary" || variant === "brand-primary",
-              }
+              },
             )}
           >
             {icon}
@@ -116,12 +116,12 @@ const IconButtonRoot = React.forwardRef<HTMLElement, IconButtonRootProps>(
               "text-neutral-700": variant === "neutral-primary",
               "text-brand-600":
                 variant === "brand-tertiary" || variant === "brand-secondary",
-            }
+            },
           )}
         />
       </button>
     );
-  }
+  },
 );
 
 export const IconButton = IconButtonRoot;

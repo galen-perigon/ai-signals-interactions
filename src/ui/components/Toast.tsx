@@ -30,13 +30,13 @@ const ToastRoot = React.forwardRef<HTMLElement, ToastRootProps>(
       className,
       ...otherProps
     }: ToastRootProps,
-    ref
+    ref,
   ) {
     return (
       <div
         className={SubframeUtils.twClassNames(
           "group/2c7966c2 flex w-80 items-center gap-4 rounded-md bg-background-primary px-4 py-3 shadow-lg",
-          className
+          className,
         )}
         ref={ref as any}
         {...otherProps}
@@ -48,10 +48,11 @@ const ToastRoot = React.forwardRef<HTMLElement, ToastRootProps>(
               "text-green-700": variant === "success",
               "text-red-700": variant === "error",
               "text-brand-500": variant === "brand",
-            }
+            },
           )}
           name={icon}
         />
+
         <div className="flex grow shrink-0 basis-0 flex-col items-start">
           {title ? (
             <span
@@ -62,7 +63,7 @@ const ToastRoot = React.forwardRef<HTMLElement, ToastRootProps>(
                     variant === "success" ||
                     variant === "error" ||
                     variant === "brand",
-                }
+                },
               )}
             >
               {title}
@@ -79,7 +80,7 @@ const ToastRoot = React.forwardRef<HTMLElement, ToastRootProps>(
         ) : null}
       </div>
     );
-  }
+  },
 );
 
 export const Toast = ToastRoot;

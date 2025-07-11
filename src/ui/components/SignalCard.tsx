@@ -18,7 +18,13 @@
 import React, { useState } from "react";
 import * as SubframeUtils from "../utils";
 import * as SubframeCore from "@subframe/core";
-import { FeatherSparkle, FeatherTrash, FeatherPlus, FeatherColumns, FeatherEdit } from "@subframe/core";
+import {
+  FeatherSparkle,
+  FeatherTrash,
+  FeatherPlus,
+  FeatherColumns,
+  FeatherEdit,
+} from "@subframe/core";
 import { Button } from "./Button";
 import { Badges } from "./Badges";
 import { IconButton } from "./IconButton";
@@ -60,6 +66,8 @@ interface SignalCardRootProps extends React.HTMLAttributes<HTMLDivElement> {
   onRestore?: (originalTimestamp: Date) => void;
   onEdit?: () => void;
   originalTimestamp?: Date;
+  isSaveLoading?: boolean;
+  isPreviewLoading?: boolean;
   className?: string;
 }
 
@@ -88,10 +96,12 @@ const SignalCardRoot = React.forwardRef<HTMLElement, SignalCardRootProps>(
       onRestore,
       onEdit,
       originalTimestamp,
+      isSaveLoading = false,
+      isPreviewLoading = false,
       className,
       ...otherProps
     }: SignalCardRootProps,
-    ref
+    ref,
   ) {
     // State for managing dynamic table rows
     const [dataFields, setDataFields] = useState<DataField[]>([
@@ -158,20 +168,36 @@ const SignalCardRoot = React.forwardRef<HTMLElement, SignalCardRootProps>(
     };
 
     // Function to update a field
-    const updateField = (id: string, fieldName: string, description: string) => {
+    const updateField = (
+      id: string,
+      fieldName: string,
+      description: string,
+    ) => {
       setDataFields(
         dataFields.map((field) =>
-          field.id === id ? { ...field, fieldName, description } : field
-        )
+          field.id === id ? { ...field, fieldName, description } : field,
+        ),
       );
     };
 
     // Field suggestions with descriptions
     const fieldSuggestions = [
-      { fieldName: "Company Details", description: "Basic information about the company" },
-      { fieldName: "Funding Information", description: "Details about funding rounds and investors" },
-      { fieldName: "Leadership Data", description: "Information about key executives and founders" },
-      { fieldName: "Performance Metrics", description: "Financial and operational performance data" },
+      {
+        fieldName: "Company Details",
+        description: "Basic information about the company",
+      },
+      {
+        fieldName: "Funding Information",
+        description: "Details about funding rounds and investors",
+      },
+      {
+        fieldName: "Leadership Data",
+        description: "Information about key executives and founders",
+      },
+      {
+        fieldName: "Performance Metrics",
+        description: "Financial and operational performance data",
+      },
     ];
 
     // Handle restore button click
@@ -184,21 +210,25 @@ const SignalCardRoot = React.forwardRef<HTMLElement, SignalCardRootProps>(
     return (
       <div
         className={SubframeUtils.twClassNames(
-          "group/74d5fb4a flex w-full max-w-none flex-col items-start gap-4 rounded-rounded-x-large border border-solid border-brand-200 bg-background-primary px-4 py-4 md:px-6 md:py-6 shadow-md relative z-10",
+          "group/74d5fb4a flex w-full max-w-none flex-col items-start gap-4 rounded-rounded-x-large border border-solid border-brand-200 bg-background-primary px-4 py-4 md:px-6 md:py-6 shadow-md relative z-10 transition-all duration-500 ease-out",
           {
-            "px-4 py-4": variant === "old-version",
+            "px-4 py-4 gap-0": variant === "old-version",
             "px-6 py-6": variant === "approved",
           },
-          className
+          className,
         )}
         ref={ref as any}
         {...otherProps}
+        style={{
+          transform: variant === "approved" ? "scale(0.98)" : "scale(1)",
+          transition: "all 500ms cubic-bezier(0.23, 1, 0.32, 1)"
+        }}
       >
         {/* Header Section */}
         <div
           className={SubframeUtils.twClassNames(
             "flex w-full items-center gap-4",
-            { "flex-row flex-nowrap gap-4": variant === "approved" }
+            { "flex-row flex-nowrap gap-4": variant === "approved" },
           )}
         >
           <div className="flex grow shrink-0 basis-0 items-center gap-2">
@@ -206,6 +236,7 @@ const SignalCardRoot = React.forwardRef<HTMLElement, SignalCardRootProps>(
               className="text-caption font-caption text-text-secondary"
               name={icon}
             />
+
             {text ? (
               <span className="text-caption-bold font-caption-bold text-text-secondary">
                 {text}
@@ -237,23 +268,39 @@ const SignalCardRoot = React.forwardRef<HTMLElement, SignalCardRootProps>(
           >
             {variant === "approved" ? "Saved" : "Draft"}
           </Badges>
-          <IconButton
-            className={SubframeUtils.twClassNames("hidden", {
-              hidden: variant === "old-version",
-              flex: variant === "approved",
-            })}
-            size={variant === "approved" ? "small" : "small"}
-            icon={variant === "approved" ? <FeatherEdit /> : undefined}
-            onClick={onEdit}
-          />
+          {/* Show loading spinner in place of Edit button when loading */}
+          {variant === "approved" && isPreviewLoading ? (
+            <div className="flex h-8 w-8 items-center justify-center">
+              <SubframeCore.Icon
+                className="text-caption font-caption text-brand-600 animate-spin"
+                name="FeatherLoader"
+              />
+            </div>
+          ) : (
+            <IconButton
+              className={SubframeUtils.twClassNames("hidden", {
+                hidden: variant === "old-version",
+                flex: variant === "approved",
+              })}
+              size={variant === "approved" ? "small" : "small"}
+              icon={variant === "approved" ? <FeatherEdit /> : undefined}
+              onClick={onEdit}
+            />
+          )}
         </div>
 
         {/* Title Section */}
         <div
           className={SubframeUtils.twClassNames(
-            "flex w-full items-center justify-between",
-            { hidden: variant === "old-version" }
+            "flex w-full items-center justify-between transition-all duration-400 ease-out",
+            { 
+              "opacity-0 max-h-0 overflow-hidden transform scale-95": variant === "old-version",
+              "opacity-100 max-h-none transform scale-100": variant !== "old-version"
+            }
           )}
+          style={{
+            transition: "all 400ms cubic-bezier(0.23, 1, 0.32, 1)"
+          }}
         >
           <div className="flex items-center gap-4">
             <Avatar
@@ -305,14 +352,21 @@ const SignalCardRoot = React.forwardRef<HTMLElement, SignalCardRootProps>(
         {/* Main Content - Filter and Data Sections */}
         <div
           className={SubframeUtils.twClassNames(
-            "flex w-full flex-col items-start gap-2 mt-2",
-            { hidden: variant === "old-version" || variant === "approved" }
+            "flex w-full flex-col items-start gap-2 mt-2 transition-all duration-500 ease-out",
+            { 
+              "opacity-0 max-h-0 overflow-hidden transform scale-95 translate-y-4": variant === "old-version" || variant === "approved",
+              "opacity-100 max-h-none transform scale-100 translate-y-0": variant === "default"
+            }
           )}
+          style={{
+            transition: "all 500ms cubic-bezier(0.23, 1, 0.32, 1)"
+          }}
         >
           <div className="flex w-full flex-col items-start gap-4 rounded-lg relative z-10">
             {/* #Filter Section */}
             <div className="flex w-full flex-col items-start gap-2">
               <div className="flex h-px w-full flex-none flex-col items-center gap-2 bg-border-primary" />
+
               <div className="flex w-full flex-col items-start gap-4 px-1 py-1">
                 <Accordion
                   trigger={
@@ -321,6 +375,7 @@ const SignalCardRoot = React.forwardRef<HTMLElement, SignalCardRootProps>(
                         className="text-body font-body text-text-secondary"
                         name={icon2}
                       />
+
                       {text9 ? (
                         <span className="grow shrink-0 basis-0 text-body-bold font-body-bold text-text-primary">
                           {text9}
@@ -383,6 +438,7 @@ const SignalCardRoot = React.forwardRef<HTMLElement, SignalCardRootProps>(
                   className="text-body font-body text-text-secondary"
                   name="FeatherTable"
                 />
+
                 {text7 ? (
                   <span className="text-body-bold font-body-bold text-text-primary">
                     {text7}
@@ -402,132 +458,169 @@ const SignalCardRoot = React.forwardRef<HTMLElement, SignalCardRootProps>(
                 className="min-w-[400px] md:min-w-[600px] relative w-full"
                 header={
                   <Table.HeaderRow>
-                    <Table.HeaderCell className="w-full">Field Name</Table.HeaderCell>
+                    <Table.HeaderCell className="w-full">
+                      Field Name
+                    </Table.HeaderCell>
                     <Table.HeaderCell>Description</Table.HeaderCell>
-                    <Table.HeaderCell className="w-[100px] sticky right-0 bg-background-primary shadow-lg z-10 hidden md:table-cell text-center">Actions</Table.HeaderCell>
+                    <Table.HeaderCell className="w-[100px] sticky right-0 bg-background-primary shadow-lg z-10 hidden md:table-cell text-center">
+                      Actions
+                    </Table.HeaderCell>
                   </Table.HeaderRow>
                 }
               >
-              {dataFields.map((field) => (
-                <Table.Row key={field.id}>
-                  <Table.Cell className="w-full">
-                    <TextField variant="filled" label="" helpText="" className="w-full">
-                      <TextField.Input
-                        placeholder="Enter field name"
-                        value={field.fieldName}
-                        onChange={(e) =>
-                          updateField(field.id, e.target.value, field.description)
-                        }
+                {dataFields.map((field) => (
+                  <Table.Row key={field.id}>
+                    <Table.Cell className="w-full">
+                      <TextField
+                        variant="filled"
+                        label=""
+                        helpText=""
                         className="w-full"
-                      />
-                    </TextField>
-                  </Table.Cell>
-                  <Table.Cell className="min-w-[200px]">
-                    {/* Desktop: Simple description field */}
-                    <div className="hidden md:block w-full">
-                      <TextField variant="filled" label="" helpText="" className="w-full">
+                      >
                         <TextField.Input
-                          placeholder="Enter description"
-                          value={field.description}
+                          placeholder="Enter field name"
+                          value={field.fieldName}
                           onChange={(e) =>
-                            updateField(field.id, field.fieldName, e.target.value)
+                            updateField(
+                              field.id,
+                              e.target.value,
+                              field.description,
+                            )
                           }
                           className="w-full"
                         />
                       </TextField>
-                    </div>
-                    {/* Mobile: Description field with action icons */}
-                    <div className="flex items-center gap-2 md:hidden">
-                      <div className="flex-1">
-                        <TextField variant="filled" label="" helpText="" className="w-full">
+                    </Table.Cell>
+                    <Table.Cell className="min-w-[200px]">
+                      {/* Desktop: Simple description field */}
+                      <div className="hidden md:block w-full">
+                        <TextField
+                          variant="filled"
+                          label=""
+                          helpText=""
+                          className="w-full"
+                        >
                           <TextField.Input
                             placeholder="Enter description"
                             value={field.description}
                             onChange={(e) =>
-                              updateField(field.id, field.fieldName, e.target.value)
+                              updateField(
+                                field.id,
+                                field.fieldName,
+                                e.target.value,
+                              )
                             }
                             className="w-full"
                           />
                         </TextField>
                       </div>
-                      {/* Mobile enhance icon - positioned before trash icon */}
-                      <SubframeCore.Tooltip.Provider>
-                        <SubframeCore.Tooltip.Root>
-                          <SubframeCore.Tooltip.Trigger asChild={true}>
-                            <SubframeCore.Icon
-                              className="w-4 h-4 text-text-secondary hover:text-brand-600 transition-colors cursor-pointer flex-shrink-0"
-                              name="FeatherSparkle"
-                              onClick={() => {
-                                // Enhance functionality - could be expanded later
-                                console.log('Enhance description for field:', field.id);
-                              }}
+                      {/* Mobile: Description field with action icons */}
+                      <div className="flex items-center gap-2 md:hidden">
+                        <div className="flex-1">
+                          <TextField
+                            variant="filled"
+                            label=""
+                            helpText=""
+                            className="w-full"
+                          >
+                            <TextField.Input
+                              placeholder="Enter description"
+                              value={field.description}
+                              onChange={(e) =>
+                                updateField(
+                                  field.id,
+                                  field.fieldName,
+                                  e.target.value,
+                                )
+                              }
+                              className="w-full"
                             />
-                          </SubframeCore.Tooltip.Trigger>
-                          <SubframeCore.Tooltip.Portal>
-                            <SubframeCore.Tooltip.Content
-                              side="top"
-                              align="center"
-                              sideOffset={4}
-                              asChild={true}
-                            >
-                              <Tooltip>Enhance with AI</Tooltip>
-                            </SubframeCore.Tooltip.Content>
-                          </SubframeCore.Tooltip.Portal>
-                        </SubframeCore.Tooltip.Root>
-                      </SubframeCore.Tooltip.Provider>
-                      {/* Mobile delete icon - at the end of the row */}
-                      <SubframeCore.Icon
-                        className="w-4 h-4 text-text-secondary hover:text-red-600 transition-colors cursor-pointer flex-shrink-0"
-                        name="FeatherTrash"
-                        onClick={() => removeField(field.id)}
-                      />
-                    </div>
-                  </Table.Cell>
-                  <Table.Cell className="w-[100px] min-w-[100px] sticky right-0 bg-background-primary shadow-lg z-10 hidden md:table-cell align-middle">
-                    <div className="flex items-center gap-1 justify-center">
-                      <SubframeCore.Tooltip.Provider>
-                        <SubframeCore.Tooltip.Root>
-                          <SubframeCore.Tooltip.Trigger asChild={true}>
-                            <IconButton size="small" icon={<FeatherSparkle />} />
-                          </SubframeCore.Tooltip.Trigger>
-                          <SubframeCore.Tooltip.Portal>
-                            <SubframeCore.Tooltip.Content
-                              side="bottom"
-                              align="start"
-                              sideOffset={4}
-                              asChild={true}
-                            >
-                              <Tooltip>enhance with AI</Tooltip>
-                            </SubframeCore.Tooltip.Content>
-                          </SubframeCore.Tooltip.Portal>
-                        </SubframeCore.Tooltip.Root>
-                      </SubframeCore.Tooltip.Provider>
-                      <SubframeCore.Tooltip.Provider>
-                        <SubframeCore.Tooltip.Root>
-                          <SubframeCore.Tooltip.Trigger asChild={true}>
-                            <IconButton
-                              size="small"
-                              icon={<FeatherTrash />}
-                              onClick={() => removeField(field.id)}
-                            />
-                          </SubframeCore.Tooltip.Trigger>
-                          <SubframeCore.Tooltip.Portal>
-                            <SubframeCore.Tooltip.Content
-                              side="top"
-                              align="center"
-                              sideOffset={4}
-                              asChild={true}
-                            >
-                              <Tooltip>Remove data point</Tooltip>
-                            </SubframeCore.Tooltip.Content>
-                          </SubframeCore.Tooltip.Portal>
-                        </SubframeCore.Tooltip.Root>
-                      </SubframeCore.Tooltip.Provider>
-                    </div>
-                  </Table.Cell>
-                </Table.Row>
-              ))}
-            </Table>
+                          </TextField>
+                        </div>
+                        {/* Mobile enhance icon - positioned before trash icon */}
+                        <SubframeCore.Tooltip.Provider>
+                          <SubframeCore.Tooltip.Root>
+                            <SubframeCore.Tooltip.Trigger asChild={true}>
+                              <SubframeCore.Icon
+                                className="w-4 h-4 text-text-secondary hover:text-brand-600 transition-colors cursor-pointer flex-shrink-0"
+                                name="FeatherSparkle"
+                                onClick={() => {
+                                  // Enhance functionality - could be expanded later
+                                  console.log(
+                                    "Enhance description for field:",
+                                    field.id,
+                                  );
+                                }}
+                              />
+                            </SubframeCore.Tooltip.Trigger>
+                            <SubframeCore.Tooltip.Portal>
+                              <SubframeCore.Tooltip.Content
+                                side="top"
+                                align="center"
+                                sideOffset={4}
+                                asChild={true}
+                              >
+                                <Tooltip>Enhance with AI</Tooltip>
+                              </SubframeCore.Tooltip.Content>
+                            </SubframeCore.Tooltip.Portal>
+                          </SubframeCore.Tooltip.Root>
+                        </SubframeCore.Tooltip.Provider>
+                        {/* Mobile delete icon - at the end of the row */}
+                        <SubframeCore.Icon
+                          className="w-4 h-4 text-text-secondary hover:text-red-600 transition-colors cursor-pointer flex-shrink-0"
+                          name="FeatherTrash"
+                          onClick={() => removeField(field.id)}
+                        />
+                      </div>
+                    </Table.Cell>
+                    <Table.Cell className="w-[100px] min-w-[100px] sticky right-0 bg-background-primary shadow-lg z-10 hidden md:table-cell align-middle">
+                      <div className="flex items-center gap-1 justify-center">
+                        <SubframeCore.Tooltip.Provider>
+                          <SubframeCore.Tooltip.Root>
+                            <SubframeCore.Tooltip.Trigger asChild={true}>
+                              <IconButton
+                                size="small"
+                                icon={<FeatherSparkle />}
+                              />
+                            </SubframeCore.Tooltip.Trigger>
+                            <SubframeCore.Tooltip.Portal>
+                              <SubframeCore.Tooltip.Content
+                                side="bottom"
+                                align="start"
+                                sideOffset={4}
+                                asChild={true}
+                              >
+                                <Tooltip>enhance with AI</Tooltip>
+                              </SubframeCore.Tooltip.Content>
+                            </SubframeCore.Tooltip.Portal>
+                          </SubframeCore.Tooltip.Root>
+                        </SubframeCore.Tooltip.Provider>
+                        <SubframeCore.Tooltip.Provider>
+                          <SubframeCore.Tooltip.Root>
+                            <SubframeCore.Tooltip.Trigger asChild={true}>
+                              <IconButton
+                                size="small"
+                                icon={<FeatherTrash />}
+                                onClick={() => removeField(field.id)}
+                              />
+                            </SubframeCore.Tooltip.Trigger>
+                            <SubframeCore.Tooltip.Portal>
+                              <SubframeCore.Tooltip.Content
+                                side="top"
+                                align="center"
+                                sideOffset={4}
+                                asChild={true}
+                              >
+                                <Tooltip>Remove data point</Tooltip>
+                              </SubframeCore.Tooltip.Content>
+                            </SubframeCore.Tooltip.Portal>
+                          </SubframeCore.Tooltip.Root>
+                        </SubframeCore.Tooltip.Provider>
+                      </div>
+                    </Table.Cell>
+                  </Table.Row>
+                ))}
+              </Table>
             </div>
 
             {/* Action Buttons */}
@@ -549,7 +642,9 @@ const SignalCardRoot = React.forwardRef<HTMLElement, SignalCardRootProps>(
                       size="small"
                       icon={<FeatherSparkle />}
                     >
-                      <span className="hidden sm:inline">Field suggestions</span>
+                      <span className="hidden sm:inline">
+                        Field suggestions
+                      </span>
                       <span className="sm:hidden">Suggestions</span>
                     </Button>
                   </SubframeCore.DropdownMenu.Trigger>
@@ -569,7 +664,7 @@ const SignalCardRoot = React.forwardRef<HTMLElement, SignalCardRootProps>(
                             onClick={() =>
                               addFieldFromSuggestion(
                                 suggestion.fieldName,
-                                suggestion.description
+                                suggestion.description,
                               )
                             }
                           >
@@ -581,16 +676,25 @@ const SignalCardRoot = React.forwardRef<HTMLElement, SignalCardRootProps>(
                   </SubframeCore.DropdownMenu.Portal>
                 </SubframeCore.DropdownMenu.Root>
               </div>
-              <Button onClick={onSavePreview} className="flex-shrink-0">
-                <span className="hidden md:inline">Save + preview</span>
-                <span className="md:hidden">Save</span>
+              <Button 
+                onClick={onSavePreview} 
+                className="flex-shrink-0"
+                loading={isSaveLoading}
+                disabled={isSaveLoading}
+              >
+                <span className="hidden md:inline">
+                  {isSaveLoading ? "Generating..." : "Save + preview"}
+                </span>
+                <span className="md:hidden">
+                  {isSaveLoading ? "Loading" : "Save"}
+                </span>
               </Button>
             </div>
           </div>
         </div>
       </div>
     );
-  }
+  },
 );
 
 export const SignalCard = SignalCardRoot;

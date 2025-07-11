@@ -69,6 +69,7 @@ interface BuilderPreviewRootProps extends React.HTMLAttributes<HTMLDivElement> {
   text45?: React.ReactNode;
   text46?: React.ReactNode;
   text47?: React.ReactNode;
+  isLoading?: boolean;
   className?: string;
 }
 
@@ -126,16 +127,234 @@ const BuilderPreviewRoot = React.forwardRef<
     text45,
     text46,
     text47,
+    isLoading = false,
     className,
     ...otherProps
   }: BuilderPreviewRootProps,
-  ref
+  ref,
 ) {
+  const [loadingProgress, setLoadingProgress] = React.useState(0);
+
+  React.useEffect(() => {
+    if (isLoading) {
+      setLoadingProgress(0);
+      const interval = setInterval(() => {
+        setLoadingProgress(prev => {
+          if (prev >= 100) {
+            clearInterval(interval);
+            return 100;
+          }
+          return prev + 2;
+        });
+      }, 200); // 10000ms / 50 steps = 200ms per step
+      
+      return () => clearInterval(interval);
+    }
+  }, [isLoading]);
+
+  if (isLoading) {
+    return (
+      <div
+        className={SubframeUtils.twClassNames(
+          "flex w-full flex-col items-start gap-6 rounded-rounded-x-large border border-solid border-brand-200 bg-white p-6 shadow-md relative overflow-hidden transition-all duration-700 ease-out",
+          className,
+        )}
+        ref={ref as any}
+        {...otherProps}
+        style={{ 
+          opacity: loadingProgress >= 100 ? 0 : 1,
+          transform: loadingProgress >= 100 ? 'translateY(-10px)' : 'translateY(0)'
+        }}
+      >
+        {/* Animated background pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0 bg-gradient-to-br from-brand-100 via-transparent to-brand-100 animate-pulse"></div>
+        </div>
+        
+        {/* Floating particles animation */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute w-2 h-2 bg-brand-200 rounded-full opacity-20 animate-float-1"></div>
+          <div className="absolute w-1 h-1 bg-brand-300 rounded-full opacity-30 animate-float-2"></div>
+          <div className="absolute w-1.5 h-1.5 bg-brand-200 rounded-full opacity-25 animate-float-3"></div>
+        </div>
+        
+        {/* Header */}
+        <div className="flex w-full items-center justify-between relative z-10">
+          <div className="flex grow shrink-0 basis-0 items-center gap-2 min-w-0">
+            <div className="transform-gpu">
+              <SubframeCore.Icon
+                className="text-body font-body text-brand-600 flex-shrink-0 transition-all duration-700 ease-in-out"
+                name="FeatherZap"
+              />
+            </div>
+            <span className="text-h2 font-h2 text-text-primary truncate animate-fade-in-up">
+              Signal Preview
+            </span>
+          </div>
+        </div>
+
+        {/* Main content area */}
+        <div className="flex w-full flex-col items-stretch justify-center gap-4 overflow-hidden flex-1 px-4 md:px-12 min-w-0">
+          <div className="flex w-full flex-col items-stretch justify-center gap-4 relative flex-1">
+            {/* Enhanced loading message with streaming data */}
+            <div className="flex w-full items-center justify-center relative z-10">
+              <div className="text-center max-w-2xl">
+                {/* Progress bar above the text */}
+                <div className="flex items-center justify-center gap-2 mb-4 animate-fade-in-right">
+                  <div className="w-20 h-2 bg-brand-100 rounded-full overflow-hidden shadow-inner">
+                    <div 
+                      className="h-full bg-gradient-to-r from-brand-500 to-brand-600 rounded-full transition-all duration-500 ease-out transform-gpu"
+                      style={{ 
+                        width: `${loadingProgress}%`,
+                        boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.1)'
+                      }}
+                    />
+                  </div>
+                  <span className="text-caption font-caption text-text-secondary min-w-[3ch] transition-all duration-300 ease-in-out">
+                    {loadingProgress}%
+                  </span>
+                </div>
+                
+                <div className="flex items-center justify-center mb-4">
+                  <span className="text-3xl font-bold text-text-primary animate-fade-in-up" style={{ fontFamily: 'PX Grotesk' }}>
+                    Generating preview
+                  </span>
+                </div>
+                
+                {/* Streaming data container with fade masks */}
+                <div className="relative h-96 overflow-hidden mb-6">
+                  {/* Fade masks */}
+                  <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-white to-transparent z-10 pointer-events-none"></div>
+                  <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-white to-transparent z-10 pointer-events-none"></div>
+                  <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
+                  <div className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
+                  
+                  {/* Streaming data content */}
+                  <div className="h-full overflow-hidden relative">
+                    <div className="absolute inset-0 animate-stream-up-fast">
+                      <div className="space-y-2 text-caption font-mono text-text-secondary text-left">
+                        {/* Process steps with detailed logging - Chunked loading */}
+                        
+                        {/* Chunk 1: Connection Setup */}
+                        <div className={`transition-all duration-300 ease-out transform ${loadingProgress > 8 ? 'opacity-100' : 'opacity-0'}`}>
+                          <span className="text-brand-600">●</span> Initializing connection pool to 2,341 data sources...
+                        </div>
+                        <div className={`transition-all duration-300 ease-out transform ${loadingProgress > 8 ? 'opacity-100' : 'opacity-0'}`}>
+                          <span className="text-green-600">✓</span> Connected to Crunchbase API (endpoint: /v4/entities/organizations)
+                        </div>
+                        <div className={`transition-all duration-300 ease-out transform ${loadingProgress > 8 ? 'opacity-100' : 'opacity-0'}`}>
+                          <span className="text-green-600">✓</span> Connected to PitchBook Intelligence Platform
+                        </div>
+                        <div className={`transition-all duration-300 ease-out transform ${loadingProgress > 8 ? 'opacity-100' : 'opacity-0'}`}>
+                          <span className="text-green-600">✓</span> Connected to SEC EDGAR database
+                        </div>
+                        <div className={`transition-all duration-300 ease-out transform ${loadingProgress > 8 ? 'opacity-100' : 'opacity-0'}`}>
+                          <span className="text-green-600">✓</span> Connected to Bloomberg Terminal API
+                        </div>
+                        
+                        {/* Chunk 2: Filtering Setup */}
+                        <div className={`transition-all duration-300 ease-out transform ${loadingProgress > 22 ? 'opacity-100' : 'opacity-0'}`}>
+                          <span className="text-brand-600">●</span> Applying geographic filters: California, USA
+                        </div>
+                        <div className={`transition-all duration-300 ease-out transform ${loadingProgress > 22 ? 'opacity-100' : 'opacity-0'}`}>
+                          <span className="text-brand-600">●</span> Filtering industry sectors: Artificial Intelligence, Machine Learning
+                        </div>
+                        <div className={`transition-all duration-300 ease-out transform ${loadingProgress > 22 ? 'opacity-100' : 'opacity-0'}`}>
+                          <span className="text-brand-600">●</span> Scanning for transaction types: Acquisitions, Mergers, Strategic Investments
+                        </div>
+                        <div className={`transition-all duration-300 ease-out transform ${loadingProgress > 22 ? 'opacity-100' : 'opacity-0'}`}>
+                          <span className="text-yellow-600">⚡</span> Processing 47,382 potential matches...
+                        </div>
+                        
+                        {/* Chunk 3: Data Discovery */}
+                        <div className={`transition-all duration-300 ease-out transform ${loadingProgress > 38 ? 'opacity-100' : 'opacity-0'}`}>
+                          <span className="text-green-600">✓</span> Found: Microsoft → AI Dynamics ($2.4B, All cash)
+                        </div>
+                        <div className={`transition-all duration-300 ease-out transform ${loadingProgress > 38 ? 'opacity-100' : 'opacity-0'}`}>
+                          <span className="text-green-600">✓</span> Found: Google → DataFlow Technologies ($850M, Mixed)
+                        </div>
+                        <div className={`transition-all duration-300 ease-out transform ${loadingProgress > 38 ? 'opacity-100' : 'opacity-0'}`}>
+                          <span className="text-green-600">✓</span> Found: Amazon → CloudSecure ($1.2B, Stock swap)
+                        </div>
+                        <div className={`transition-all duration-300 ease-out transform ${loadingProgress > 38 ? 'opacity-100' : 'opacity-0'}`}>
+                          <span className="text-green-600">✓</span> Found: Salesforce → ConnectHub ($650M, Mixed)
+                        </div>
+                        <div className={`transition-all duration-300 ease-out transform ${loadingProgress > 38 ? 'opacity-100' : 'opacity-0'}`}>
+                          <span className="text-green-600">✓</span> Found: Meta → VirtureSpace ($420M, Phased)
+                        </div>
+                        
+                        {/* Chunk 4: Data Processing */}
+                        <div className={`transition-all duration-300 ease-out transform ${loadingProgress > 55 ? 'opacity-100' : 'opacity-0'}`}>
+                          <span className="text-brand-600">●</span> Extracting deal terms and strategic rationale...
+                        </div>
+                        <div className={`transition-all duration-300 ease-out transform ${loadingProgress > 55 ? 'opacity-100' : 'opacity-0'}`}>
+                          <span className="text-brand-600">●</span> Parsing regulatory filings for transaction details...
+                        </div>
+                        <div className={`transition-all duration-300 ease-out transform ${loadingProgress > 55 ? 'opacity-100' : 'opacity-0'}`}>
+                          <span className="text-brand-600">●</span> Cross-referencing with press releases and earnings calls...
+                        </div>
+                        <div className={`transition-all duration-300 ease-out transform ${loadingProgress > 55 ? 'opacity-100' : 'opacity-0'}`}>
+                          <span className="text-yellow-600">⚡</span> Validating data integrity across 8 sources...
+                        </div>
+                        
+                        {/* Chunk 5: Quality Assurance */}
+                        <div className={`transition-all duration-300 ease-out transform ${loadingProgress > 68 ? 'opacity-100' : 'opacity-0'}`}>
+                          <span className="text-green-600">✓</span> Data quality score: 97.8% (Excellent)
+                        </div>
+                        <div className={`transition-all duration-300 ease-out transform ${loadingProgress > 68 ? 'opacity-100' : 'opacity-0'}`}>
+                          <span className="text-green-600">✓</span> Duplicate detection: 0 conflicts found
+                        </div>
+                        <div className={`transition-all duration-300 ease-out transform ${loadingProgress > 68 ? 'opacity-100' : 'opacity-0'}`}>
+                          <span className="text-green-600">✓</span> Source verification: All references validated
+                        </div>
+                        
+                        {/* Chunk 6: Final Processing */}
+                        <div className={`transition-all duration-300 ease-out transform ${loadingProgress > 82 ? 'opacity-100' : 'opacity-0'}`}>
+                          <span className="text-brand-600">●</span> Standardizing currency formats and date ranges...
+                        </div>
+                        <div className={`transition-all duration-300 ease-out transform ${loadingProgress > 82 ? 'opacity-100' : 'opacity-0'}`}>
+                          <span className="text-brand-600">●</span> Geocoding company locations and headquarters...
+                        </div>
+                        <div className={`transition-all duration-300 ease-out transform ${loadingProgress > 82 ? 'opacity-100' : 'opacity-0'}`}>
+                          <span className="text-brand-600">●</span> Enriching with company metadata and executive profiles...
+                        </div>
+                        <div className={`transition-all duration-300 ease-out transform ${loadingProgress > 82 ? 'opacity-100' : 'opacity-0'}`}>
+                          <span className="text-yellow-600">⚡</span> Building relational data structure...
+                        </div>
+                        
+                        {/* Chunk 7: Completion */}
+                        <div className={`transition-all duration-300 ease-out transform ${loadingProgress > 95 ? 'opacity-100' : 'opacity-0'}`}>
+                          <span className="text-green-600">✓</span> Schema validation passed
+                        </div>
+                        <div className={`transition-all duration-300 ease-out transform ${loadingProgress > 95 ? 'opacity-100' : 'opacity-0'}`}>
+                          <span className="text-green-600">✓</span> Indexing completed for real-time updates
+                        </div>
+                        <div className={`transition-all duration-300 ease-out transform ${loadingProgress > 95 ? 'opacity-100' : 'opacity-0'}`}>
+                          <span className="text-brand-600">●</span> Preparing preview interface...
+                        </div>
+                        <div className={`transition-all duration-300 ease-out transform ${loadingProgress > 95 ? 'opacity-100' : 'opacity-0'}`}>
+                          <span className="text-green-600">✓</span> Dataset ready: 5 acquisitions, 8 data fields, 2,341 sources
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    );
+  }
+
   return (
     <div
       className={SubframeUtils.twClassNames(
         "flex w-full flex-col items-start gap-6 rounded-rounded-x-large border border-solid border-brand-200 bg-white p-6 shadow-md",
-        className
+        className,
       )}
       ref={ref as any}
       {...otherProps}
@@ -146,8 +365,11 @@ const BuilderPreviewRoot = React.forwardRef<
             className="text-body font-body text-text-primary flex-shrink-0"
             name={icon}
           />
+
           {text ? (
-            <span className="text-h2 font-h2 text-text-primary truncate">{text}</span>
+            <span className="text-h2 font-h2 text-text-primary truncate">
+              {text}
+            </span>
           ) : null}
         </div>
         <div className="flex items-start justify-end flex-shrink-0">
@@ -189,6 +411,7 @@ const BuilderPreviewRoot = React.forwardRef<
                       icon="FeatherSearch"
                       className="min-h-[32px] min-w-[32px]"
                     />
+
                     <div className="flex flex-col items-start">
                       {text4 ? (
                         <span className="text-caption font-caption text-text-secondary whitespace-nowrap">
@@ -208,6 +431,7 @@ const BuilderPreviewRoot = React.forwardRef<
                       icon="FeatherFileText"
                       className="min-h-[32px] min-w-[32px]"
                     />
+
                     <div className="flex flex-col items-start">
                       {text6 ? (
                         <span className="text-caption font-caption text-text-secondary whitespace-nowrap">
@@ -227,6 +451,7 @@ const BuilderPreviewRoot = React.forwardRef<
                       icon="FeatherCheckCircle"
                       className="min-h-[32px] min-w-[32px]"
                     />
+
                     <div className="flex flex-col items-start">
                       {text8 ? (
                         <span className="text-caption font-caption text-text-secondary whitespace-nowrap">
@@ -254,6 +479,7 @@ const BuilderPreviewRoot = React.forwardRef<
                   className="text-caption font-caption text-text-secondary"
                   name={icon2}
                 />
+
                 {text10 ? (
                   <span className="text-caption-bold font-caption-bold text-text-secondary">
                     {text10}
@@ -280,14 +506,30 @@ const BuilderPreviewRoot = React.forwardRef<
                 className="h-auto w-full table-auto min-w-[800px] md:min-w-[1200px]"
                 header={
                   <Table.HeaderRow>
-                    <Table.HeaderCell className="min-w-[120px]">Event type</Table.HeaderCell>
-                    <Table.HeaderCell className="min-w-[160px]">Acquirer name</Table.HeaderCell>
-                    <Table.HeaderCell className="min-w-[140px]">Startup name</Table.HeaderCell>
-                    <Table.HeaderCell className="min-w-[140px]">Startup location</Table.HeaderCell>
-                    <Table.HeaderCell className="min-w-[100px]">Deal value</Table.HeaderCell>
-                    <Table.HeaderCell className="min-w-[120px]">Deal terms</Table.HeaderCell>
-                    <Table.HeaderCell className="min-w-[200px]">Strategic rationale</Table.HeaderCell>
-                    <Table.HeaderCell className="min-w-[160px]">Source URL</Table.HeaderCell>
+                    <Table.HeaderCell className="min-w-[120px]">
+                      Event type
+                    </Table.HeaderCell>
+                    <Table.HeaderCell className="min-w-[160px]">
+                      Acquirer name
+                    </Table.HeaderCell>
+                    <Table.HeaderCell className="min-w-[140px]">
+                      Startup name
+                    </Table.HeaderCell>
+                    <Table.HeaderCell className="min-w-[140px]">
+                      Startup location
+                    </Table.HeaderCell>
+                    <Table.HeaderCell className="min-w-[100px]">
+                      Deal value
+                    </Table.HeaderCell>
+                    <Table.HeaderCell className="min-w-[120px]">
+                      Deal terms
+                    </Table.HeaderCell>
+                    <Table.HeaderCell className="min-w-[200px]">
+                      Strategic rationale
+                    </Table.HeaderCell>
+                    <Table.HeaderCell className="min-w-[160px]">
+                      Source URL
+                    </Table.HeaderCell>
                   </Table.HeaderRow>
                 }
               >

@@ -31,14 +31,14 @@ const LinkButtonRoot = React.forwardRef<HTMLElement, LinkButtonRootProps>(
       type = "button",
       ...otherProps
     }: LinkButtonRootProps,
-    ref
+    ref,
   ) {
     return (
       <button
         className={SubframeUtils.twClassNames(
           "group/a4ee726a flex cursor-pointer items-center gap-1 border-none bg-transparent",
           { "flex-row flex-nowrap gap-1": size === "large" },
-          className
+          className,
         )}
         ref={ref as any}
         type={type}
@@ -54,10 +54,11 @@ const LinkButtonRoot = React.forwardRef<HTMLElement, LinkButtonRootProps>(
                 variant === "inverse",
               "text-brand-600 group-hover/a4ee726a:text-brand-600":
                 variant === "brand",
-            }
+            },
           )}
           name={icon}
         />
+
         {children ? (
           <span
             className={SubframeUtils.twClassNames(
@@ -69,7 +70,7 @@ const LinkButtonRoot = React.forwardRef<HTMLElement, LinkButtonRootProps>(
                   variant === "inverse",
                 "text-brand-600 group-hover/a4ee726a:text-brand-600":
                   variant === "brand",
-              }
+              },
             )}
           >
             {children}
@@ -85,13 +86,13 @@ const LinkButtonRoot = React.forwardRef<HTMLElement, LinkButtonRootProps>(
                 variant === "inverse",
               "text-brand-600 group-hover/a4ee726a:text-brand-600":
                 variant === "brand",
-            }
+            },
           )}
           name={iconRight}
         />
       </button>
     );
-  }
+  },
 );
 
 export const LinkButton = LinkButtonRoot;

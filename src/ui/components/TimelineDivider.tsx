@@ -18,18 +18,19 @@ const TimelineDividerRoot = React.forwardRef<
   TimelineDividerRootProps
 >(function TimelineDividerRoot(
   { children, className, ...otherProps }: TimelineDividerRootProps,
-  ref
+  ref,
 ) {
   return (
     <div
       className={SubframeUtils.twClassNames(
         "flex w-full items-center",
-        className
+        className,
       )}
       ref={ref as any}
       {...otherProps}
     >
       <div className="flex h-px grow shrink-0 basis-0 flex-col items-center gap-2 bg-neutral-200" />
+
       <div className="flex h-6 items-center gap-1 rounded-md border border-solid border-border-primary bg-background-primary px-2">
         {children ? (
           <span className="whitespace-nowrap text-caption-bold font-caption-bold text-text-secondary">

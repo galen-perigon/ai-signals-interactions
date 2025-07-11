@@ -50,7 +50,7 @@ const AttachmentsModalRoot = React.forwardRef<
     className,
     ...otherProps
   }: AttachmentsModalRootProps,
-  ref
+  ref,
 ) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
@@ -80,7 +80,7 @@ const AttachmentsModalRoot = React.forwardRef<
   const handleDrop = (event: React.DragEvent) => {
     event.preventDefault();
     setIsDragOver(false);
-    
+
     const files = event.dataTransfer.files;
     if (files && files.length > 0) {
       const file = files[0];
@@ -89,17 +89,17 @@ const AttachmentsModalRoot = React.forwardRef<
   };
 
   const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes';
+    if (bytes === 0) return "0 Bytes";
     const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const sizes = ["Bytes", "KB", "MB", "GB"];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   };
   return (
     <div
       className={SubframeUtils.twClassNames(
         "flex h-full w-144 flex-col items-start gap-6 bg-background-primary px-6 py-6",
-        className
+        className,
       )}
       ref={ref as any}
       {...otherProps}
@@ -117,13 +117,13 @@ const AttachmentsModalRoot = React.forwardRef<
         </div>
         <IconButton icon={<FeatherX />} onClick={onClose} />
       </div>
-      <div 
+      <div
         className={SubframeUtils.twClassNames(
           "flex w-full flex-col items-start gap-4 rounded-lg border-2 border-dashed px-6 py-6 transition-all duration-200",
           {
             "border-brand-400 bg-brand-50": isDragOver,
             "border-brand-200 bg-background-secondary": !isDragOver,
-          }
+          },
         )}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
@@ -137,7 +137,7 @@ const AttachmentsModalRoot = React.forwardRef<
           ) : null}
           {text2 ? (
             <span className="text-body-bold font-body-bold text-text-primary">
-              {selectedFile ? 'File Selected' : text2}
+              {selectedFile ? "File Selected" : text2}
             </span>
           ) : null}
           {text3 ? (
@@ -147,15 +147,15 @@ const AttachmentsModalRoot = React.forwardRef<
           ) : null}
         </div>
         <div className="flex w-full items-center justify-center gap-2">
-          <Button 
-            variant="brand-secondary" 
+          <Button
+            variant="brand-secondary"
             icon={<FeatherUpload />}
             onClick={handleChooseFile}
           >
             Choose File
           </Button>
         </div>
-        
+
         {/* Hidden file input */}
         <input
           ref={fileInputRef}
@@ -164,7 +164,7 @@ const AttachmentsModalRoot = React.forwardRef<
           accept=".csv,.xlsx,.xls,.json,.txt"
           onChange={handleFileSelect}
         />
-        
+
         {/* Selected file display */}
         {selectedFile && (
           <div className="flex w-full items-center justify-between rounded-lg border border-solid border-brand-200 bg-background-primary px-4 py-3">
@@ -181,8 +181,8 @@ const AttachmentsModalRoot = React.forwardRef<
                 </span>
               </div>
             </div>
-            <IconButton 
-              icon={<FeatherX />} 
+            <IconButton
+              icon={<FeatherX />}
               size="small"
               onClick={() => setSelectedFile(null)}
             />
@@ -193,6 +193,7 @@ const AttachmentsModalRoot = React.forwardRef<
         title="CSV Format Guidelines"
         description="Your CSV file should include the following columns: ID, Name, Email, Rote. Make sure to use UTF-8 encoding and include headers in the first row."
       />
+
       <div className="flex w-full items-center gap-2">
         {icon3 ? (
           <SubframeCore.IconWrapper className="text-body font-body text-text-secondary">
@@ -213,8 +214,10 @@ const AttachmentsModalRoot = React.forwardRef<
         </Button>
       </div>
       <div className="flex w-full items-center justify-end gap-2 border-t border-solid border-brand-200 pt-4">
-        <Button variant="neutral-secondary" onClick={onClose}>Cancel</Button>
-        <Button 
+        <Button variant="neutral-secondary" onClick={onClose}>
+          Cancel
+        </Button>
+        <Button
           icon={<FeatherUpload />}
           disabled={!selectedFile}
           onClick={() => {

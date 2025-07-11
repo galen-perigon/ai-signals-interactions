@@ -16,13 +16,13 @@ interface ChatSelectRootProps extends React.HTMLAttributes<HTMLDivElement> {
 const ChatSelectRoot = React.forwardRef<HTMLElement, ChatSelectRootProps>(
   function ChatSelectRoot(
     { children, className, ...otherProps }: ChatSelectRootProps,
-    ref
+    ref,
   ) {
     return (
       <div
         className={SubframeUtils.twClassNames(
           "group/06e247f1 flex cursor-pointer items-center gap-2 rounded-md px-3 py-1.5 hover:bg-neutral-100",
-          className
+          className,
         )}
         ref={ref as any}
         {...otherProps}
@@ -40,7 +40,7 @@ const ChatSelectRoot = React.forwardRef<HTMLElement, ChatSelectRootProps>(
         />
       </div>
     );
-  }
+  },
 );
 
 export const ChatSelect = ChatSelectRoot;

@@ -25,21 +25,21 @@ const CheckboxCardRoot = React.forwardRef<HTMLElement, CheckboxCardRootProps>(
       className,
       ...otherProps
     }: CheckboxCardRootProps,
-    ref
+    ref,
   ) {
     return (
       <SubframeCore.Checkbox.Root asChild={true} {...otherProps}>
         <button
           className={SubframeUtils.twClassNames(
             "group/de0b4dfb flex cursor-pointer items-center gap-4 rounded-md border border-solid border-border-primary bg-background-primary px-4 py-3 hover:border hover:border-solid hover:border-border-primary hover:bg-background-tertiary aria-[checked=true]:border aria-[checked=true]:border-solid aria-[checked=true]:border-border-secondary aria-[checked=true]:bg-background-tertiary hover:aria-[checked=true]:border hover:aria-[checked=true]:border-solid hover:aria-[checked=true]:border-border-secondary hover:aria-[checked=true]:bg-background-tertiary disabled:cursor-default disabled:border disabled:border-solid disabled:border-neutral-100 disabled:bg-neutral-100 hover:disabled:cursor-default hover:disabled:border hover:disabled:border-solid hover:disabled:border-neutral-100 hover:disabled:bg-neutral-100",
-            className
+            className,
           )}
           ref={ref as any}
         >
           <div
             className={SubframeUtils.twClassNames(
               "flex h-4 w-4 flex-none flex-col items-center justify-center gap-2 rounded-[2px] border-2 border-solid border-neutral-300 group-aria-[checked=true]/de0b4dfb:border group-aria-[checked=true]/de0b4dfb:border-solid group-aria-[checked=true]/de0b4dfb:border-brand-500 group-aria-[checked=true]/de0b4dfb:bg-brand-500 group-disabled/de0b4dfb:border-2 group-disabled/de0b4dfb:border-solid group-disabled/de0b4dfb:border-neutral-200 group-disabled/de0b4dfb:bg-neutral-100",
-              { hidden: hideCheckbox }
+              { hidden: hideCheckbox },
             )}
           >
             <SubframeCore.Icon
@@ -55,7 +55,7 @@ const CheckboxCardRoot = React.forwardRef<HTMLElement, CheckboxCardRootProps>(
         </button>
       </SubframeCore.Checkbox.Root>
     );
-  }
+  },
 );
 
 export const CheckboxCard = CheckboxCardRoot;

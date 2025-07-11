@@ -20,13 +20,13 @@ const CopyToClipboardFieldRoot = React.forwardRef<
   CopyToClipboardFieldRootProps
 >(function CopyToClipboardFieldRoot(
   { text, className, ...otherProps }: CopyToClipboardFieldRootProps,
-  ref
+  ref,
 ) {
   return (
     <div
       className={SubframeUtils.twClassNames(
         "flex items-start gap-1.5 rounded-md border border-solid border-brand-200 bg-neutral-50 pl-2 pr-0.5 py-0.5",
-        className
+        className,
       )}
       ref={ref as any}
       {...otherProps}

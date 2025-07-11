@@ -27,7 +27,7 @@ const AvatarRoot = React.forwardRef<HTMLElement, AvatarRootProps>(
       className,
       ...otherProps
     }: AvatarRootProps,
-    ref
+    ref,
   ) {
     return (
       <div
@@ -44,7 +44,7 @@ const AvatarRoot = React.forwardRef<HTMLElement, AvatarRootProps>(
             "bg-red-100": variant === "error",
             "bg-neutral-100": variant === "neutral",
           },
-          className
+          className,
         )}
         ref={ref as any}
         {...otherProps}
@@ -64,7 +64,7 @@ const AvatarRoot = React.forwardRef<HTMLElement, AvatarRootProps>(
                 "text-green-800": variant === "success",
                 "text-red-800": variant === "error",
                 "text-neutral-800": variant === "neutral",
-              }
+              },
             )}
           >
             {children}
@@ -79,14 +79,14 @@ const AvatarRoot = React.forwardRef<HTMLElement, AvatarRootProps>(
                 "h-6 w-6 flex-none": size === "small",
                 "h-12 w-12 flex-none": size === "large",
                 "h-16 w-16 flex-none": size === "x-large",
-              }
+              },
             )}
             src={image}
           />
         ) : null}
       </div>
     );
-  }
+  },
 );
 
 export const Avatar = AvatarRoot;

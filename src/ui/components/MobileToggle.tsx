@@ -18,7 +18,7 @@ export const MobileToggle: React.FC<MobileToggleProps> = ({
     <div
       className={SubframeUtils.twClassNames(
         "flex w-full items-center justify-center p-1 bg-neutral-100 rounded-lg shadow-sm border border-solid border-neutral-200",
-        className
+        className,
       )}
     >
       <div className="flex w-full max-w-xs relative">
@@ -29,10 +29,10 @@ export const MobileToggle: React.FC<MobileToggleProps> = ({
             {
               "translate-x-0": activeMode === "chat",
               "translate-x-full": activeMode === "preview",
-            }
+            },
           )}
         />
-        
+
         {/* Chat button */}
         <button
           className={SubframeUtils.twClassNames(
@@ -40,7 +40,7 @@ export const MobileToggle: React.FC<MobileToggleProps> = ({
             {
               "text-text-primary": activeMode === "chat",
               "text-text-secondary": activeMode === "preview",
-            }
+            },
           )}
           onClick={() => onModeChange("chat")}
         >
@@ -60,7 +60,7 @@ export const MobileToggle: React.FC<MobileToggleProps> = ({
           </svg>
           <span className="text-body font-body">Chat</span>
         </button>
-        
+
         {/* Preview button */}
         <button
           className={SubframeUtils.twClassNames(
@@ -68,7 +68,7 @@ export const MobileToggle: React.FC<MobileToggleProps> = ({
             {
               "text-text-primary": activeMode === "preview",
               "text-text-secondary": activeMode === "chat",
-            }
+            },
           )}
           onClick={() => onModeChange("preview")}
         >
@@ -85,6 +85,7 @@ export const MobileToggle: React.FC<MobileToggleProps> = ({
               strokeWidth={2}
               d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
             />
+
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -97,4 +98,4 @@ export const MobileToggle: React.FC<MobileToggleProps> = ({
       </div>
     </div>
   );
-}; 
+};

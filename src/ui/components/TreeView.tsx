@@ -24,13 +24,13 @@ const Folder = React.forwardRef<HTMLElement, FolderProps>(function Folder(
     className,
     ...otherProps
   }: FolderProps,
-  ref
+  ref,
 ) {
   return (
     <Accordion
       className={SubframeUtils.twClassNames(
         "group/c841484c cursor-pointer",
-        className
+        className,
       )}
       trigger={
         <div className="flex w-full items-center gap-2 rounded-md px-3 py-2 group-hover/c841484c:bg-neutral-50">
@@ -38,6 +38,7 @@ const Folder = React.forwardRef<HTMLElement, FolderProps>(function Folder(
             className="text-body font-body text-text-primary"
             name={icon}
           />
+
           {label ? (
             <span className="line-clamp-1 grow shrink-0 basis-0 text-body font-body text-text-primary">
               {label}
@@ -74,14 +75,14 @@ const Item = React.forwardRef<HTMLElement, ItemProps>(function Item(
     className,
     ...otherProps
   }: ItemProps,
-  ref
+  ref,
 ) {
   return (
     <div
       className={SubframeUtils.twClassNames(
         "group/42786044 flex w-full cursor-pointer items-center gap-2 rounded-md px-3 py-2 hover:bg-neutral-50",
         { "bg-brand-50 hover:bg-brand-50": selected },
-        className
+        className,
       )}
       ref={ref as any}
       {...otherProps}
@@ -89,15 +90,16 @@ const Item = React.forwardRef<HTMLElement, ItemProps>(function Item(
       <SubframeCore.Icon
         className={SubframeUtils.twClassNames(
           "text-body font-body text-text-primary",
-          { "text-brand-600": selected }
+          { "text-brand-600": selected },
         )}
         name={icon}
       />
+
       {label ? (
         <span
           className={SubframeUtils.twClassNames(
             "line-clamp-1 grow shrink-0 basis-0 text-body font-body text-text-primary",
-            { "text-brand-600": selected }
+            { "text-brand-600": selected },
           )}
         >
           {label}
@@ -115,13 +117,13 @@ interface TreeViewRootProps extends React.HTMLAttributes<HTMLDivElement> {
 const TreeViewRoot = React.forwardRef<HTMLElement, TreeViewRootProps>(
   function TreeViewRoot(
     { children, className, ...otherProps }: TreeViewRootProps,
-    ref
+    ref,
   ) {
     return children ? (
       <div
         className={SubframeUtils.twClassNames(
           "flex w-full flex-col items-start",
-          className
+          className,
         )}
         ref={ref as any}
         {...otherProps}
@@ -129,7 +131,7 @@ const TreeViewRoot = React.forwardRef<HTMLElement, TreeViewRootProps>(
         {children}
       </div>
     ) : null;
-  }
+  },
 );
 
 export const TreeView = Object.assign(TreeViewRoot, {

@@ -26,13 +26,13 @@ const Step = React.forwardRef<HTMLElement, StepProps>(function Step(
     className,
     ...otherProps
   }: StepProps,
-  ref
+  ref,
 ) {
   return (
     <div
       className={SubframeUtils.twClassNames(
         "group/c1145464 flex w-full cursor-pointer flex-col items-center justify-center gap-1",
-        className
+        className,
       )}
       ref={ref as any}
       {...otherProps}
@@ -40,19 +40,20 @@ const Step = React.forwardRef<HTMLElement, StepProps>(function Step(
       <div
         className={SubframeUtils.twClassNames(
           "flex w-full items-center justify-center gap-2",
-          { "flex-row flex-nowrap gap-2": firstStep }
+          { "flex-row flex-nowrap gap-2": firstStep },
         )}
       >
         <div
           className={SubframeUtils.twClassNames(
             "flex h-px grow shrink-0 basis-0 flex-col items-center gap-2 bg-neutral-300",
-            { "bg-transparent": firstStep }
+            { "bg-transparent": firstStep },
           )}
         />
+
         <div
           className={SubframeUtils.twClassNames(
             "flex h-7 w-7 flex-none flex-col items-center justify-center gap-2 rounded-full bg-neutral-100",
-            { "bg-brand-50": variant === "active" || variant === "completed" }
+            { "bg-brand-50": variant === "active" || variant === "completed" },
           )}
         >
           {stepNumber ? (
@@ -62,7 +63,7 @@ const Step = React.forwardRef<HTMLElement, StepProps>(function Step(
                 {
                   "text-brand-600":
                     variant === "active" || variant === "completed",
-                }
+                },
               )}
             >
               {stepNumber}
@@ -72,7 +73,7 @@ const Step = React.forwardRef<HTMLElement, StepProps>(function Step(
         <div
           className={SubframeUtils.twClassNames(
             "flex h-px grow shrink-0 basis-0 flex-col items-center gap-2 bg-neutral-300",
-            { "bg-transparent": lastStep }
+            { "bg-transparent": lastStep },
           )}
         />
       </div>
@@ -84,7 +85,7 @@ const Step = React.forwardRef<HTMLElement, StepProps>(function Step(
               "text-body-bold font-body-bold text-text-primary":
                 variant === "active",
               "text-text-secondary": variant === "completed",
-            }
+            },
           )}
         >
           {label}
@@ -102,13 +103,13 @@ interface StepperRootProps extends React.HTMLAttributes<HTMLDivElement> {
 const StepperRoot = React.forwardRef<HTMLElement, StepperRootProps>(
   function StepperRoot(
     { children, className, ...otherProps }: StepperRootProps,
-    ref
+    ref,
   ) {
     return children ? (
       <div
         className={SubframeUtils.twClassNames(
           "flex w-full items-start justify-center",
-          className
+          className,
         )}
         ref={ref as any}
         {...otherProps}
@@ -116,7 +117,7 @@ const StepperRoot = React.forwardRef<HTMLElement, StepperRootProps>(
         {children}
       </div>
     ) : null;
-  }
+  },
 );
 
 export const Stepper = Object.assign(StepperRoot, {

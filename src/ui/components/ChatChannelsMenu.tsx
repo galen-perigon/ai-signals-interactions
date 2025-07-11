@@ -19,13 +19,13 @@ interface FolderProps extends React.ComponentProps<typeof Accordion> {
 
 const Folder = React.forwardRef<HTMLElement, FolderProps>(function Folder(
   { children, label, icon = null, className, ...otherProps }: FolderProps,
-  ref
+  ref,
 ) {
   return (
     <Accordion
       className={SubframeUtils.twClassNames(
         "group/05c886b1 cursor-pointer",
-        className
+        className,
       )}
       trigger={
         <div className="flex w-full items-center gap-2 rounded-md pl-3 pr-4 pt-6 pb-2 group-hover/05c886b1:bg-neutral-50">
@@ -33,6 +33,7 @@ const Folder = React.forwardRef<HTMLElement, FolderProps>(function Folder(
             className="text-body font-body text-text-primary"
             name={icon}
           />
+
           {label ? (
             <span className="line-clamp-1 grow shrink-0 basis-0 text-body-bold font-body-bold text-text-secondary">
               {label}
@@ -72,14 +73,14 @@ const Item = React.forwardRef<HTMLElement, ItemProps>(function Item(
     className,
     ...otherProps
   }: ItemProps,
-  ref
+  ref,
 ) {
   return (
     <div
       className={SubframeUtils.twClassNames(
         "group/eb5db798 flex w-full cursor-pointer items-center gap-2 rounded-md px-3 py-2 hover:bg-white",
         { "bg-neutral-100 hover:bg-neutral-100": selected },
-        className
+        className,
       )}
       ref={ref as any}
       {...otherProps}
@@ -88,7 +89,7 @@ const Item = React.forwardRef<HTMLElement, ItemProps>(function Item(
         <SubframeCore.Icon
           className={SubframeUtils.twClassNames(
             "text-body font-body text-text-secondary",
-            { "text-text-primary": selected }
+            { "text-text-primary": selected },
           )}
           name={icon}
         />
@@ -97,7 +98,7 @@ const Item = React.forwardRef<HTMLElement, ItemProps>(function Item(
         <span
           className={SubframeUtils.twClassNames(
             "line-clamp-1 grow shrink-0 basis-0 text-body font-body text-text-secondary",
-            { "text-body-bold font-body-bold text-text-primary": selected }
+            { "text-body-bold font-body-bold text-text-primary": selected },
           )}
         >
           {children}
@@ -121,13 +122,13 @@ const ChatChannelsMenuRoot = React.forwardRef<
   ChatChannelsMenuRootProps
 >(function ChatChannelsMenuRoot(
   { children, className, ...otherProps }: ChatChannelsMenuRootProps,
-  ref
+  ref,
 ) {
   return children ? (
     <div
       className={SubframeUtils.twClassNames(
         "flex w-full flex-col items-start",
-        className
+        className,
       )}
       ref={ref as any}
       {...otherProps}

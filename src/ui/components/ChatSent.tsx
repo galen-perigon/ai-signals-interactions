@@ -17,13 +17,13 @@ interface ChatSentRootProps extends React.HTMLAttributes<HTMLDivElement> {
 const ChatSentRoot = React.forwardRef<HTMLElement, ChatSentRootProps>(
   function ChatSentRoot(
     { name, message, timestamp, className, ...otherProps }: ChatSentRootProps,
-    ref
+    ref,
   ) {
     return (
       <div
         className={SubframeUtils.twClassNames(
           "group/8206bfc1 flex w-full flex-col items-end justify-center gap-1",
-          className
+          className,
         )}
         ref={ref as any}
         {...otherProps}
@@ -49,7 +49,7 @@ const ChatSentRoot = React.forwardRef<HTMLElement, ChatSentRootProps>(
         </div>
       </div>
     );
-  }
+  },
 );
 
 export const ChatSent = ChatSentRoot;

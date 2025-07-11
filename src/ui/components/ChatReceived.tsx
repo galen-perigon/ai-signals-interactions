@@ -29,13 +29,13 @@ const ChatReceivedRoot = React.forwardRef<HTMLElement, ChatReceivedRootProps>(
       className,
       ...otherProps
     }: ChatReceivedRootProps,
-    ref
+    ref,
   ) {
     return (
       <div
         className={SubframeUtils.twClassNames(
           "flex w-full items-start gap-4",
-          className
+          className,
         )}
         ref={ref as any}
         {...otherProps}
@@ -66,7 +66,7 @@ const ChatReceivedRoot = React.forwardRef<HTMLElement, ChatReceivedRootProps>(
         </div>
       </div>
     );
-  }
+  },
 );
 
 export const ChatReceived = ChatReceivedRoot;

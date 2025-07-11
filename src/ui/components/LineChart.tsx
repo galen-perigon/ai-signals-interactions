@@ -16,7 +16,7 @@ interface LineChartRootProps
 const LineChartRoot = React.forwardRef<HTMLElement, LineChartRootProps>(
   function LineChartRoot(
     { className, ...otherProps }: LineChartRootProps,
-    ref
+    ref,
   ) {
     return (
       <SubframeCore.LineChart
@@ -33,7 +33,7 @@ const LineChartRoot = React.forwardRef<HTMLElement, LineChartRootProps>(
         {...otherProps}
       />
     );
-  }
+  },
 );
 
 export const LineChart = LineChartRoot;

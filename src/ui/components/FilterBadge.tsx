@@ -23,7 +23,7 @@ const FilterBadgeRoot = React.forwardRef<HTMLElement, FilterBadgeRootProps>(
       className,
       ...otherProps
     }: FilterBadgeRootProps,
-    ref
+    ref,
   ) {
     return (
       <div
@@ -33,7 +33,7 @@ const FilterBadgeRoot = React.forwardRef<HTMLElement, FilterBadgeRootProps>(
             "border border-solid border-brand-50 bg-brand-0 hover:bg-brand-50":
               selected,
           },
-          className
+          className,
         )}
         ref={ref as any}
         {...otherProps}
@@ -43,7 +43,7 @@ const FilterBadgeRoot = React.forwardRef<HTMLElement, FilterBadgeRootProps>(
             <span
               className={SubframeUtils.twClassNames(
                 "text-caption-bold font-caption-bold text-text-primary",
-                { "text-brand-600": selected }
+                { "text-brand-600": selected },
               )}
             >
               {label}
@@ -53,14 +53,14 @@ const FilterBadgeRoot = React.forwardRef<HTMLElement, FilterBadgeRootProps>(
         <div
           className={SubframeUtils.twClassNames(
             "flex min-w-[24px] items-center justify-center gap-2 rounded-md bg-neutral-100 px-1 py-1",
-            { "bg-brand-50 group-hover/9f379f68:bg-brand-100": selected }
+            { "bg-brand-50 group-hover/9f379f68:bg-brand-100": selected },
           )}
         >
           {count ? (
             <span
               className={SubframeUtils.twClassNames(
                 "text-caption-bold font-caption-bold text-text-primary text-center",
-                { "text-brand-600": selected }
+                { "text-brand-600": selected },
               )}
             >
               {count}
@@ -69,7 +69,7 @@ const FilterBadgeRoot = React.forwardRef<HTMLElement, FilterBadgeRootProps>(
         </div>
       </div>
     );
-  }
+  },
 );
 
 export const FilterBadge = FilterBadgeRoot;

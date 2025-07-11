@@ -18,14 +18,14 @@ interface ContentProps
 
 const Content = React.forwardRef<HTMLElement, ContentProps>(function Content(
   { children, className, ...otherProps }: ContentProps,
-  ref
+  ref,
 ) {
   return children ? (
     <SubframeCore.Drawer.Content asChild={true} {...otherProps}>
       <div
         className={SubframeUtils.twClassNames(
           "flex h-full min-w-[320px] flex-col items-start gap-2 border-l border-solid border-brand-200 bg-background-primary",
-          className
+          className,
         )}
         ref={ref as any}
       >
@@ -46,14 +46,14 @@ interface DrawerRootProps
 const DrawerRoot = React.forwardRef<HTMLElement, DrawerRootProps>(
   function DrawerRoot(
     { children, className, ...otherProps }: DrawerRootProps,
-    ref
+    ref,
   ) {
     return children ? (
       <SubframeCore.Drawer.Root asChild={true} {...otherProps}>
         <div
           className={SubframeUtils.twClassNames(
             "flex h-full w-full flex-col items-end justify-center gap-2 bg-[#00000066]",
-            className
+            className,
           )}
           ref={ref as any}
         >
@@ -61,7 +61,7 @@ const DrawerRoot = React.forwardRef<HTMLElement, DrawerRootProps>(
         </div>
       </SubframeCore.Drawer.Root>
     ) : null;
-  }
+  },
 );
 
 export const Drawer = Object.assign(DrawerRoot, {

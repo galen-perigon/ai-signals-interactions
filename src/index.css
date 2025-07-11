@@ -18,3 +18,124 @@ body {
 #root {
   flex-grow: 1;
 }
+
+/* Custom animations for BuilderPreview loading state */
+@keyframes spin-slow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fade-in-up {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in-right {
+  0% { opacity: 0; transform: translateX(20px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulse-gentle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.05); }
+}
+
+@keyframes check-in {
+  0% { opacity: 0; transform: scale(0.5) rotate(-10deg); }
+  50% { opacity: 1; transform: scale(1.1) rotate(5deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+@keyframes dots {
+  0%, 20% { opacity: 0; }
+  40% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200px 0; }
+  100% { background-position: 200px 0; }
+}
+
+@keyframes float-1 {
+  0%, 100% { transform: translateY(0px) translateX(0px); }
+  33% { transform: translateY(-20px) translateX(10px); }
+  66% { transform: translateY(-10px) translateX(-5px); }
+}
+
+@keyframes float-2 {
+  0%, 100% { transform: translateY(0px) translateX(0px); }
+  50% { transform: translateY(-15px) translateX(15px); }
+}
+
+@keyframes float-3 {
+  0%, 100% { transform: translateY(0px) translateX(0px); }
+  25% { transform: translateY(-10px) translateX(-10px); }
+  75% { transform: translateY(-25px) translateX(8px); }
+}
+
+@keyframes stream-up {
+  0% { transform: translateY(100%); }
+  100% { transform: translateY(-100%); }
+}
+
+@keyframes stream-up-fast {
+  0% { transform: translateY(100%); }
+  100% { transform: translateY(-50%); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 4s linear infinite;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out forwards;
+}
+
+.animate-fade-in-right {
+  animation: fade-in-right 0.8s ease-out forwards;
+}
+
+.animate-pulse-gentle {
+  animation: pulse-gentle 2s ease-in-out infinite;
+}
+
+.animate-check-in {
+  animation: check-in 0.6s ease-out forwards;
+}
+
+.animate-dots {
+  animation: dots 1.5s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, currentColor 0%, transparent 50%, currentColor 100%);
+  background-size: 200px 100%;
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+.animate-float-1 {
+  animation: float-1 6s ease-in-out infinite;
+  top: 20%;
+  left: 10%;
+}
+
+.animate-float-2 {
+  animation: float-2 8s ease-in-out infinite;
+  top: 60%;
+  right: 15%;
+}
+
+.animate-float-3 {
+  animation: float-3 7s ease-in-out infinite;
+  bottom: 30%;
+  left: 70%;
+}
+
+.animate-stream-up {
+  animation: stream-up 15s linear infinite;
+}
+
+.animate-stream-up-fast {
+  animation: stream-up-fast 10s linear infinite;
+}

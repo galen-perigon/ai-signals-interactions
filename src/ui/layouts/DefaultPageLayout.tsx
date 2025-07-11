@@ -20,13 +20,13 @@ const DefaultPageLayoutRoot = React.forwardRef<
   DefaultPageLayoutRootProps
 >(function DefaultPageLayoutRoot(
   { children, className, ...otherProps }: DefaultPageLayoutRootProps,
-  ref
+  ref,
 ) {
   return (
     <div
       className={SubframeUtils.twClassNames(
         "flex h-screen w-full items-start bg-neutral-50 mobile:flex-col mobile:flex-nowrap mobile:gap-0",
-        className
+        className,
       )}
       ref={ref as any}
       {...otherProps}
@@ -35,6 +35,7 @@ const DefaultPageLayoutRoot = React.forwardRef<
         className="h-auto w-16 flex-none self-stretch mobile:h-auto mobile:w-full mobile:flex-none hidden md:flex"
         expanded={false}
       />
+
       {children ? (
         <div className="flex grow shrink-0 basis-0 flex-col items-start gap-4 self-stretch overflow-y-auto bg-background-primary">
           {children}

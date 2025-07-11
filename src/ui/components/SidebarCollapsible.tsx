@@ -31,7 +31,7 @@ const NavItem = React.forwardRef<HTMLElement, NavItemProps>(function NavItem(
     className,
     ...otherProps
   }: NavItemProps,
-  ref
+  ref,
 ) {
   return (
     <div
@@ -44,7 +44,7 @@ const NavItem = React.forwardRef<HTMLElement, NavItemProps>(function NavItem(
           "bg-background-selected hover:bg-background-tertiary active:bg-background-selected":
             selected,
         },
-        className
+        className,
       )}
       ref={ref as any}
       {...otherProps}
@@ -53,7 +53,7 @@ const NavItem = React.forwardRef<HTMLElement, NavItemProps>(function NavItem(
         <div
           className={SubframeUtils.twClassNames(
             "flex items-center gap-2 group-active/691beefb:h-auto group-active/691beefb:w-auto group-active/691beefb:flex-none",
-            { "items-center justify-start": featured }
+            { "items-center justify-start": featured },
           )}
         >
           {leftSlot}
@@ -66,7 +66,7 @@ const NavItem = React.forwardRef<HTMLElement, NavItemProps>(function NavItem(
             {
               "items-start justify-center": featured,
               "items-start justify-start": size === "large",
-            }
+            },
           )}
         >
           {labelSlot}
@@ -102,14 +102,14 @@ const SidebarCollapsibleRoot = React.forwardRef<
     className,
     ...otherProps
   }: SidebarCollapsibleRootProps,
-  ref
+  ref,
 ) {
   return (
     <nav
       className={SubframeUtils.twClassNames(
         "group/e9a2b1a3 flex h-full w-16 flex-col items-start gap-2 bg-background-secondary cursor-default",
         { "h-full w-56 flex-col flex-nowrap gap-2": expanded },
-        className
+        className,
       )}
       ref={ref as any}
       {...otherProps}
@@ -117,14 +117,14 @@ const SidebarCollapsibleRoot = React.forwardRef<
       <div
         className={SubframeUtils.twClassNames(
           "flex w-16 grow shrink-0 basis-0 flex-col items-start border-r border-solid border-brand-200 bg-background-secondary absolute top-0 bottom-0 transition-all group-hover/e9a2b1a3:w-56 group-hover/e9a2b1a3:grow group-hover/e9a2b1a3:shrink-0 group-hover/e9a2b1a3:basis-0 group-hover/e9a2b1a3:rounded-r-lg group-hover/e9a2b1a3:border-y group-hover/e9a2b1a3:border-r group-hover/e9a2b1a3:border-solid group-hover/e9a2b1a3:border-brand-200 group-hover/e9a2b1a3:shadow-md",
-          { "w-56 grow shrink-0 basis-0": expanded }
+          { "w-56 grow shrink-0 basis-0": expanded },
         )}
       >
         {header ? (
           <div
             className={SubframeUtils.twClassNames(
               "flex w-full flex-col items-start gap-2 px-4 py-3 group-hover/e9a2b1a3:items-start group-hover/e9a2b1a3:justify-start",
-              { "items-start justify-start": expanded }
+              { "items-start justify-start": expanded },
             )}
           >
             {header}
@@ -134,7 +134,7 @@ const SidebarCollapsibleRoot = React.forwardRef<
           <div
             className={SubframeUtils.twClassNames(
               "flex w-full grow shrink-0 basis-0 flex-col items-start gap-2 px-3 py-4 overflow-auto",
-              { "flex-col flex-nowrap gap-2": expanded }
+              { "flex-col flex-nowrap gap-2": expanded },
             )}
           >
             {children}
@@ -144,7 +144,7 @@ const SidebarCollapsibleRoot = React.forwardRef<
           <div
             className={SubframeUtils.twClassNames(
               "flex w-full items-center justify-center gap-4 overflow-hidden py-4 group-hover/e9a2b1a3:px-2 group-hover/e9a2b1a3:py-2",
-              { "border-none px-3 py-4": expanded }
+              { "border-none px-3 py-4": expanded },
             )}
           >
             {marketingSlot}
@@ -159,7 +159,7 @@ const SidebarCollapsibleRoot = React.forwardRef<
           <div
             className={SubframeUtils.twClassNames(
               "flex w-full flex-col items-center justify-center overflow-hidden border-t border-solid border-brand-200",
-              { "h-auto w-full flex-none px-0 py-0": expanded }
+              { "h-auto w-full flex-none px-0 py-0": expanded },
             )}
           >
             {footer}

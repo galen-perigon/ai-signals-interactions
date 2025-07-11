@@ -17,13 +17,13 @@ interface InfoCardImageProps extends React.HTMLAttributes<HTMLDivElement> {
 const InfoCardImage = React.forwardRef<HTMLElement, InfoCardImageProps>(
   function InfoCardImage(
     { image, className, ...otherProps }: InfoCardImageProps,
-    ref
+    ref,
   ) {
     return (
       <div
         className={SubframeUtils.twClassNames(
           "flex w-full flex-col items-start gap-2",
-          className
+          className,
         )}
         ref={ref as any}
         {...otherProps}
@@ -32,7 +32,7 @@ const InfoCardImage = React.forwardRef<HTMLElement, InfoCardImageProps>(
         <IconButton size="small" icon="FeatherArrowUpRight" />
       </div>
     );
-  }
+  },
 );
 
 interface InfoCardRootProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -43,13 +43,13 @@ interface InfoCardRootProps extends React.HTMLAttributes<HTMLDivElement> {
 const InfoCardRoot = React.forwardRef<HTMLElement, InfoCardRootProps>(
   function InfoCardRoot(
     { messageSlot, className, ...otherProps }: InfoCardRootProps,
-    ref
+    ref,
   ) {
     return (
       <div
         className={SubframeUtils.twClassNames(
           "flex w-52 flex-col items-start rounded-lg border border-solid border-brand-200 bg-background-primary",
-          className
+          className,
         )}
         ref={ref as any}
         {...otherProps}
@@ -59,6 +59,7 @@ const InfoCardRoot = React.forwardRef<HTMLElement, InfoCardRootProps>(
             className="w-full flex-none"
             src="https://res.cloudinary.com/subframe/image/upload/v1750955423/uploads/5484/cqe3dsoeyakof0satrtl.png"
           />
+
           <IconButton
             className="absolute top-2 right-2"
             size="small"
@@ -72,7 +73,7 @@ const InfoCardRoot = React.forwardRef<HTMLElement, InfoCardRootProps>(
         ) : null}
       </div>
     );
-  }
+  },
 );
 
 export const InfoCard = Object.assign(InfoCardRoot, {

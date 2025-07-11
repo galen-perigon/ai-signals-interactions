@@ -17,7 +17,7 @@ interface BarChartRootProps
 const BarChartRoot = React.forwardRef<HTMLElement, BarChartRootProps>(
   function BarChartRoot(
     { stacked = false, className, ...otherProps }: BarChartRootProps,
-    ref
+    ref,
   ) {
     return (
       <SubframeCore.BarChart
@@ -35,7 +35,7 @@ const BarChartRoot = React.forwardRef<HTMLElement, BarChartRootProps>(
         {...otherProps}
       />
     );
-  }
+  },
 );
 
 export const BarChart = BarChartRoot;

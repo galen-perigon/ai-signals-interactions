@@ -25,7 +25,7 @@ const Item = React.forwardRef<HTMLElement, ItemProps>(function Item(
     className,
     ...otherProps
   }: ItemProps,
-  ref
+  ref,
 ) {
   return (
     <div
@@ -35,7 +35,7 @@ const Item = React.forwardRef<HTMLElement, ItemProps>(function Item(
           "border-b-2 border-solid border-brand-500 px-2.5 pt-0.5 pb-px hover:border-b-2 hover:border-solid hover:border-brand-500":
             active,
         },
-        className
+        className,
       )}
       ref={ref as any}
       {...otherProps}
@@ -46,10 +46,11 @@ const Item = React.forwardRef<HTMLElement, ItemProps>(function Item(
           {
             "text-neutral-400 group-hover/d5612535:text-neutral-400": disabled,
             "text-brand-600 group-hover/d5612535:text-brand-600": active,
-          }
+          },
         )}
         name={icon}
       />
+
       {children ? (
         <span
           className={SubframeUtils.twClassNames(
@@ -58,7 +59,7 @@ const Item = React.forwardRef<HTMLElement, ItemProps>(function Item(
               "text-neutral-400 group-hover/d5612535:text-neutral-400":
                 disabled,
               "text-brand-600 group-hover/d5612535:text-brand-600": active,
-            }
+            },
           )}
         >
           {children}
@@ -75,7 +76,7 @@ interface TabsRootProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const TabsRoot = React.forwardRef<HTMLElement, TabsRootProps>(function TabsRoot(
   { children, className, ...otherProps }: TabsRootProps,
-  ref
+  ref,
 ) {
   return (
     <div

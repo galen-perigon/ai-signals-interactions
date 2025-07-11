@@ -17,7 +17,7 @@ interface SkeletonTextRootProps
 const SkeletonTextRoot = React.forwardRef<HTMLElement, SkeletonTextRootProps>(
   function SkeletonTextRoot(
     { size = "default", className, ...otherProps }: SkeletonTextRootProps,
-    ref
+    ref,
   ) {
     return (
       <SubframeCore.Skeleton
@@ -29,13 +29,13 @@ const SkeletonTextRoot = React.forwardRef<HTMLElement, SkeletonTextRootProps>(
             "h-7 w-full": size === "subheader",
             "h-4 w-full": size === "label",
           },
-          className
+          className,
         )}
         ref={ref as any}
         {...otherProps}
       />
     );
-  }
+  },
 );
 
 export const SkeletonText = SkeletonTextRoot;

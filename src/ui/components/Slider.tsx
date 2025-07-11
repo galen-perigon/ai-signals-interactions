@@ -15,14 +15,14 @@ interface RangeProps
 
 const Range = React.forwardRef<HTMLElement, RangeProps>(function Range(
   { className, ...otherProps }: RangeProps,
-  ref
+  ref,
 ) {
   return (
     <SubframeCore.Slider.Range asChild={true} {...otherProps}>
       <div
         className={SubframeUtils.twClassNames(
           "flex h-full flex-col items-start rounded-full bg-brand-500",
-          className
+          className,
         )}
         ref={ref as any}
       />
@@ -37,14 +37,14 @@ interface ThumbProps
 
 const Thumb = React.forwardRef<HTMLElement, ThumbProps>(function Thumb(
   { className, ...otherProps }: ThumbProps,
-  ref
+  ref,
 ) {
   return (
     <SubframeCore.Slider.Thumb asChild={true} {...otherProps}>
       <div
         className={SubframeUtils.twClassNames(
           "flex h-5 w-5 items-center gap-2 rounded-full bg-brand-500",
-          className
+          className,
         )}
         ref={ref as any}
       />
@@ -59,14 +59,14 @@ interface TrackProps
 
 const Track = React.forwardRef<HTMLElement, TrackProps>(function Track(
   { className, ...otherProps }: TrackProps,
-  ref
+  ref,
 ) {
   return (
     <SubframeCore.Slider.Track asChild={true} {...otherProps}>
       <div
         className={SubframeUtils.twClassNames(
           "flex h-1.5 w-full flex-col items-start gap-2 rounded-full bg-neutral-100",
-          className
+          className,
         )}
         ref={ref as any}
       >
@@ -91,7 +91,7 @@ const SliderRoot = React.forwardRef<HTMLElement, SliderRootProps>(
         <div
           className={SubframeUtils.twClassNames(
             "flex h-5 w-full cursor-pointer flex-col items-start justify-center gap-2",
-            className
+            className,
           )}
           ref={ref as any}
         >
@@ -100,7 +100,7 @@ const SliderRoot = React.forwardRef<HTMLElement, SliderRootProps>(
         </div>
       </SubframeCore.Slider.Root>
     );
-  }
+  },
 );
 
 export const Slider = Object.assign(SliderRoot, {

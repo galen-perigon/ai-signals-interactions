@@ -27,13 +27,13 @@ const ChatSelectItemRoot = React.forwardRef<
     className,
     ...otherProps
   }: ChatSelectItemRootProps,
-  ref
+  ref,
 ) {
   return (
     <div
       className={SubframeUtils.twClassNames(
         "group/4ecc2bc0 flex w-full cursor-pointer items-center gap-4 rounded-md px-3 py-3 hover:bg-neutral-100",
-        className
+        className,
       )}
       ref={ref as any}
       {...otherProps}
@@ -51,7 +51,7 @@ const ChatSelectItemRoot = React.forwardRef<
       <SubframeCore.Icon
         className={SubframeUtils.twClassNames(
           "hidden text-body font-body text-text-primary",
-          { "inline-flex text-h3 font-h3": selected }
+          { "inline-flex text-h3 font-h3": selected },
         )}
         name="FeatherCheckCircle2"
       />

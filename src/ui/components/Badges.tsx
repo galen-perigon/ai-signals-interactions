@@ -25,7 +25,7 @@ const BadgesRoot = React.forwardRef<HTMLElement, BadgesRootProps>(
       className,
       ...otherProps
     }: BadgesRootProps,
-    ref
+    ref,
   ) {
     return (
       <div
@@ -42,7 +42,7 @@ const BadgesRoot = React.forwardRef<HTMLElement, BadgesRootProps>(
             "border border-solid border-neutral-100 bg-neutral-100":
               variant === "neutral",
           },
-          className
+          className,
         )}
         ref={ref as any}
         {...otherProps}
@@ -60,7 +60,7 @@ const BadgesRoot = React.forwardRef<HTMLElement, BadgesRootProps>(
                 "text-gold-800": variant === "warning",
                 "text-red-800": variant === "error",
                 "text-neutral-700": variant === "neutral",
-              }
+              },
             )}
           >
             {children}
@@ -71,7 +71,7 @@ const BadgesRoot = React.forwardRef<HTMLElement, BadgesRootProps>(
         ) : null}
       </div>
     );
-  }
+  },
 );
 
 export const Badges = BadgesRoot;

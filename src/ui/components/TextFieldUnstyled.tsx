@@ -18,13 +18,13 @@ interface InputProps
 
 const Input = React.forwardRef<HTMLElement, InputProps>(function Input(
   { placeholder, className, ...otherProps }: InputProps,
-  ref
+  ref,
 ) {
   return (
     <input
       className={SubframeUtils.twClassNames(
         "h-full w-full border-none bg-transparent text-body font-body text-text-primary outline-none placeholder:text-neutral-400",
-        className
+        className,
       )}
       placeholder={placeholder as string}
       ref={ref as any}
@@ -44,13 +44,13 @@ const TextFieldUnstyledRoot = React.forwardRef<
   TextFieldUnstyledRootProps
 >(function TextFieldUnstyledRoot(
   { children, className, ...otherProps }: TextFieldUnstyledRootProps,
-  ref
+  ref,
 ) {
   return children ? (
     <label
       className={SubframeUtils.twClassNames(
         "flex flex-col items-start gap-1",
-        className
+        className,
       )}
       ref={ref as any}
       {...otherProps}

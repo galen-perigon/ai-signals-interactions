@@ -26,14 +26,14 @@ const ContextItem = React.forwardRef<HTMLElement, ContextItemProps>(
       className,
       ...otherProps
     }: ContextItemProps,
-    ref
+    ref,
   ) {
     return (
       <SubframeCore.ContextMenu.Item asChild={true} {...otherProps}>
         <div
           className={SubframeUtils.twClassNames(
             "group/9358ee78 flex h-8 w-full cursor-pointer items-center gap-2 rounded-md px-2 hover:bg-neutral-100 active:bg-neutral-50 data-[highlighted]:bg-neutral-100",
-            className
+            className,
           )}
           ref={ref as any}
         >
@@ -56,7 +56,7 @@ const ContextItem = React.forwardRef<HTMLElement, ContextItemProps>(
         </div>
       </SubframeCore.ContextMenu.Item>
     );
-  }
+  },
 );
 
 interface ContextDividerProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -66,13 +66,13 @@ interface ContextDividerProps extends React.HTMLAttributes<HTMLDivElement> {
 const ContextDivider = React.forwardRef<HTMLElement, ContextDividerProps>(
   function ContextDivider(
     { className, ...otherProps }: ContextDividerProps,
-    ref
+    ref,
   ) {
     return (
       <div
         className={SubframeUtils.twClassNames(
           "flex w-full items-start gap-2 px-1 py-1",
-          className
+          className,
         )}
         ref={ref as any}
         {...otherProps}
@@ -80,7 +80,7 @@ const ContextDivider = React.forwardRef<HTMLElement, ContextDividerProps>(
         <div className="flex h-px grow shrink-0 basis-0 flex-col items-center gap-2 bg-neutral-200" />
       </div>
     );
-  }
+  },
 );
 
 interface ContextMenuRootProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -91,13 +91,13 @@ interface ContextMenuRootProps extends React.HTMLAttributes<HTMLDivElement> {
 const ContextMenuRoot = React.forwardRef<HTMLElement, ContextMenuRootProps>(
   function ContextMenuRoot(
     { children, className, ...otherProps }: ContextMenuRootProps,
-    ref
+    ref,
   ) {
     return children ? (
       <div
         className={SubframeUtils.twClassNames(
           "flex min-w-[192px] flex-col items-start rounded-md border border-solid border-brand-200 bg-background-primary px-1 py-1 shadow-lg",
-          className
+          className,
         )}
         ref={ref as any}
         {...otherProps}
@@ -105,7 +105,7 @@ const ContextMenuRoot = React.forwardRef<HTMLElement, ContextMenuRootProps>(
         {children}
       </div>
     ) : null;
-  }
+  },
 );
 
 export const ContextMenu = Object.assign(ContextMenuRoot, {

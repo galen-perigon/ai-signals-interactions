@@ -17,7 +17,7 @@ interface LoaderRootProps
 const LoaderRoot = React.forwardRef<HTMLElement, LoaderRootProps>(
   function LoaderRoot(
     { size = "medium", className, ...otherProps }: LoaderRootProps,
-    ref
+    ref,
   ) {
     return (
       <SubframeCore.Loader
@@ -27,13 +27,13 @@ const LoaderRoot = React.forwardRef<HTMLElement, LoaderRootProps>(
             "text-h2 font-h2": size === "large",
             "text-caption font-caption": size === "small",
           },
-          className
+          className,
         )}
         ref={ref as any}
         {...otherProps}
       />
     );
-  }
+  },
 );
 
 export const Loader = LoaderRoot;

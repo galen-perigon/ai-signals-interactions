@@ -33,7 +33,7 @@ const CopyToClipboardButtonRoot = React.forwardRef<
     className,
     ...otherProps
   }: CopyToClipboardButtonRootProps,
-  ref
+  ref,
 ) {
   return (
     <SubframeCore.Tooltip.Provider>
@@ -46,7 +46,7 @@ const CopyToClipboardButtonRoot = React.forwardRef<
             <div
               className={SubframeUtils.twClassNames(
                 "group/e8c76626 flex h-6 w-6 cursor-pointer flex-col items-center justify-center gap-2 rounded-md hover:bg-neutral-100",
-                className
+                className,
               )}
               ref={ref as any}
             >
