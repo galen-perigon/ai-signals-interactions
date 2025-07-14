@@ -15,9 +15,9 @@ import * as SubframeUtils from "../utils";
 import * as SubframeCore from "@subframe/core";
 import { FeatherPlay } from "@subframe/core";
 import { Button } from "./Button";
-import { Loader } from "./Loader";
 import { IconWithBackground } from "./IconWithBackground";
 import { Table } from "./Table";
+import { ProcessingAnimation3D } from "./ProcessingAnimation3D";
 
 interface BuilderPreviewRootProps extends React.HTMLAttributes<HTMLDivElement> {
   icon?: SubframeCore.IconName;
@@ -70,6 +70,7 @@ interface BuilderPreviewRootProps extends React.HTMLAttributes<HTMLDivElement> {
   text46?: React.ReactNode;
   text47?: React.ReactNode;
   loading?: boolean;
+  onAnimationComplete?: () => void;
   className?: string;
 }
 
@@ -128,6 +129,7 @@ const BuilderPreviewRoot = React.forwardRef<
     text46,
     text47,
     loading = false,
+    onAnimationComplete,
     className,
     ...otherProps
   }: BuilderPreviewRootProps,
@@ -136,35 +138,21 @@ const BuilderPreviewRoot = React.forwardRef<
   return (
     <div
       className={SubframeUtils.twClassNames(
-        "flex w-full flex-col items-start gap-6 rounded-rounded-x-large border border-solid border-brand-200 bg-white px-3 py-6 md:px-6 shadow-md",
+        "flex w-full flex-col items-start gap-6 rounded-rounded-x-large border border-solid border-brand-200 px-3 py-6 md:px-6 shadow-md bg-white dark:bg-gray-900 grid-pattern",
         className
       )}
       ref={ref as any}
       {...otherProps}
     >
       {loading ? (
-        // Loading State - Lightning Zap Loader
-        <div className="flex w-full h-full items-center justify-center py-20">
-          <div className="flex flex-col items-center gap-4">
-            <div className="relative">
-              <SubframeCore.Icon
-                className="text-6xl text-brand-500 animate-pulse"
-                name="FeatherZap"
-                style={{
-                  filter: 'drop-shadow(0 0 20px rgba(99, 102, 241, 0.5))',
-                  animation: 'pulse 1.5s ease-in-out infinite alternate'
-                }}
-              />
-              <div className="absolute inset-0 bg-brand-500/20 rounded-full animate-ping"></div>
-            </div>
-            <div className="text-body-bold font-body-bold text-text-secondary animate-pulse">
-              Loading preview...
-            </div>
-          </div>
-        </div>
+        // Loading State - 3D Processing Animation
+        <ProcessingAnimation3D 
+          className="w-full h-full min-h-[500px]" 
+          onComplete={onAnimationComplete}
+        />
       ) : (
-        // Normal Content
-        <>
+        // Normal Content - with smooth streaming animation
+        <div className="animate-fadeSlideIn w-full h-full flex flex-col gap-6">
           <div className="flex w-full items-center justify-between">
             <div className="flex grow shrink-0 basis-0 items-center gap-2 min-w-0">
               <SubframeCore.Icon
@@ -183,15 +171,22 @@ const BuilderPreviewRoot = React.forwardRef<
             </div>
           </div>
           <div className="flex w-full flex-col items-stretch justify-start gap-4 overflow-auto flex-1 px-2 md:px-8 min-w-0">
-            <div className="flex w-full flex-col items-stretch justify-start gap-4 py-6 relative flex-1">
-              <div className="flex w-full flex-col items-start gap-6 z-10">
+            <div className="flex w-full flex-col items-stretch justify-start gap-6 py-6 relative flex-1">
+              
+              <div className="flex w-full flex-col items-start gap-6 z-10 relative">
                 <div
                   id="stats"
-                  className="flex w-full flex-col items-start gap-4 rounded-lg border border-solid border-brand-200 bg-background-secondary px-4 py-4 shadow-md flex-shrink-0"
+                  className="flex w-full flex-col items-start gap-6 rounded-xl border border-solid border-brand-200 bg-background-secondary px-6 py-8 md:px-8 md:py-10 shadow-lg flex-shrink-0 relative"
                 >
-                  <div className="flex w-full items-start gap-4">
-                    <div className="flex items-center gap-3">
-                      <Loader />
+                  <div className="flex w-full items-start gap-6">
+                    <div className="flex items-center gap-4">
+                      <div className="w-16 h-16 rounded-lg overflow-hidden border border-solid border-brand-200 flex-shrink-0">
+                        <img
+                          src="https://res.cloudinary.com/subframe/image/upload/v1751982003/uploads/5484/vukamvk3a4viihbhnrfy.jpg"
+                          alt="Avatar"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
                       <div className="flex flex-col items-start">
                         {text2 ? (
                           <span className="text-h3 font-h3 text-text-primary">
@@ -207,12 +202,12 @@ const BuilderPreviewRoot = React.forwardRef<
                     </div>
                   </div>
                   <div className="flex w-full items-center justify-between">
-                    <div className="flex w-full items-center gap-4 overflow-x-auto">
-                      <div className="flex min-w-[180px] flex-shrink-0 items-center gap-2">
+                    <div className="flex w-full items-center gap-6 overflow-x-auto">
+                      <div className="flex min-w-[180px] flex-shrink-0 items-center gap-3">
                         <IconWithBackground
-                          variant="success"
+                          variant="neutral"
                           icon="FeatherSearch"
-                          className="min-h-[32px] min-w-[32px]"
+                          className="min-h-[32px] min-w-[32px] bg-white border border-solid border-brand-200"
                         />
                         <div className="flex flex-col items-start">
                           {text4 ? (
@@ -227,11 +222,11 @@ const BuilderPreviewRoot = React.forwardRef<
                           ) : null}
                         </div>
                       </div>
-                      <div className="flex min-w-[180px] flex-shrink-0 items-center gap-2">
+                      <div className="flex min-w-[180px] flex-shrink-0 items-center gap-3">
                         <IconWithBackground
-                          variant="success"
+                          variant="neutral"
                           icon="FeatherFileText"
-                          className="min-h-[32px] min-w-[32px]"
+                          className="min-h-[32px] min-w-[32px] bg-white border border-solid border-brand-200"
                         />
                         <div className="flex flex-col items-start">
                           {text6 ? (
@@ -246,11 +241,11 @@ const BuilderPreviewRoot = React.forwardRef<
                           ) : null}
                         </div>
                       </div>
-                      <div className="flex min-w-[180px] flex-shrink-0 items-center gap-2">
+                      <div className="flex min-w-[180px] flex-shrink-0 items-center gap-3">
                         <IconWithBackground
-                          variant="success"
+                          variant="neutral"
                           icon="FeatherCheckCircle"
-                          className="min-h-[32px] min-w-[32px]"
+                          className="min-h-[32px] min-w-[32px] bg-white border border-solid border-brand-200"
                         />
                         <div className="flex flex-col items-start">
                           {text8 ? (
@@ -267,12 +262,21 @@ const BuilderPreviewRoot = React.forwardRef<
                       </div>
                     </div>
                   </div>
+                  
+                  {/* Bottom connector node */}
+                  <div className="absolute left-1/2 transform -translate-x-1/2 -bottom-1.5 w-3 h-3 rounded-full bg-white border border-neutral-200 shadow-sm z-30"></div>
+                  
+                  {/* Connecting line - positioned to connect circle centers */}
+                  <div className="absolute left-1/2 transform -translate-x-1/2 w-px bg-neutral-200 z-20" style={{top: 'calc(100% - 6px)', height: 'calc(1.5rem + 12px)'}}></div>
                 </div>
               </div>
+              
               <div
                 id="table"
-                className="flex w-full flex-col items-start gap-2 rounded-lg border border-solid border-brand-200 bg-background-secondary shadow-md flex-1"
+                className="flex w-full flex-col items-start gap-2 rounded-lg border border-solid border-brand-200 bg-background-secondary shadow-md flex-1 relative"
               >
+                {/* Top connector node */}
+                <div className="absolute left-1/2 transform -translate-x-1/2 -top-1.5 w-3 h-3 rounded-full bg-white border border-neutral-200 shadow-sm z-30"></div>
                 <div className="flex w-full items-center justify-between border-b border-solid border-brand-200 px-6 py-6">
                   <div className="flex items-center gap-2">
                     <SubframeCore.Icon
@@ -556,7 +560,7 @@ const BuilderPreviewRoot = React.forwardRef<
               </div>
             </div>
           </div>
-        </>
+        </div>
       )}
     </div>
   );

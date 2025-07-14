@@ -307,7 +307,7 @@ const SignalCardRoot = React.forwardRef<HTMLElement, SignalCardRootProps>(
         {/* Main Content - Filter and Data Sections */}
         <div
           className={SubframeUtils.twClassNames(
-            "flex w-full flex-col items-start gap-2 mt-2",
+            "flex w-full flex-col items-start gap-2 mt-2 pb-14",
             { hidden: variant === "old-version" || variant === "approved" }
           )}
         >
@@ -379,215 +379,231 @@ const SignalCardRoot = React.forwardRef<HTMLElement, SignalCardRootProps>(
             </div>
 
             {/* #Data Section */}
-            <div className="flex w-full flex-col items-start gap-1 px-1 py-1">
-              <div className="flex items-center gap-2">
-                <SubframeCore.Icon
-                  className="text-body font-body text-text-secondary"
-                  name="FeatherTable"
-                />
-                {text7 ? (
-                  <span className="text-body-bold font-body-bold text-text-primary">
-                    {text7}
-                  </span>
-                ) : null}
-              </div>
-              {text8 ? (
-                <span className="text-body font-body text-text-secondary">
-                  {text8}
-                </span>
-              ) : null}
-            </div>
-
-            {/* Dynamic Table */}
-            <div className="w-full overflow-x-auto relative">
-              <Table
-                className="min-w-[400px] md:min-w-[600px] relative w-full"
-                header={
-                  <Table.HeaderRow>
-                    <Table.HeaderCell className="w-full">Field Name</Table.HeaderCell>
-                    <Table.HeaderCell>Description</Table.HeaderCell>
-                    <Table.HeaderCell className="w-[100px] sticky right-0 bg-background-primary shadow-lg z-10 hidden md:table-cell text-center">Actions</Table.HeaderCell>
-                  </Table.HeaderRow>
+            <div className="flex w-full flex-col items-start gap-2 px-1 py-1">
+              <Accordion
+                defaultOpen={true}
+                trigger={
+                  <div className="flex w-full items-center gap-2">
+                    <SubframeCore.Icon
+                      className="text-body font-body text-text-secondary"
+                      name="FeatherTable"
+                    />
+                    {text7 ? (
+                      <span className="grow shrink-0 basis-0 text-body-bold font-body-bold text-text-primary">
+                        {text7}
+                      </span>
+                    ) : null}
+                    <Accordion.Chevron />
+                  </div>
                 }
               >
-              {dataFields.map((field) => (
-                <Table.Row key={field.id}>
-                  <Table.Cell className="w-full">
-                    <TextField variant="filled" label="" helpText="" className="w-full">
-                      <TextField.Input
-                        placeholder="Enter field name"
-                        value={field.fieldName}
-                        onChange={(e) =>
-                          updateField(field.id, e.target.value, field.description)
-                        }
-                        className="w-full"
-                      />
-                    </TextField>
-                  </Table.Cell>
-                  <Table.Cell className="min-w-[200px]">
-                    {/* Desktop: Simple description field */}
-                    <div className="hidden md:block w-full">
-                      <TextField variant="filled" label="" helpText="" className="w-full">
-                        <TextField.Input
-                          placeholder="Enter description"
-                          value={field.description}
-                          onChange={(e) =>
-                            updateField(field.id, field.fieldName, e.target.value)
-                          }
-                          className="w-full"
-                        />
-                      </TextField>
-                    </div>
-                    {/* Mobile: Description field with action icons */}
-                    <div className="flex items-center gap-2 md:hidden">
-                      <div className="flex-1">
-                        <TextField variant="filled" label="" helpText="" className="w-full">
-                          <TextField.Input
-                            placeholder="Enter description"
-                            value={field.description}
-                            onChange={(e) =>
-                              updateField(field.id, field.fieldName, e.target.value)
-                            }
-                            className="w-full"
-                          />
-                        </TextField>
-                      </div>
-                      {/* Mobile enhance icon - positioned before trash icon */}
-                      <SubframeCore.Tooltip.Provider>
-                        <SubframeCore.Tooltip.Root>
-                          <SubframeCore.Tooltip.Trigger asChild={true}>
-                            <SubframeCore.Icon
-                              className="w-4 h-4 text-text-secondary hover:text-brand-600 transition-colors cursor-pointer flex-shrink-0"
-                              name="FeatherSparkle"
-                              onClick={() => {
-                                // Enhance functionality - could be expanded later
-                                console.log('Enhance description for field:', field.id);
-                              }}
+                <div className="flex w-full flex-col items-start gap-4">
+                  {text8 ? (
+                    <span className="text-body font-body text-text-secondary">
+                      {text8}
+                    </span>
+                  ) : null}
+
+                  {/* Dynamic Table */}
+                  <div className="w-full overflow-x-auto relative">
+                    <Table
+                      className="min-w-[400px] md:min-w-[600px] relative w-full"
+                      header={
+                        <Table.HeaderRow>
+                          <Table.HeaderCell className="w-full">Field Name</Table.HeaderCell>
+                          <Table.HeaderCell>Description</Table.HeaderCell>
+                          <Table.HeaderCell className="w-[100px] sticky right-0 bg-background-primary shadow-lg z-10 hidden md:table-cell text-center">Actions</Table.HeaderCell>
+                        </Table.HeaderRow>
+                      }
+                    >
+                    {dataFields.map((field) => (
+                      <Table.Row key={field.id}>
+                        <Table.Cell className="w-full">
+                          <TextField variant="filled" label="" helpText="" className="w-full">
+                            <TextField.Input
+                              placeholder="Enter field name"
+                              value={field.fieldName}
+                              onChange={(e) =>
+                                updateField(field.id, e.target.value, field.description)
+                              }
+                              className="w-full"
                             />
-                          </SubframeCore.Tooltip.Trigger>
-                          <SubframeCore.Tooltip.Portal>
-                            <SubframeCore.Tooltip.Content
-                              side="top"
-                              align="center"
-                              sideOffset={4}
-                              asChild={true}
-                            >
-                              <Tooltip>Enhance with AI</Tooltip>
-                            </SubframeCore.Tooltip.Content>
-                          </SubframeCore.Tooltip.Portal>
-                        </SubframeCore.Tooltip.Root>
-                      </SubframeCore.Tooltip.Provider>
-                      {/* Mobile delete icon - at the end of the row */}
-                      <SubframeCore.Icon
-                        className="w-4 h-4 text-text-secondary hover:text-red-600 transition-colors cursor-pointer flex-shrink-0"
-                        name="FeatherTrash"
-                        onClick={() => removeField(field.id)}
-                      />
-                    </div>
-                  </Table.Cell>
-                  <Table.Cell className="w-[100px] min-w-[100px] sticky right-0 bg-background-primary shadow-lg z-10 hidden md:table-cell align-middle">
-                    <div className="flex items-center gap-1 justify-center">
-                      <SubframeCore.Tooltip.Provider>
-                        <SubframeCore.Tooltip.Root>
-                          <SubframeCore.Tooltip.Trigger asChild={true}>
-                            <IconButton size="small" icon={<FeatherSparkle />} />
-                          </SubframeCore.Tooltip.Trigger>
-                          <SubframeCore.Tooltip.Portal>
-                            <SubframeCore.Tooltip.Content
-                              side="bottom"
-                              align="start"
-                              sideOffset={4}
-                              asChild={true}
-                            >
-                              <Tooltip>enhance with AI</Tooltip>
-                            </SubframeCore.Tooltip.Content>
-                          </SubframeCore.Tooltip.Portal>
-                        </SubframeCore.Tooltip.Root>
-                      </SubframeCore.Tooltip.Provider>
-                      <SubframeCore.Tooltip.Provider>
-                        <SubframeCore.Tooltip.Root>
-                          <SubframeCore.Tooltip.Trigger asChild={true}>
-                            <IconButton
-                              size="small"
-                              icon={<FeatherTrash />}
+                          </TextField>
+                        </Table.Cell>
+                        <Table.Cell className="min-w-[200px]">
+                          {/* Desktop: Simple description field */}
+                          <div className="hidden md:block w-full">
+                            <TextField variant="filled" label="" helpText="" className="w-full">
+                              <TextField.Input
+                                placeholder="Enter description"
+                                value={field.description}
+                                onChange={(e) =>
+                                  updateField(field.id, field.fieldName, e.target.value)
+                                }
+                                className="w-full"
+                              />
+                            </TextField>
+                          </div>
+                          {/* Mobile: Description field with action icons */}
+                          <div className="flex items-center gap-2 md:hidden">
+                            <div className="flex-1">
+                              <TextField variant="filled" label="" helpText="" className="w-full">
+                                <TextField.Input
+                                  placeholder="Enter description"
+                                  value={field.description}
+                                  onChange={(e) =>
+                                    updateField(field.id, field.fieldName, e.target.value)
+                                  }
+                                  className="w-full"
+                                />
+                              </TextField>
+                            </div>
+                            {/* Mobile enhance icon - positioned before trash icon */}
+                            <SubframeCore.Tooltip.Provider>
+                              <SubframeCore.Tooltip.Root>
+                                <SubframeCore.Tooltip.Trigger asChild={true}>
+                                  <SubframeCore.Icon
+                                    className="w-4 h-4 text-text-secondary hover:text-brand-600 transition-colors cursor-pointer flex-shrink-0"
+                                    name="FeatherSparkle"
+                                    onClick={() => {
+                                      // Enhance functionality - could be expanded later
+                                      console.log('Enhance description for field:', field.id);
+                                    }}
+                                  />
+                                </SubframeCore.Tooltip.Trigger>
+                                <SubframeCore.Tooltip.Portal>
+                                  <SubframeCore.Tooltip.Content
+                                    side="top"
+                                    align="center"
+                                    sideOffset={4}
+                                    asChild={true}
+                                  >
+                                    <Tooltip>Enhance with AI</Tooltip>
+                                  </SubframeCore.Tooltip.Content>
+                                </SubframeCore.Tooltip.Portal>
+                              </SubframeCore.Tooltip.Root>
+                            </SubframeCore.Tooltip.Provider>
+                            {/* Mobile delete icon - at the end of the row */}
+                            <SubframeCore.Icon
+                              className="w-4 h-4 text-text-secondary hover:text-red-600 transition-colors cursor-pointer flex-shrink-0"
+                              name="FeatherTrash"
                               onClick={() => removeField(field.id)}
                             />
-                          </SubframeCore.Tooltip.Trigger>
-                          <SubframeCore.Tooltip.Portal>
-                            <SubframeCore.Tooltip.Content
-                              side="top"
-                              align="center"
-                              sideOffset={4}
-                              asChild={true}
-                            >
-                              <Tooltip>Remove data point</Tooltip>
-                            </SubframeCore.Tooltip.Content>
-                          </SubframeCore.Tooltip.Portal>
-                        </SubframeCore.Tooltip.Root>
-                      </SubframeCore.Tooltip.Provider>
-                    </div>
-                  </Table.Cell>
-                </Table.Row>
-              ))}
-            </Table>
+                          </div>
+                        </Table.Cell>
+                        <Table.Cell className="w-[100px] min-w-[100px] sticky right-0 bg-background-primary shadow-lg z-10 hidden md:table-cell align-middle">
+                          <div className="flex items-center gap-1 justify-center">
+                            <SubframeCore.Tooltip.Provider>
+                              <SubframeCore.Tooltip.Root>
+                                <SubframeCore.Tooltip.Trigger asChild={true}>
+                                  <IconButton size="small" icon={<FeatherSparkle />} />
+                                </SubframeCore.Tooltip.Trigger>
+                                <SubframeCore.Tooltip.Portal>
+                                  <SubframeCore.Tooltip.Content
+                                    side="bottom"
+                                    align="start"
+                                    sideOffset={4}
+                                    asChild={true}
+                                  >
+                                    <Tooltip>enhance with AI</Tooltip>
+                                  </SubframeCore.Tooltip.Content>
+                                </SubframeCore.Tooltip.Portal>
+                              </SubframeCore.Tooltip.Root>
+                            </SubframeCore.Tooltip.Provider>
+                            <SubframeCore.Tooltip.Provider>
+                              <SubframeCore.Tooltip.Root>
+                                <SubframeCore.Tooltip.Trigger asChild={true}>
+                                  <IconButton
+                                    size="small"
+                                    icon={<FeatherTrash />}
+                                    onClick={() => removeField(field.id)}
+                                  />
+                                </SubframeCore.Tooltip.Trigger>
+                                <SubframeCore.Tooltip.Portal>
+                                  <SubframeCore.Tooltip.Content
+                                    side="top"
+                                    align="center"
+                                    sideOffset={4}
+                                    asChild={true}
+                                  >
+                                    <Tooltip>Remove data point</Tooltip>
+                                  </SubframeCore.Tooltip.Content>
+                                </SubframeCore.Tooltip.Portal>
+                              </SubframeCore.Tooltip.Root>
+                            </SubframeCore.Tooltip.Provider>
+                          </div>
+                        </Table.Cell>
+                      </Table.Row>
+                    ))}
+                  </Table>
+                  </div>
+                </div>
+              </Accordion>
             </div>
+          </div>
+        </div>
 
-            {/* Action Buttons */}
-            <div className="flex w-full items-center gap-2 flex-wrap">
-              <div className="flex grow shrink-0 basis-0 items-start gap-2 min-w-0">
-                <Button
-                  variant="brand-secondary"
-                  size="small"
-                  icon={<FeatherPlus />}
-                  onClick={addNewField}
-                >
-                  <span className="hidden md:inline">Add new field</span>
-                  <span className="md:hidden">Add</span>
-                </Button>
-                <SubframeCore.DropdownMenu.Root>
-                  <SubframeCore.DropdownMenu.Trigger asChild={true}>
-                    <Button
-                      variant="brand-secondary"
-                      size="small"
-                      icon={<FeatherSparkle />}
-                    >
-                      <span className="hidden sm:inline">Field suggestions</span>
-                      <span className="sm:hidden">Suggestions</span>
-                    </Button>
-                  </SubframeCore.DropdownMenu.Trigger>
-                  <SubframeCore.DropdownMenu.Portal>
-                    <SubframeCore.DropdownMenu.Content
-                      side="bottom"
-                      align="start"
-                      sideOffset={4}
-                      className="z-[9999]"
-                      asChild={true}
-                    >
-                      <DropdownMenu>
-                        {fieldSuggestions.map((suggestion, index) => (
-                          <DropdownMenu.DropdownItem
-                            key={index}
-                            icon="FeatherColumns"
-                            onClick={() =>
-                              addFieldFromSuggestion(
-                                suggestion.fieldName,
-                                suggestion.description
-                              )
-                            }
-                          >
-                            {suggestion.fieldName}
-                          </DropdownMenu.DropdownItem>
-                        ))}
-                      </DropdownMenu>
-                    </SubframeCore.DropdownMenu.Content>
-                  </SubframeCore.DropdownMenu.Portal>
-                </SubframeCore.DropdownMenu.Root>
-              </div>
-              <Button onClick={onSavePreview} className="flex-shrink-0">
-                <span className="hidden md:inline">Save + preview</span>
-                <span className="md:hidden">Save</span>
+        {/* Fixed Footer with Action Buttons - positioned within SignalCard */}
+        <div
+          className={SubframeUtils.twClassNames(
+            "absolute bottom-0 left-0 right-0 bg-background-primary border-t border-border-primary px-4 py-3 md:px-6 md:py-4 rounded-b-rounded-x-large z-20",
+            { hidden: variant === "old-version" || variant === "approved" }
+          )}
+        >
+          <div className="flex w-full items-center gap-2 flex-wrap">
+            <div className="flex grow shrink-0 basis-0 items-start gap-2 min-w-0">
+              <Button
+                variant="brand-secondary"
+                size="small"
+                icon={<FeatherPlus />}
+                onClick={addNewField}
+              >
+                <span className="hidden md:inline">Add new field</span>
+                <span className="md:hidden">Add</span>
               </Button>
+              <SubframeCore.DropdownMenu.Root>
+                <SubframeCore.DropdownMenu.Trigger asChild={true}>
+                  <Button
+                    variant="brand-secondary"
+                    size="small"
+                    icon={<FeatherSparkle />}
+                  >
+                    <span className="hidden sm:inline">Field suggestions</span>
+                    <span className="sm:hidden">Suggestions</span>
+                  </Button>
+                </SubframeCore.DropdownMenu.Trigger>
+                <SubframeCore.DropdownMenu.Portal>
+                  <SubframeCore.DropdownMenu.Content
+                    side="top"
+                    align="start"
+                    sideOffset={4}
+                    className="z-[9999]"
+                    asChild={true}
+                  >
+                    <DropdownMenu>
+                      {fieldSuggestions.map((suggestion, index) => (
+                        <DropdownMenu.DropdownItem
+                          key={index}
+                          icon="FeatherColumns"
+                          onClick={() =>
+                            addFieldFromSuggestion(
+                              suggestion.fieldName,
+                              suggestion.description
+                            )
+                          }
+                        >
+                          {suggestion.fieldName}
+                        </DropdownMenu.DropdownItem>
+                      ))}
+                    </DropdownMenu>
+                  </SubframeCore.DropdownMenu.Content>
+                </SubframeCore.DropdownMenu.Portal>
+              </SubframeCore.DropdownMenu.Root>
             </div>
+            <Button onClick={onSavePreview} className="flex-shrink-0">
+              <span className="hidden md:inline">Save + preview</span>
+              <span className="md:hidden">Save</span>
+            </Button>
           </div>
         </div>
       </div>

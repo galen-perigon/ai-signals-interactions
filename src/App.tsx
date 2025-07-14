@@ -1,7 +1,10 @@
 import MonitoringChatPane1 from "./pages/MonitoringChatPane1";
+import { ThemeProvider } from "./components/ThemeProvider";
 
 export default function App() {
   return (
-    <MonitoringChatPane1 />
+    <ThemeProvider>
+      <MonitoringChatPane1 />
+    </ThemeProvider>
   );
 }

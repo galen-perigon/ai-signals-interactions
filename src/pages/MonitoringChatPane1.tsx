@@ -17,6 +17,7 @@ import { BuilderPreview } from "@/ui/components/BuilderPreview";
 import { Dialog } from "@/ui/components/Dialog";
 import { AttachmentsModal } from "@/ui/components/AttachmentsModal";
 import { MobileToggle } from "@/ui/components/MobileToggle";
+import { ThemeToggle } from "@/ui/components/ThemeToggle";
 import { useAIChat } from "../hooks/useAIChat";
 
 interface ChatMessage {
@@ -170,32 +171,7 @@ function MonitoringChatPane1() {
   const handleSavePreview = async () => {
     const currentTime = new Date();
 
-    // Enable preview mode and switch to preview on mobile
-    setIsPreviewMode(true);
-    setMobileViewMode("preview");
-
-    // Start preview loading for 5 seconds
-    setIsPreviewLoading(true);
-    
-    // Use AI to generate preview content
-    try {
-      const signalConfig = {
-        title: "AI Startup Acquisition Tracker",
-        location: "California",
-        focus: "artificial intelligence startup acquisitions and mergers",
-        dataTypes: "funding events, strategic partnerships, market developments"
-      };
-      
-      await generatePreview(signalConfig);
-      
-      // Keep loading for at least 5 seconds for the lightning animation
-      setTimeout(() => setIsPreviewLoading(false), 5000);
-    } catch (error) {
-      console.error('Failed to generate AI preview:', error);
-      // Fallback to original 5-second timer
-      setTimeout(() => setIsPreviewLoading(false), 5000);
-    }
-
+    // Check if we're editing an approved card before state changes
     const wasEditingApproved = chatItems.some(
       (item) =>
         item.type === "signal" &&
@@ -203,6 +179,7 @@ function MonitoringChatPane1() {
         (item.data as SignalCardData).isEditingApproved
     );
 
+    // IMMEDIATELY change SignalCard to approved state
     setChatItems((prev) =>
       prev.map((item) => {
         if (
@@ -224,6 +201,27 @@ function MonitoringChatPane1() {
         return item;
       })
     );
+
+    // Enable preview mode and switch to preview on mobile
+    setIsPreviewMode(true);
+    setMobileViewMode("preview");
+
+    // Start preview loading for 15 seconds (duration of 3D animation)
+    setIsPreviewLoading(true);
+    
+    // Use AI to generate preview content (async, happens in background)
+    try {
+      const signalConfig = {
+        title: "AI Startup Acquisition Tracker",
+        location: "California",
+        focus: "artificial intelligence startup acquisitions and mergers",
+        dataTypes: "funding events, strategic partnerships, market developments"
+      };
+      
+      await generatePreview(signalConfig);
+    } catch (error) {
+      console.error('Failed to generate AI preview:', error);
+    }
 
     if (wasEditingApproved) {
       const messageTime = new Date(currentTime.getTime() + 1);
@@ -262,6 +260,12 @@ function MonitoringChatPane1() {
     }
 
     setIsPreviewMode(true);
+  };
+
+  // Handle 3D animation completion
+  const handleAnimationComplete = () => {
+    // Switch back to normal content after 3D animation completes
+    setIsPreviewLoading(false);
   };
 
   const handleEdit = (signalCardId: string) => {
@@ -721,8 +725,7 @@ function MonitoringChatPane1() {
               icon={<FeatherSlidersHorizontal />}
               onClick={() => {}}
             />
-            
-
+            <ThemeToggle />
           </div>
         </div>
 
@@ -845,7 +848,6 @@ function MonitoringChatPane1() {
                         <UpdateMessage 
                           text={(item.data as UpdateMessageData).text} 
                           isNew={item.isNew} 
-                          useAIStreaming={true}
                         />
                       )}
 
@@ -982,22 +984,27 @@ function MonitoringChatPane1() {
               </div>
 
             {/* Preview Panel - Slides in from right */}
-            <div className={`h-full transition-all duration-700 ease-out overflow-hidden ${
+            <div className={`h-full overflow-hidden ${
               // Desktop: 3/5 width when preview mode is on, Mobile: always full width
               isPreviewMode || mobileViewMode === "preview" ? "w-full md:w-3/5" : "w-0"
             } ${
               // Mobile responsive classes
               mobileViewMode === "preview" ? "block" : "hidden md:block"
-            }`}>
-              <div className={`h-full transition-all duration-700 ease-out ${
+            }`} style={{
+              transition: 'all 450ms cubic-bezier(0.165, 0.84, 0.44, 1)'
+            }}>
+              <div className={`h-full ${
                 isPreviewMode || mobileViewMode === "preview"
                   ? "transform translate-x-0 opacity-100" 
                   : "transform translate-x-full opacity-0 pointer-events-none"
-              }`}>
+              }`} style={{
+                transition: 'all 450ms cubic-bezier(0.165, 0.84, 0.44, 1)'
+              }}>
                 <div className="h-full overflow-hidden p-3 md:p-2 relative">
                   {/* BuilderPreview Content */}
                   <BuilderPreview
                     loading={isPreviewLoading}
+                    onAnimationComplete={handleAnimationComplete}
                     className="h-full w-full"
                     text="Signal Preview"
                     text2="AI Startup Acquisition Tracker"
@@ -1038,33 +1045,27 @@ function MonitoringChatPane1() {
   );
 }
 
-const UpdateMessage = ({ text, isNew, useAIStreaming = false }: { text: string, isNew?: boolean, useAIStreaming?: boolean }) => {
+const UpdateMessage = ({ text, isNew }: { text: string, isNew?: boolean }) => {
   const [streamedText, setStreamedText] = useState("");
   const [isStreaming, setIsStreaming] = useState(true);
-  const { enhanceMessage, currentStreamContent, isStreaming: aiIsStreaming } = useAIChat();
 
   useEffect(() => {
-    if (useAIStreaming) {
-      // Use AI to enhance the message
-      enhanceMessage(text, 'Signal monitoring and business intelligence system');
-    } else {
-      // Use the existing character-by-character streaming
-      const streamText = async () => {
-        setStreamedText("");
-        setIsStreaming(true);
-        for (let i = 0; i < text.length; i++) {
-          await new Promise(res => setTimeout(res, 15));
-          setStreamedText(text.substring(0, i + 1));
-        }
-        setIsStreaming(false);
-      };
+    // Use simple character-by-character streaming animation
+    const streamText = async () => {
+      setStreamedText("");
+      setIsStreaming(true);
+      for (let i = 0; i < text.length; i++) {
+        await new Promise(res => setTimeout(res, 15));
+        setStreamedText(text.substring(0, i + 1));
+      }
+      setIsStreaming(false);
+    };
 
-      streamText();
-    }
-  }, [text, useAIStreaming, enhanceMessage]);
+    streamText();
+  }, [text]);
 
-  const displayText = useAIStreaming ? currentStreamContent : streamedText;
-  const showCursor = useAIStreaming ? aiIsStreaming : isStreaming;
+  const displayText = streamedText;
+  const showCursor = isStreaming;
 
   return (
     <div className={`flex w-full flex-col items-start justify-center gap-1`}>

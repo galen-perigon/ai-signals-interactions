@@ -8,7 +8,10 @@
 
 import React from "react";
 import * as SubframeUtils from "../utils";
-import * as SubframeCore from "@subframe/core";
+import { FeatherPlus } from "@subframe/core";
+import { FeatherTrendingUp } from "@subframe/core";
+import { FeatherZap } from "@subframe/core";
+import { FeatherPanelRight } from "@subframe/core";
 
 interface NavItemProps extends React.HTMLAttributes<HTMLDivElement> {
   selected?: boolean;
