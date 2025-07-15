@@ -154,6 +154,11 @@ html.dark .bg-button-tertiary {
   color: #111111 !important;
 }
 
+html.dark .bg-button-tertiary span,
+html.dark .bg-button-tertiary svg {
+  color: #111111 !important;
+}
+
 /* Form elements */
 html.dark textarea,
 html.dark input {

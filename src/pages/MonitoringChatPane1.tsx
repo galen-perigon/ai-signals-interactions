@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { DefaultPageLayout } from "@/ui/layouts/DefaultPageLayout";
 import * as SubframeCore from "@subframe/core";
-import { FeatherPenLine, FeatherStar, FeatherBell, FeatherSlidersHorizontal, FeatherArrowUp, FeatherPaperclip, FeatherChevronDown, FeatherFileText, FeatherX } from "@subframe/core";
+import { FeatherPenLine, FeatherStar, FeatherBell, FeatherSlidersHorizontal, FeatherArrowUp, FeatherPaperclip, FeatherChevronDown, FeatherFileText, FeatherX, FeatherLayers } from "@subframe/core";
 import { Breadcrumbs } from "@/ui/components/Breadcrumbs";
 import { IconButton } from "@/ui/components/IconButton";
 import { Badge } from "@/ui/components/Badge";
@@ -689,7 +689,7 @@ function MonitoringChatPane1() {
     <DefaultPageLayout>
       <div className="flex h-screen w-full flex-col bg-neutral-50">
         {/* Header */}
-        <div className="flex w-full items-center gap-2 px-4 py-2 bg-white border-b">
+        <div className="flex w-full items-center gap-2 px-4 py-2 bg-white border-b border-solid border-brand-200">
           <div className="flex grow shrink-0 basis-0 items-center gap-2">
             <Breadcrumbs className="h-auto grow shrink-0 basis-0">
               <SubframeCore.Icon
@@ -725,12 +725,18 @@ function MonitoringChatPane1() {
               icon={<FeatherSlidersHorizontal />}
               onClick={() => {}}
             />
+            <IconButton
+              size="small"
+              icon={<FeatherLayers />}
+              onClick={() => window.location.hash = "#showcase"}
+              title="Component Showcase"
+            />
             <ThemeToggle />
           </div>
         </div>
 
         {/* Mobile Toggle - Only visible on mobile */}
-        <div className="md:hidden w-full px-4 py-1 bg-neutral-100 border-b">
+        <div className="md:hidden w-full px-4 py-1 bg-neutral-100 border-b border-solid border-brand-200">
           <MobileToggle 
             activeMode={mobileViewMode} 
             onModeChange={setMobileViewMode}
@@ -855,7 +861,7 @@ function MonitoringChatPane1() {
                         <div className={`flex w-full items-center gap-4 transition-all duration-700 ease-out opacity-70 hover:opacity-100 ${
                           item.isNew ? 'animate-in fade-in-0 slide-in-from-bottom-3 duration-600 delay-300' : ''
                         }`}>
-                          <div className={`flex h-px grow shrink-0 basis-0 flex-col items-center gap-2 bg-border-primary transition-all duration-500 ${
+                          <div className={`flex h-px grow shrink-0 basis-0 flex-col items-center gap-2 bg-brand-200 transition-all duration-500 ${
                             item.isNew ? 'animate-in fade-in-0 slide-in-from-left-2 duration-400 delay-500' : ''
                           }`} />
                           <div className={`flex items-center gap-2 relative transition-all duration-500 hover:scale-105 ${
@@ -878,7 +884,7 @@ function MonitoringChatPane1() {
                                       : "Plan updated"} {formatTimestamp(item.timestamp)}
                             </span>
                           </div>
-                          <div className={`flex h-px grow shrink-0 basis-0 flex-col items-center gap-2 bg-border-primary transition-all duration-500 ${
+                          <div className={`flex h-px grow shrink-0 basis-0 flex-col items-center gap-2 bg-brand-200 transition-all duration-500 ${
                             item.isNew ? 'animate-in fade-in-0 slide-in-from-right-2 duration-400 delay-500' : ''
                           }`} />
                         </div>

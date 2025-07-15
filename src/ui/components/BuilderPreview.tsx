@@ -138,7 +138,7 @@ const BuilderPreviewRoot = React.forwardRef<
   return (
     <div
       className={SubframeUtils.twClassNames(
-        "flex w-full flex-col items-start gap-6 rounded-rounded-x-large border border-solid border-brand-200 px-3 py-6 md:px-6 shadow-md bg-white dark:bg-gray-900 grid-pattern",
+        "flex w-full flex-col items-start gap-6 rounded-rounded-x-large border border-solid border-brand-200 px-3 py-6 md:px-6 shadow-md bg-background-primary grid-pattern",
         className
       )}
       ref={ref as any}
