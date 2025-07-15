@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import MonitoringChatPane1 from "./pages/MonitoringChatPane1";
-import ComponentShowcase from "./pages/ComponentShowcase";
+/* import ComponentShowcase from "./pages/ComponentShowcase"; */
 import { ThemeProvider } from "./components/ThemeProvider";
 
 export default function App() {
